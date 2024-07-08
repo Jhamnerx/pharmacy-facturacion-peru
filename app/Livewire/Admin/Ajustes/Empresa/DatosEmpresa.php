@@ -6,9 +6,10 @@ use App\Models\Empresa;
 use App\Models\Locales;
 use Livewire\Component;
 use Livewire\Attributes\On;
-use App\Imports\CatalagoImport;
-use Illuminate\Support\Collection;
 use Livewire\WithFileUploads;
+use App\Imports\CatalagoImport;
+use App\Models\CatalogoDigemid;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DatosEmpresa extends Component
@@ -168,6 +169,7 @@ class DatosEmpresa extends Component
         ]);
 
         try {
+            CatalogoDigemid::truncate();
 
             $import = Excel::import(new CatalagoImport, $this->file);
 
