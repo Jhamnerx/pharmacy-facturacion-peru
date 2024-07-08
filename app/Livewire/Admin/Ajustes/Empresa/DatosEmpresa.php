@@ -160,12 +160,12 @@ class DatosEmpresa extends Component
     public function importExcel()
     {
 
-        // $this->validate([
-        //     'file' => 'required|file|max:10024|extensions:xlsx,xls',
-        // ], [
-        //     'file.required' => 'El archivo es requerido',
-        //     'file.extensions' => 'El archivo debe ser un archivo de tipo: xlsx',
-        // ]);
+        $this->validate([
+            'file' => 'required',
+        ], [
+            'file.required' => 'El archivo es requerido',
+            'file.extensions' => 'El archivo debe ser un archivo de tipo: xlsx',
+        ]);
 
         try {
 
