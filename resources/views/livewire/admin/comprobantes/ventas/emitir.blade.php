@@ -123,7 +123,7 @@
 
                         <div class="col-span-12 md:col-span-6">
                             <x-form.select autocomplete="off" id="cliente_id" name="cliente_id"
-                                label="Selecciona un cliente:" wire:model.live="cliente_id"
+                                label="Selecciona un cliente:" wire:model.live="cliente_id" :clearable="false"
                                 placeholder="Escriba el nombre o número de documento del cliente" :async-data="[
                                     'api' => route('api.clientes.index'),
                                     'params' => ['tipo_comprobante' => $tipo_comprobante_id],

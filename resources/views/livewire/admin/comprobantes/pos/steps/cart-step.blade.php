@@ -332,7 +332,7 @@
                         </div>
                         <div class="col-span-9">
                             <x-form.select autocomplete="off" id="cliente_id" name="cliente_id"
-                                wire:model.live="cliente_id"
+                                wire:model.live="cliente_id" :clearable="false"
                                 placeholder="Escriba el nombre o número de documento del cliente" :async-data="[
                                     'api' => route('api.clientes.index'),
                                 ]"
