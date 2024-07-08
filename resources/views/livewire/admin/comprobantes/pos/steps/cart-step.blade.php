@@ -352,11 +352,13 @@
                         <div class="col-span-3 flex items-center justify-center">
                             <x-form.button icon="plus" positive />
                         </div>
-                        <div class="col-span-12">
-                            <div class="w-full">
-                                {{ $cliente }}
+                        @if (app()->environment('local'))
+                            <div class="col-span-12">
+                                <div class="w-full">
+                                    {{ $cliente }}
+                                </div>
                             </div>
-                        </div>
+                        @endif
 
                         <div class="col-span-12">
                             <div class="py-2 ml-auto mt-5 w-full mx-4">
