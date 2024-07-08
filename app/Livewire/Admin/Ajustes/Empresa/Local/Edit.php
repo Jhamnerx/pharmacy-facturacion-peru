@@ -16,7 +16,6 @@ class Edit extends Component
     #[On('open-modal-edit-local')]
     public function openModal(Locales $local)
     {
-        dd($local->series); // dd($local) is a function that dumps information about a variable
         $this->local = $local;
         $this->nombre = $local->nombre;
         $this->direccion = $local->direccion;
