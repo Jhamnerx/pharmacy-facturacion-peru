@@ -23,7 +23,7 @@
                 </ul>
         </div>
     </div>
-    <div class="p-2 shadow overflow-hidden sm:rounded-md">
+    <div class="shadow overflow-hidden sm:rounded-md">
         <div class="px-4 py-2 bg-slate-100 dark:bg-gray-700 sm:p-2">
             <!-- Page header -->
             {{-- <div
@@ -495,8 +495,8 @@
 
         <div>
             <div class="p-2 shadow overflow-hidden sm:rounded-md">
-                <div class="px-4 py-2 bg-slate-100 dark:bg-gray-700 sm:p-2">
-                    <div class="grid grid-cols-12 gap-8 m-3">
+                <div class="px-4 bg-slate-100 dark:bg-gray-700 sm:p-2">
+                    <div class="grid grid-cols-12 gap-8 m-1">
 
                         <div class="col-span-12">
                             <div class="grid grid-cols-12 justify-center pt-2 lg:mx-4 gap-3">
@@ -637,13 +637,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            {{ $descuento_monto }}-{{ $descuento }} -{{ $descuento_factor }}
+
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-span-12">
-                                    <div class="card bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                                    <div class="card bg-white dark:bg-gray-800 p-2 rounded-lg shadow">
                                         <div class="form-group">
 
                                             <x-form.textarea label="Comentario:" id="comentario" name="comentario"
