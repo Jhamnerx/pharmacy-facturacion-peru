@@ -82,6 +82,12 @@ class Emitir extends Component
         return view('livewire.admin.comprobantes.ventas.emitir');
     }
 
+    #[On('echo:ventas,VentaCreada')]
+    public function actualizarVista()
+    {
+        $this->render();
+    }
+
     public function openModalDetraccion()
     {
         $this->openModalDt = true;

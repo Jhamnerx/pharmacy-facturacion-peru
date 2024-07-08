@@ -554,7 +554,7 @@ class CartStep extends Component
         $this->tipo_comprobante_id = "02";
         $this->setSerieMount();
         //VentaCreada::dispatch();
-        $this->dispatch('venta-creada-from-pos')->to(Emitir::class);
+        // $this->dispatch('venta-creada-from-pos')->to(Emitir::class);
     }
 
     public function closeModal()

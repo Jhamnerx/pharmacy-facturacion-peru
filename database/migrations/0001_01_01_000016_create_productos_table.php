@@ -27,7 +27,7 @@ return new class extends Migration
             $table->integer('ventas')->default(0);
             $table->string('divisa')->nullable();
             $table->enum('tipo', ['producto', 'servicio'])->default('producto');
-            $table->text('tipo_afectacion')->default('10');
+            $table->text('tipo_afectacion')->nullable();
             $table->unsignedBigInteger('categoria_id')->nullable()->index('productos_categoria_id_foreign');
             $table->unsignedBigInteger('local_id')->nullable();
             $table->string('unit_code')->nullable()->index('productos_unit_code_foreign');
