@@ -95,16 +95,9 @@
                     </div>
 
                     <div class="col-span-4 lg:col-span-1">
-                        @if (
-                            $serie->tipoComprobante->codigo !== '08' &&
-                                $serie->tipoComprobante->codigo !== '09' &&
-                                $serie->tipoComprobante->codigo !== '07' &&
-                                $serie->tipoComprobante->codigo !== 'RA' &&
-                                $serie->tipoComprobante->codigo !== 'RC')
-                            <x-form.button outline rose label="Eliminar" :disabled="$serie->tipoComprobante->ventas->count() > 0"
-                                wire:click.prevent="deleteSerie({{ $serie->id }})" />
-                        @endif
 
+                        {{-- <x-form.button outline rose label="Eliminar" :disabled="$serie->tipoComprobante->ventas->count() > 0"
+                                wire:click.prevent="deleteSerie({{ $serie->id }})" /> --}}
 
                     </div>
 
