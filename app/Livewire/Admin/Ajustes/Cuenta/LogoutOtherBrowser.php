@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use Jenssegers\Agent\Agent;
+use Laravel\Jetstream\Agent;
 use Livewire\Component;
 
 class LogoutOtherBrowser extends Component
