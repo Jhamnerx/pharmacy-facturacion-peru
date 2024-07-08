@@ -35,6 +35,7 @@ class CatalagoImport implements ToModel, WithChunkReading, SkipsOnFailure, WithE
 
     public function model(array $row)
     {
+        CatalogoDigemid::truncate();
 
         return new CatalogoDigemid([
             'Cod_Prod' => $row['cod_prod'],
