@@ -1,0 +1,47 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('compras', function (Blueprint $table) {
+            $table->id('id');
+            $table->string('serie');
+            $table->string('correlativo');
+            $table->string('serie_correlativo');
+            $table->unsignedBigInteger('proveedor_id');
+            $table->date('fecha_emision');
+            $table->dateTime('fecha_hora_emision')->nullable();
+            $table->string('divisa')->nullable();
+            $table->decimal('tipo_cambio', 11)->nullable();
+            $table->text('comentario')->nullable();
+            $table->decimal('sub_total', 11, 4)->default(0);
+            $table->decimal('igv', 11, 4)->nullable();
+            $table->decimal('total', 11, 4)->default(0);
+
+            $table->unsignedBigInteger('user_id');
+            $table->enum('estado', ['COMPLETADO', 'BORRADOR'])->default('BORRADOR');
+            $table->enum('pago_estado', ['UNPAID', 'PAID'])->default('UNPAID');
+            $table->enum('forma_pago', ['CONTADO', 'CREDITO'])->default('CONTADO');
+            $table->unsignedBigInteger('local_id')->nullable();
+            $table->timestamps();
+
+            $table->foreign(['local_id'])->references(['id'])->on('locales')->onUpdate('restrict')->onDelete('set null');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('compras');
+    }
+};
