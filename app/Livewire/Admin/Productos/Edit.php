@@ -2,19 +2,20 @@
 
 namespace App\Livewire\Admin\Productos;
 
-use App\Http\Requests\ProductosRequest;
+use Livewire\Component;
 use App\Models\Productos;
+use Livewire\Attributes\On;
+use Livewire\WithFileUploads;
+use Intervention\Image\ImageManager;
+use App\Http\Requests\ProductosRequest;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Encoders\PngEncoder;
-use Intervention\Image\ImageManager;
 use Intervention\Image\ImageManagerStatic as Image;
-use Livewire\Attributes\On;
-use Livewire\Component;
 
 class Edit extends Component
 {
-
+    use WithFileUploads;
     public $showModal = false;
     public $producto;
 
@@ -102,22 +103,29 @@ class Edit extends Component
 
     public function saveImage(Productos $producto): bool
     {
-        if ($this->file_name != "default.png") {
+
+        if ($this->file_name !== "default.png") {
             // create new manager instance with desired driver
-            $manager = new ImageManager(Driver::class);
 
-            // reading jpeg image
-            $image = $manager->read($this->file);
-            $image->resize(500, 400, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-            $encoded = $image->encode(new PngEncoder());
-            $url = 'productos/' . $producto->id . '.png';
-            Storage::put($url, $encoded, 'public');
+            try {
+                $manager = new ImageManager(Driver::class);
 
-            $producto->image()->create([
-                'url' => $url
-            ]);
+                // reading jpeg image
+                $image = $manager->read($this->file);
+                $image->resize(500, 400, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $encoded = $image->encode(new PngEncoder());
+                $url = 'productos/' . $producto->id . '.png';
+
+                Storage::disk('public')->put($url, $encoded);
+
+                $producto->image()->create([
+                    'url' => $url
+                ]);
+            } catch (\Throwable $th) {
+                // dd($th);
+            }
         }
 
         return true;
@@ -156,6 +164,7 @@ class Edit extends Component
         $this->closeModal();
 
         $this->dispatch('update-table');
+        $this->dispatch('reset-file-imagen');
     }
 
     public function searchMedicamento()

@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Productos;
 
 use Livewire\Component;
 use App\Models\Productos;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
 
 class Index extends Component
@@ -14,7 +15,7 @@ class Index extends Component
     public $search;
 
 
-    #[\Livewire\Attributes\On('update-table')]
+    #[On('update-table')]
     public function updateTable()
     {
         $this->render();

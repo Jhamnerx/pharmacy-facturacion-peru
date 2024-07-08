@@ -116,6 +116,7 @@ class Create extends Component
         );
         $this->closeModal();
         $this->dispatch('update-table');
+        $this->dispatch('reset-file-imagen');
     }
 
     public function searchMedicamento()

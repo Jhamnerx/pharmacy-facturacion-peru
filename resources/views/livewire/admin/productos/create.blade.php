@@ -232,6 +232,12 @@
                 reader.readAsDataURL(file.file);
             });
 
+            Livewire.on('reset-file-imagen', (event) => {
+
+                imagen.removeFile();
+
+            });
+
 
         });
     </script>

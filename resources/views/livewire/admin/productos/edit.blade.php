@@ -263,6 +263,12 @@
 
             });
 
+            Livewire.on('reset-file-imagen', (event) => {
+
+                imagenEdit.removeFile();
+
+            });
+
             imagenEdit.on('removefile', (error, file) => {
 
                 @this.set('file', null);
