@@ -66,6 +66,7 @@ class CartStep extends Component
     public $tipo_operacion = '0101';
 
     public $app_descuento = false;
+    public $pago_estado = 'PAID';
 
     public $series = [];
 
@@ -525,6 +526,7 @@ class CartStep extends Component
                     $this->dispatch('finishVenta', venta: $venta->id);
                 } else {
                     $this->dispatch('notify-toast', icon: 'success', title: 'VENTA REGISTRADA', mensaje: $mensaje['fe_mensaje_sunat']);
+                    $venta->update(['estado' => 'COMPLETADO']);
                     $this->dispatch('finishVenta', venta: $venta->id);
                 }
             } else {
@@ -549,6 +551,7 @@ class CartStep extends Component
     {
         Cart::destroy();
         $this->loadCart();
+        $this->tipo_comprobante_id = "02";
         $this->setSerieMount();
         //VentaCreada::dispatch();
         $this->dispatch('venta-creada-from-pos')->to(Emitir::class);

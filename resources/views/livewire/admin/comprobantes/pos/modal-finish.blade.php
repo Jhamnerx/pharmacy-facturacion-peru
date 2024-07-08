@@ -54,9 +54,7 @@
                 </div>
                 <div class="p-4 flex flex-col md:flex-row justify-between items-center">
                     <div class="mb-4 md:mb-0 flex space-x-2">
-                        <input type="text"
-                            class="border border-gray-300 dark:border-gray-600 p-2 rounded focus:outline-none dark:bg-gray-700 dark:text-gray-300"
-                            placeholder="+51">
+
                         <x-form.input type="email" wire:model.blur="email" />
                         <x-form.button slate label="Enviar" wire:click.prevent="sendEmailInvoice()" />
                     </div>

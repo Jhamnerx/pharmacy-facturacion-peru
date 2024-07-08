@@ -475,7 +475,7 @@ class Emitir extends Component
                     session()->flash('venta-registrada', $mensaje["fe_mensaje_error"] . ': Intenta enviar en un rato');
                     $this->redirectRoute('admin.ventas.index');
                 } else {
-
+                    $venta->update(['estado' => 'COMPLETADO']);
                     session()->flash('venta-registrada', $mensaje['fe_mensaje_sunat']);
                     $this->redirectRoute('admin.ventas.index');
                 }

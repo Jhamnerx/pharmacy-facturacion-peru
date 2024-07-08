@@ -45,6 +45,7 @@ class VentasPosRequest extends FormRequest
             'forma_pago' => 'required',
             'pago' => 'required',
             'vuelto' => 'required',
+            'pago_estado' => 'required',
 
             'cart' => 'array|between:1,1000',
             'cart.*.producto_id' => 'nullable',
