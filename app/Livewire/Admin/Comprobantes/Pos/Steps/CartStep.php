@@ -213,9 +213,12 @@ class CartStep extends Component
         }
     }
 
+    //CARGAR DIRECCION DEL CLIENTE
     public function updatedClienteId($value)
     {
-        $this->cliente = Clientes::find($value);
+        if ($value) {
+            $this->cliente = Clientes::findOrFail($value);
+        }
     }
 
     public function calcularPrecioUnitario($valor_unitario, $codigo_afectacion)
