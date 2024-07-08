@@ -20,17 +20,16 @@
                 </a>
             </li>
             <li class="mr-0.5 md:mr-0 md:mb-0.5">
-                <a class="flex items-center px-2.5 py-2 rounded whitespace-nowrap @if (Route::is('admin.ajustes.cuenta')) {{ 'bg-indigo-50 dark:bg-indigo-500/30' }} @endif"
+                <a class="flex items-center px-2.5 py-2 rounded whitespace-nowrap @if (Route::is('admin.ajustes.roles')) {{ 'bg-indigo-50 dark:bg-indigo-500/30' }} @endif"
                     href="{{ route('admin.ajustes.roles') }}">
-                    <svg class="w-4 h-4 shrink-0 fill-current text-slate-400 mr-2"
-                        :class="settingsPanel === 'roles' && 'text-indigo-400'" xmlns="http://www.w3.org/2000/svg"
+                    <svg class="w-4 h-4 shrink-0 fill-current text-slate-400 mr-2" xmlns="http://www.w3.org/2000/svg"
                         fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
                         </path>
                     </svg>
                     <span
-                        class="text-sm font-medium @if (Route::is('admin.ajustes.cuenta')) {{ 'text-indigo-500 dark:text-indigo-400' }}@else{{ 'text-slate-600 dark:text-slate-300 hover:text-slate-700 dark:hover:text-slate-200' }} @endif">
+                        class="text-sm font-medium @if (Route::is('admin.ajustes.roles')) {{ 'text-indigo-500 dark:text-indigo-400' }}@else{{ 'text-slate-600 dark:text-slate-300 hover:text-slate-700 dark:hover:text-slate-200' }} @endif">
                         Roles Sistema
                     </span>
                 </a>
