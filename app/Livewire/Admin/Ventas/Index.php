@@ -54,19 +54,6 @@ class Index extends Component
         $this->emit('openModalDelete', $venta);
     }
 
-    public function emitFactura()
-    {
-        return redirect()->route('admin.factura.create');
-    }
-    public function emitBoleta()
-    {
-        return redirect()->route('admin.boleta.create');
-    }
-    public function emitNotaVenta()
-    {
-        return redirect()->route('admin.nota.venta.create');
-    }
-
     public function getCdr(Ventas $venta)
     {
         try {

@@ -5,7 +5,7 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-                <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-400 font-bold">VENTAS ✨</h1>
+                <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-400 font-bold">COTIZACIONES ✨</h1>
             </div>
 
         </div>
@@ -13,21 +13,7 @@
         <!-- More actions -->
         <div class="sm:flex sm:justify-between sm:items-center mb-5">
 
-            <!-- Left side -->
-            <div class="mb-4 sm:mb-0">
-                <div class="contenedor-estados-sunat flex flex-wrap -m-1">
-                    <div class="sunat-estado m-1">
-                        <label class="estadosunat">
-                        </label>
 
-                        Estados SUNAT:
-                    </div>
-                    <div><label class="aceptado"></label>Aceptado</div>
-                    <div><label class="rechazado"></label>Rechazado</div>
-                    <div><label class="noenviado"></label>Pendiente de envío</div>
-                    <div><label class="baja"></label>Comunicación de baja(Anulado)</div>
-                </div>
-            </div>
 
             <!-- Right side -->
             <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
@@ -37,7 +23,7 @@
                 <form class="relative">
                     <label for="action-search" class="sr-only">Search</label>
                     <input name="serie_correlativo" id="action-search" class="form-input pl-9 focus:border-slate-300"
-                        type="search" wire:model.live="search" placeholder="Buscar Factura o Boleta…" />
+                        type="search" wire:model.live="search" placeholder="Buscar Cotizacion…" />
                     <button type="button" class="absolute inset-0 right-auto group" type="submit" aria-label="Search">
                         <svg class="w-4 h-4 shrink-0 fill-current text-slate-400 group-hover:text-slate-500 ml-3 mr-2"
                             viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -51,7 +37,7 @@
 
                 <!-- Create invoice button -->
 
-                <a href="{{ route('admin.invoice.create') }}">
+                <a href="{{ route('admin.cotizaciones.create') }}">
                     <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
                         <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                             <path
@@ -67,7 +53,7 @@
         </div>
 
         <!-- Table -->
-        <x-ventas.table :ventas="$ventas" />
+        <x-ventas.cotizaciones :ventas="$ventas" />
 
         <!-- Pagination -->
         <div class="mt-8">
