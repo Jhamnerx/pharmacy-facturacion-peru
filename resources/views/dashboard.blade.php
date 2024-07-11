@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('contenido')
-    <div class="px-4 sm:px-6 lg:px-8 py-8 w-full |" :class="{ 'sidebar-expanded': sidebarExpanded }" x-data="{ page: 'dashboard-inicio', sidebarOpen: false, sidebarExpanded: localStorage.getItem('sidebar-expanded') == 'true' }"
+    <div class="px-4 sm:px-6 lg:px-8 py-8 w-full |" :class="{ 'sidebar-expanded': sidebarExpanded }" x-data="{ page: 'dashboard-inicio', sidebarOpen: false, sidebarExpanded: localStorage.getItem('sidebar-expanded') == 'false' }"
         x-init="$watch('sidebarExpanded', value => localStorage.setItem('sidebar-expanded', value))">
 
         <div class="relative bg-indigo-200 p-4 sm:p-6 rounded-sm overflow-hidden mb-8">

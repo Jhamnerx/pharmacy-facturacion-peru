@@ -42,7 +42,7 @@
 
             <div class="grid grid-cols-12 gap-4 m-3">
                 {{-- IZQUIERDA PRODUCTOS Y BUSCADOR --}}
-                <div class="col-span-12 xl:col-span-8">
+                <div class="col-span-12 xl:col-span-7">
 
                     <div class="grid grid-cols-12 gap-2">
                         {{-- BUSCADOR --}}
@@ -94,124 +94,132 @@
                         </div>
 
                         <div class="col-span-12 grid grid-cols-12 gap-2">
-                            {{-- <div
-                                class="col-span-6 md:col-span-4 lg:col-span-3 relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-                                <a class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="#">
-                                    <img class="object-cover"
-                                        src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8c25lYWtlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-                                        alt="product image" />
-                                    <span
-                                        class="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">39%
-                                        OFF</span>
-                                </a>
-                                <div class="mt-4 px-5 pb-5">
-                                    <a href="#">
-                                        <h5 class="text-xl tracking-tight text-slate-900">Nike Air MX Super 2500 - Red
-                                        </h5>
-                                    </a>
-                                    <div class="mt-2 mb-5 flex items-center justify-between">
-                                        <p>
-                                            <span class="text-3xl font-bold text-slate-900">$449</span>
-                                            <span class="text-sm text-slate-900 line-through">$699</span>
-                                        </p>
-                                        <div class="flex items-center">
-                                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor"
-                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                </path>
-                                            </svg>
-                                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor"
-                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                </path>
-                                            </svg>
-                                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor"
-                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                </path>
-                                            </svg>
-                                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor"
-                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                </path>
-                                            </svg>
-                                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor"
-                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                </path>
-                                            </svg>
-                                            <span
-                                                class="mr-2 ml-3 rounded bg-yellow-200 px-2.5 py-0.5 text-xs font-semibold">5.0</span>
-                                        </div>
-                                    </div>
-                                    <a href="#"
-                                        class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-6 w-6" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                                        </svg>
-                                        Add to cart</a>
-                                </div>
-                            </div> --}}
-                            @foreach ($productos as $producto)
-                                <div
-                                    class="col-span-6 md:col-span-4 lg:col-span-3 relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800">
-                                    <a class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="#">
-                                        <img class="object-cover"
-                                            src="{{ $producto->imagen ? Storage::url($producto->image->url) : Storage::url('productos/default.png') }}"
-                                            alt="product image" />
-                                        <span
-                                            class="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">{{ $producto->stock }}</span>
-                                    </a>
-                                    <div class="mt-4 px-2 lg:px-5 pb-5">
-                                        <a href="#">
-                                            <h5
-                                                class="text-lg lg:text-xl tracking-tight text-slate-900 dark:text-white">
-                                                {{ $producto->nombre }}
-                                                {{ $producto->forma_farmaceutica ? '-' . $producto->forma_farmaceutica : '' }}
-                                            </h5>
-                                        </a>
 
-                                        <div class="mt-2 mb-5 text-sm lg:text-base">
-                                            <div class="flex flex-col xl:flex-row justify-between">
+                            <div class="col-span-12">
+                                <table class="table-auto">
+                                    <thead
+                                        class="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/20 border-t border-b border-slate-200 dark:border-slate-700">
+                                        <tr>
+                                            <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
+                                                <div class="font-semibold text-left">#</div>
+                                            </th>
 
-                                                <p class="flex items-center mb-2 lg:mb-0">
-                                                    <span
-                                                        class="text-xl lg:text-1xl font-bold text-slate-900 dark:text-white">${{ $producto->precio_unitario }}</span>
-                                                    <span
-                                                        class="ml-2 text-xs lg:text-sm text-slate-900 line-through dark:text-gray-300">${{ $producto->precio_minimo }}</span>
-                                                </p>
-                                                @if ($producto->numero_registro_sanitario)
-                                                    <div class="flex items-center">
+                                            <th
+                                                class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap hidden 2xl:block">
+                                                <div class="font-semibold text-left">IMAGEN</div>
+                                            </th>
+                                            <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                <div class="font-semibold text-left">NOMBRE</div>
+                                            </th>
+                                            <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                <div class="font-semibold text-left">N° REG. SANITARIO</div>
+                                            </th>
+                                            <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                <div class="font-semibold text-left">STOCK</div>
+                                            </th>
+                                            <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                <div class="font-semibold text-left">PRECIO VENTA</div>
+                                            </th>
+                                            <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                <div class="font-semibold text-center">-</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-sm divide-y divide-slate-200 dark:divide-slate-700">
+                                        <!-- Row -->
 
-                                                        <span
-                                                            class="mr-2 ml-3 rounded bg-yellow-200 px-2.5 py-0.5 text-xs font-semibold dark:bg-yellow-300">{{ $producto->numero_registro_sanitario }}</span>
+                                        @foreach ($productos as $producto)
+                                            <tr wire:key="productos-{{ $producto->id }}">
+                                                <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
+                                                    <div class="flex items-center ">
+
+                                                        <div class="font-medium  text-left">
+                                                            {{ $producto->codigo }}
+                                                        </div>
                                                     </div>
-                                                @endif
+                                                </td>
+                                                <td
+                                                    class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap hidden 2xl:block">
+                                                    <div class="flex items-center">
+                                                        <div
+                                                            class="w-14 h-10 shrink-0 flex items-center justify-center bg-slate-100 rounded-full mr-2 sm:mr-3">
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 px-2 lg:px-5 pb-5">
+                                                            @if ($producto->image)
+                                                                <img class="rounded-full"
+                                                                    src="{{ Storage::url($producto->image->url) }}"
+                                                                    width="56" alt="Icon 01" />
+                                                            @else
+                                                                <img class="rounded-full"
+                                                                    src="{{ Storage::url('productos/default.png') }}"
+                                                                    width="56" alt="Icon 01" />
+                                                            @endif
+                                                        </div>
 
-                                        <a href="#" wire:click.prevent="addToCart({{ $producto->id }})"
-                                            class="flex items-center justify-center rounded-md bg-slate-900 px-3 lg:px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-700">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                                            </svg>
-                                            <span class="hidden lg:inline">Añadir al carrito</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            @endforeach
+                                                    </div>
+                                                </td>
+
+                                                <td class="px-2 first:pl-5 last:pr-5 py-3 ">
+                                                    <div class="flex items-center ">
+
+                                                        <div
+                                                            class="font-medium text-slate-800 dark:text-slate-50 text-left">
+                                                            {{ $producto->nombre }} -
+                                                            {{ $producto->forma_farmaceutica }} -
+                                                            {{ $producto->presentacion }}
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+
+                                                <td class="px-2 first:pl-5 last:pr-5 py-3">
+                                                    <div class="text-left text-slate-800 dark:text-slate-50">
+                                                        {{ $producto->numero_registro_sanitario }}</div>
+                                                </td>
+
+                                                <td class="px-2 first:pl-5 last:pr-5 py-3">
+                                                    <div class="text-left">
+                                                        {{ $producto->stock . ' - ' . $producto->unit->name }}
+                                                    </div>
+                                                </td>
+
+                                                <td class="px-2 first:pl-5 last:pr-5 py-3">
+                                                    <div class="text-left font-medium text-emerald-500">
+
+                                                        {{ $producto->divisa = 'USD' ? '$ ' : 'S/ ' }}
+                                                        {{ $producto->precio_unitario }}
+                                                    </div>
+                                                </td>
+
+                                                <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
+                                                    <a href="#"
+                                                        wire:click.prevent="addToCart({{ $producto->id }})"
+                                                        class="flex items-center justify-center rounded-md bg-slate-900 px-3 lg:px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-700">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                            stroke-width="2">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                                        </svg>
+                                                        <span class="hidden 2xl:inline">Añadir al carrito</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        @if ($productos->count() < 1)
+                                            <tr>
+                                                <td colspan="6"
+                                                    class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap col-span-full">
+                                                    <div class="text-center">No hay Registros</div>
+                                                </td>
+                                            </tr>
+                                        @endif
+
+
+                                    </tbody>
+                                </table>
+
+
+                            </div>
                             <!-- Pagination -->
                             <div class="mt-8 col-span-full">
                                 {{ $productos->links() }}
@@ -225,7 +233,7 @@
 
                 {{-- DERECHA CARRITO Y TOTAL --}}
                 <div
-                    class="col-span-12 xl:col-span-4 bg-white dark:bg-gray-800 shadow-lg rounded-lg border border-slate-300 dark:border-gray-900 p-2">
+                    class="col-span-12 xl:col-span-5 bg-white dark:bg-gray-800 shadow-lg rounded-lg border border-slate-300 dark:border-gray-900 p-2">
 
                     <div class="grid grid-cols-12 gap-2">
 
@@ -248,10 +256,10 @@
                                             </th>
 
                                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                                <div class="font-semibold text-center">IMPORTE DE TOTAL</div>
+                                                <div class="font-semibold text-center">TOTAL</div>
                                             </th>
                                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                                <div class="font-semibold text-center">BORRAR</div>
+                                                <div class="font-semibold text-center">-</div>
                                             </th>
                                         </tr>
                                     </thead>
@@ -260,7 +268,7 @@
 
                                         @if ($cart)
 
-                                            {{-- @if (app()->environment('local'))
+                                            @if (app()->environment('local'))
                                                 <tr class="main bg-slate-100 dark:bg-slate-800">
                                                     <td class="px-2 first:pl-5 last:pr-5 py-3" colspan="4">
                                                         <div class="font-medium text-sm text-left">
@@ -268,7 +276,7 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            @endif --}}
+                                            @endif
                                             @foreach ($cart as $clave => $item)
                                                 <tr class="main bg-slate-100 dark:bg-slate-800"
                                                     wire:key="item-{{ $clave }}">
@@ -277,8 +285,6 @@
                                                             {{ $item['descripcion'] }}
                                                         </div>
 
-
-                                                        <small>{{ $item['unit'] }}</small>
                                                     </td>
 
                                                     <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-2">
@@ -291,14 +297,16 @@
                                                             wire:change="updateQuantity('{{ $item['rowId'] }}', $event.target.value)">
                                                     </td>
 
-                                                    <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-32">
+                                                    <td
+                                                        class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-52 xl:w-32">
                                                         <x-form.currency id="total" name="total"
                                                             wire:model.blur="cart.{{ $item['rowId'] }}.precio_unitario"
                                                             precision="2" />
                                                     </td>
-                                                    <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-32">
+                                                    <td
+                                                        class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-52 xl:w-32">
 
-                                                        <div class="font-medium text-sm text-left">
+                                                        <div class="font-medium text-sm text-center">
                                                             {{ $item['total'] }}
                                                         </div>
                                                     </td>

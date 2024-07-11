@@ -35,6 +35,7 @@ class ProductosSeeder extends Seeder
 
         foreach ($products as $product) {
             Productos::create([
+                'tipo_afectacion' => '10',
                 'nombre' => $product['nombre'],
                 'codigo' => $product['codigo'],
                 'forma_farmaceutica' => $product['forma_farmaceutica'],
