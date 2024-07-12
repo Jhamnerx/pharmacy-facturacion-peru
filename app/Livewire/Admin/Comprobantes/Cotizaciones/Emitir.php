@@ -2,20 +2,21 @@
 
 namespace App\Livewire\Admin\Comprobantes\Cotizaciones;
 
-use Livewire\Component;
+
 use Carbon\Carbon;
 use App\Models\Series;
-use App\Models\Ventas;
+
 use App\Models\Empresa;
+use Livewire\Component;
 use App\Models\Clientes;
 use Livewire\Attributes\On;
+use App\Models\Cotizaciones;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Models\CodigosDetracciones;
 use App\Http\Requests\VentasRequest;
 use App\Http\Controllers\UtilesController;
-use App\Http\Controllers\Facturacion\Api\ApiFacturacion;
-use App\Models\Cotizaciones;
+
 
 class Emitir extends Component
 {
@@ -53,7 +54,7 @@ class Emitir extends Component
     public $min_correlativo;
 
     //DISMINUIR STOCK
-    public $decrease_stock = true;
+    public $decrease_stock = false;
 
 
     public $tipo_operacion = '0101';
@@ -446,48 +447,13 @@ class Emitir extends Component
             }
 
             //CREAR ITEMS DE LA VENTA
-            Cotizaciones::createItems($venta, $datos["items"], $this->decrease_stock);
-
-
-            //SI DETRACCION ES TRUE CREAR DETRACCION
-            if ($this->detraccion) {
-                $venta->detraccion()->create([
-                    'codigo_detraccion' => $this->datosDetraccion['codigo_detraccion'],
-                    'porcentaje' => $this->datosDetraccion['porcentaje'],
-                    'monto' => $this->datosDetraccion['monto'],
-                    'metodo_pago_id' => $this->datosDetraccion['metodo_pago_id'],
-                    'cuenta_bancaria' => $this->datosDetraccion['cuenta_bancaria'],
-                    'tipo_cambio' => $this->tipo_cambio,
-                ]);
-            }
-
-            //SI ES ANTICIPO REGISTRAR ANTICIPO
-            if ($this->deduce_anticipos) {
-
-                Ventas::createPrepayments($venta, $this->prepayments);
-            }
+            Cotizaciones::createItems($venta, $datos["items"]);
 
             //ACTUALIZAR CORRELATIVO DE SERIE UTILIZADA
             $venta->getSerie->increment('correlativo');
 
-            if ($this->metodo_type != '03' && $this->tipo_comprobante_id !== '02') {
-                $api = new ApiFacturacion();
-
-                $mensaje = $api->emitirInvoice($venta, $this->metodo_type, $this->tipo_operacion);
-                dd($mensaje);
-                if ($mensaje['fe_codigo_error']) {
-                    session()->flash('venta-registrada', $mensaje["fe_mensaje_error"] . ': Intenta enviar en un rato');
-                    $this->redirectRoute('admin.ventas.index');
-                } else {
-                    $venta->update(['estado' => 'COMPLETADO']);
-                    session()->flash('venta-registrada', $mensaje['fe_mensaje_sunat']);
-                    $this->redirectRoute('admin.ventas.index');
-                }
-            } else {
-
-                session()->flash('venta-registrada', 'Nota de venta registrada');
-                $this->redirectRoute('admin.ventas.index');
-            }
+            session()->flash('venta-registrada', 'COTIZACIÓN REGISTRADA' . ': Intenta enviar en un rato');
+            $this->redirectRoute('admin.cotizacion.index');
         } catch (\Throwable $th) {
             DB::rollBack();
             dd($th);

@@ -39,7 +39,7 @@
 
                         {{-- DATOS DE LA EMPRESA --}}
                         <div
-                            class="col-span-12 lg:col-span-4 xl:col-span-6 pl-6 self-center overflow-hidden text-ellipsis">
+                            class="col-span-12 lg:col-span-4 xl:col-span-4 pl-6 self-center overflow-hidden text-ellipsis">
                             <div class="mb-0" style="line-height: initial;">
                                 <span class="font-bold text-slate-800 dark:text-gray-200">
                                     {{ $empresa->nombre_comercial }}
@@ -50,7 +50,7 @@
                         </div>
 
                         {{-- FECHAS --}}
-                        <div class="col-span-12 lg:col-span-6 xl:col-span-4 self-end">
+                        <div class="col-span-12 lg:col-span-6 xl:col-span-6 self-end">
 
                             <div class="grid grid-cols-12 gap-2">
                                 <div class="col-span-6">
@@ -87,27 +87,27 @@
                         </div>
 
                         {{-- SERIE --}}
-                        <div class="col-span-12 xs:col-span-4 xl:col-span-2">
+                        <div class="col-span-12 xs:col-span-4 xl:col-span-3">
                             <x-form.select id="serie" name="serie" label="Serie:" wire:model.live="serie"
                                 placeholder="Selecciona una serie" :options="$series" option-label="serie"
                                 option-value="serie" />
                         </div>
 
                         {{-- CORRELATIVO --}}
-                        <div class="col-span-12 xs:col-span-4 xl:col-span-2">
+                        <div class="col-span-12 xs:col-span-4 xl:col-span-3">
                             <x-form.number readonly id="correlativo" name="correlativo" wire:model.live="correlativo"
                                 label="Correlativo:" />
                         </div>
 
                         {{-- MONEDA --}}
-                        <div class="col-span-12 xs:col-span-6 xl:col-span-2">
+                        <div class="col-span-12 xs:col-span-6 xl:col-span-3">
                             <x-form.select label="Divisa:" id="divisa" name="divisa" :options="[['name' => 'SOLES', 'id' => 'PEN'], ['name' => 'DOLARES', 'id' => 'USD']]"
                                 option-label="name" option-value="id" wire:model.live="divisa" :clearable="false"
                                 icon='currency-dollar' />
                         </div>
 
                         @if ($tipo_comprobante_id !== '02')
-                            <div class="col-span-12 xs:col-span-6 xl:col-span-2">
+                            <div class="col-span-12 xs:col-span-6 xl:col-span-3">
                                 <x-form.select id="forma_pago" name="forma_pago" label="Forma Pago:" :options="[
                                     ['name' => 'CONTADO', 'id' => 'CONTADO'],
                                     ['name' => 'CREDITO', 'id' => 'CREDITO'],

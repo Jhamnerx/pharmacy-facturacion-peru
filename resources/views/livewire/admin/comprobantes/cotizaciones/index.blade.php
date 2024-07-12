@@ -8,32 +8,12 @@
                 <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-400 font-bold">COTIZACIONES ✨</h1>
             </div>
 
-        </div>
-
-        <!-- More actions -->
-        <div class="sm:flex sm:justify-between sm:items-center mb-5">
-
-
-
-            <!-- Right side -->
+            <!-- Right: Actions -->
             <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
 
-                <!-- Search form -->
 
-                <form class="relative">
-                    <label for="action-search" class="sr-only">Search</label>
-                    <input name="serie_correlativo" id="action-search" class="form-input pl-9 focus:border-slate-300"
-                        type="search" wire:model.live="search" placeholder="Buscar Cotizacion…" />
-                    <button type="button" class="absolute inset-0 right-auto group" type="submit" aria-label="Search">
-                        <svg class="w-4 h-4 shrink-0 fill-current text-slate-400 group-hover:text-slate-500 ml-3 mr-2"
-                            viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z" />
-                            <path
-                                d="M15.707 14.293L13.314 11.9a8.019 8.019 0 01-1.414 1.414l2.393 2.393a.997.997 0 001.414 0 .999.999 0 000-1.414z" />
-                        </svg>
-                    </button>
-                </form>
+                <!-- Search form -->
+                <x-search-form placeholder="Buscar Cotizacion" />
 
                 <!-- Create invoice button -->
 
@@ -43,15 +23,70 @@
                             <path
                                 d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
                         </svg>
-                        <span class="hidden xs:block ml-2">Emitir</span>
+                        <span class="hidden xs:block ml-2">Crear</span>
                     </button>
                 </a>
-
-
             </div>
 
         </div>
 
+
+        <!-- More actions -->
+        <div class="sm:flex sm:justify-between sm:items-center mb-5">
+
+            <!-- Left side -->
+            <div class="mb-4 sm:mb-0 text-slate-500" x-data="{ clickeado: 0 }">
+                <ul class="flex flex-wrap -m-1">
+
+                    <li class="m-1">
+                        <button wire:click.prevent="status('null')"
+                            :class="clickeado === 0 && 'border-transparent shadow-sm bg-indigo-500 text-white'"
+                            @click="clickeado = 0"
+                            class="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-4 py-1 border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out">
+                            Todas
+                            <span class="ml-1 text-indigo-200">{{ $totales['total'] }}</span></button>
+                    </li>
+                    <li class="m-1">
+                        <button wire:click.prevent="status('0')"
+                            :class="clickeado === 1 && 'border-transparent shadow-sm bg-indigo-500 text-white'"
+                            @click="clickeado = 1"
+                            class="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-4 py-1 border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out">
+                            Pendientes
+                            <span class="ml-1 text-slate-400">{{ $totales['pendientes'] }}</span></button>
+                    </li>
+                    <li class="m-1">
+                        <button wire:click.prevent="status('1')"
+                            :class="clickeado === 2 && 'border-transparent shadow-sm bg-indigo-500 text-white'"
+                            @click="clickeado = 2"
+                            class="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-4 py-1 border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out">
+                            Aceptadas
+                            <span class="ml-1 text-slate-400">{{ $totales['aceptadas'] }}</span></button>
+                    </li>
+                    <li class="m-1">
+                        <button wire:click.prevent="status('2')"
+                            :class="clickeado === 3 && 'border-transparent shadow-sm bg-indigo-500 text-white'"
+                            @click="clickeado = 3"
+                            class="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-4 py-1 border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out">
+                            Rechazadas
+                            <span class="ml-1 text-slate-400">{{ $totales['rechazadas'] }}</span></button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Right side -->
+            <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
+                <!-- Eliminar button -->
+                <div class="table-items-action hidden">
+                    <div class="flex items-center">
+                        <div class="hidden xl:block text-sm italic mr-2 whitespace-nowrap"><span
+                                class="table-items-count"></span> Items Seleccionados</div>
+                        <button
+                            class="btn bg-white border-slate-200 hover:border-slate-300 text-rose-500 hover:text-rose-600">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
         <!-- Table -->
         <x-ventas.cotizaciones :ventas="$ventas" />
 

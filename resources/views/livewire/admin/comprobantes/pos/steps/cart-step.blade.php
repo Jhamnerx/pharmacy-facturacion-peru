@@ -42,7 +42,7 @@
 
             <div class="grid grid-cols-12 gap-4 m-3">
                 {{-- IZQUIERDA PRODUCTOS Y BUSCADOR --}}
-                <div class="col-span-12 xl:col-span-7">
+                <div class="col-span-12 xl:col-span-6">
 
                     <div class="grid grid-cols-12 gap-2">
                         {{-- BUSCADOR --}}
@@ -78,7 +78,7 @@
                                             'border-2 border-cyan-700 bg-cyan-600 shadow-md': active ===
                                                 {{ $categoria->id }}
                                         }"
-                                        class="whitespace-nowrap rounded-md bg-gradient-to-r from-blue-500 to-blue-800 px-2 lg:px-4 py-1 lg:py-3 text-white">
+                                        class="whitespace-nowrap rounded-md bg-gradient-to-r from-blue-500 to-blue-800 px-2 lg:px-2 py-1 lg:py-2 text-white">
 
                                         {{ $categoria->nombre }}
                                     </button>
@@ -86,7 +86,7 @@
                             </div>
                             @if ($categorias->hasMorePages())
                                 <div class="flex justify-center mt-4">
-                                    <button wire:click="loadMore" class="bg-blue-500 text-white px-4 py-2 rounded">
+                                    <button wire:click="loadMore" class="bg-blue-500 text-white px-1 py-1 rounded">
                                         Cargar más
                                     </button>
                                 </div>
@@ -111,7 +111,8 @@
                                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                                 <div class="font-semibold text-left">NOMBRE</div>
                                             </th>
-                                            <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                            <th
+                                                class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap hidden 2xl:block">
                                                 <div class="font-semibold text-left">N° REG. SANITARIO</div>
                                             </th>
                                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
@@ -171,14 +172,14 @@
                                                 </td>
 
 
-                                                <td class="px-2 first:pl-5 last:pr-5 py-3">
+                                                <td class="px-2 first:pl-5 last:pr-5 py-3 hidden 2xl:block">
                                                     <div class="text-left text-slate-800 dark:text-slate-50">
                                                         {{ $producto->numero_registro_sanitario }}</div>
                                                 </td>
 
                                                 <td class="px-2 first:pl-5 last:pr-5 py-3">
                                                     <div class="text-left">
-                                                        {{ $producto->stock . ' - ' . $producto->unit->name }}
+                                                        {{ $producto->stock }}
                                                     </div>
                                                 </td>
 
@@ -193,7 +194,7 @@
                                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                                                     <a href="#"
                                                         wire:click.prevent="addToCart({{ $producto->id }})"
-                                                        class="flex items-center justify-center rounded-md bg-slate-900 px-3 lg:px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-700">
+                                                        class="flex items-center justify-center rounded-md bg-slate-900 px-2 lg:px-2 py-2 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-700">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
                                                             fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                                             stroke-width="2">
@@ -233,7 +234,7 @@
 
                 {{-- DERECHA CARRITO Y TOTAL --}}
                 <div
-                    class="col-span-12 xl:col-span-5 bg-white dark:bg-gray-800 shadow-lg rounded-lg border border-slate-300 dark:border-gray-900 p-2">
+                    class="col-span-12 xl:col-span-6 bg-white dark:bg-gray-800 shadow-lg rounded-lg border border-slate-300 dark:border-gray-900 p-2">
 
                     <div class="grid grid-cols-12 gap-2">
 

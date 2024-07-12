@@ -11,6 +11,7 @@ use App\Models\EnvioResumen;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Http\Controllers\Facturacion\Api\ApiFacturacion;
+use App\Models\Empresa;
 
 class Index extends Component
 {
@@ -55,7 +56,7 @@ class Index extends Component
             'total' => $total,
         ];
 
-        return view('livewire.admin.comprobantes.cotizaciones.index', compact('ventas'));
+        return view('livewire.admin.comprobantes.cotizaciones.index', compact('ventas', 'totales'));
     }
 
 
@@ -65,9 +66,58 @@ class Index extends Component
         return $d && $d->format($format) == $date;
     }
 
-    public function openModalDelete(Cotizaciones $venta)
+    public function status($status = null)
+    {
+        $this->estado = $status;
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function markAccept(Cotizaciones $presupuesto)
+    {
+        $presupuesto->update([
+            'estado' => '1',
+        ]);
+        $this->render();
+    }
+
+    public function markReject(Cotizaciones $presupuesto)
+    {
+        $presupuesto->update([
+            'estado' => '2',
+        ]);
+        $this->render();
+    }
+
+    public function convertToInvoice(Cotizaciones $presupuesto)
     {
 
-        $this->emit('openModalDelete', $venta);
+        if (!$presupuesto->invoice) {
+
+
+            $this->dispatch('convert-to-invoice', presupuesto: $presupuesto);
+        } else {
+
+            $this->dispatch(
+                'error',
+                title: 'ERROR: ',
+                mensaje: 'El comprobante de este presupuesto ya fue creada',
+            );
+        }
+    }
+
+
+    public function openModalDelete(Cotizaciones $presupuesto)
+    {
+        $this->dispatch('open-modal-delete', presupuesto: $presupuesto);
+    }
+
+    public function modalOpenSend(Cotizaciones $presupuesto)
+    {
+
+        $this->dispatch('open-modal-send', presupuesto: $presupuesto);
     }
 }

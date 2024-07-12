@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\VentasStatus;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Scopes\LocalScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Notifications\Ventas\EnviarPresupuestoCliente;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cotizaciones extends Model
@@ -115,7 +117,7 @@ class Cotizaciones extends Model
         return $this->belongsTo(User::class);
     }
     //CREAR ITEM DETALLE VENTA
-    public static function createItems(Cotizaciones $venta, $ventaItems, $decrease_stock = true)
+    public static function createItems(Cotizaciones $venta, $ventaItems)
     {
 
         foreach ($ventaItems as $ventaItem) {
@@ -133,5 +135,46 @@ class Cotizaciones extends Model
         }
 
         return $venta->detalle;
+    }
+
+    public function getPDFData($action)
+    {
+
+        $empresa = Empresa::first();
+
+        view()->share([
+            'presupuesto' => $this,
+            'plantilla' => $empresa,
+        ]);
+
+
+
+        //NUEVA VERSION CON DATOS ADICIONALES
+
+        $pdf = PDF::loadView('pdf.cotizacion.pdf')->setPaper('Legal');
+
+        if ($action == 1) {
+
+            return $pdf->download($this->serie_correlativo . '.pdf');
+        } else {
+            return $pdf->stream($this->serie_correlativo . '.pdf');
+        };
+    }
+
+
+    public function getPDFDataToMail($data)
+    {
+
+        $empresa = Empresa::first();
+
+        view()->share([
+            'presupuesto' => $this,
+            'plantilla' => $empresa,
+        ]);
+
+        $pdf = PDF::loadHTML(view('pdf.presupuesto.pdf-new'))->setPaper('Legal');
+
+
+        $this->clientes->notify(new EnviarPresupuestoCliente($this, $pdf, $data));
     }
 }
