@@ -11,6 +11,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\TipoComprobantes;
 use App\Models\Scopes\LocalScope;
 use App\Observers\VentasObserver;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\EnviarComprobanteCliente;
 use Illuminate\Database\Eloquent\Model;
 use Luecano\NumeroALetras\NumeroALetras;
 use App\Http\Controllers\Facturacion\Api\Util;
@@ -243,6 +245,22 @@ class Ventas extends Model
         return $pdf->stream('COMPROBANTE-' . $this->serie_correlativo . '.pdf');
     }
 
+    public function getPDFToMail($empresa)
+    {
+
+        if ($this->tipo_comprobante_id !== '02') {
+            $util = Util::getInstance();
+
+            $html = $util->getPdf($this, 'pdf');
+
+
+            return Pdf::loadHTML($html)->setPaper('Legal');
+        } else {
+
+            return Pdf::loadHTML(view('templates.comprobantes.nota-venta', ['venta' => $this, 'empresa' => $empresa]))->setPaper('Legal');
+        }
+    }
+
     //FUNCION QUE LLAMA A LA CLASE UTIL PARA RENDERIZAR EL PDF NOTA VENTA
     public function getPdfNotaVenta($formato)
     {
@@ -275,5 +293,13 @@ class Ventas extends Model
     {
         $util = Util::getInstance();
         return $util->downloadXml($this);
+    }
+
+    public function enviarComprobante($email)
+    {
+        $empresa = Empresa::first();
+        $pdf = $this->getPDFToMail($empresa);
+
+        Mail::to($email)->send(new EnviarComprobanteCliente($this, $email, $pdf, $empresa));
     }
 }

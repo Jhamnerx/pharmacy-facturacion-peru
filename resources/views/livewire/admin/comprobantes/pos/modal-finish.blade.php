@@ -56,7 +56,8 @@
                     <div class="mb-4 md:mb-0 flex space-x-2">
 
                         <x-form.input type="email" wire:model.blur="email" />
-                        <x-form.button slate label="Enviar" wire:click.prevent="sendEmailInvoice()" />
+                        <x-form.button slate label="Enviar" wire:click.prevent="sendEmailInvoice()"
+                            spinner="sendEmailInvoice()" />
                     </div>
                     <div class="flex space-x-2">
                         <x-form.phone wire:model.blur="numero_celular" placeholder="+51" :mask="['#########']" />

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {{ header('Content-type:application/pdf') }}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <style>
         body {
@@ -25,7 +26,7 @@
         }
 
         .header {
-            background-color: #ffd700;
+            background-color: #e1e2b1;
             padding: 10px;
             border-radius: 8px 8px 0 0;
             text-align: center;
@@ -58,16 +59,15 @@
 
 <body>
     <div class="container">
-        <div class="header">COTIZACION {{ $presupuesto->serie_correlativo }}</div>
+        <div class="header">{{ $invoice->tipoComprobante->descripcion }} {{ $invoice->serie_correlativo }}</div>
         <div class="content">
-            <p>Estimados {{ $presupuesto->cliente->razon_social }},</p>
-            <p>BLAS PHARMA, envía una <strong>COTIZACION</strong>.</p>
-            <p><strong>TIPO:</strong> COTIZACION</p>
-            <p><strong>SERIE:</strong> {{ $presupuesto->serie }}</p>
-            <p><strong>NÚMERO:</strong> {{ $presupuesto->correlativo }}</p>
-            <p><strong>FECHA DE EMISIÓN:</strong> {{ $presupuesto->fecha_emision->format('d-m-Y') }}</p>
-            <p><strong>FECHA DE VENCIMIENTO:</strong> {{ $presupuesto->fecha_vencimiento->format('d-m-Y') }}</p>
-            <p><strong>TOTAL:</strong> {{ $presupuesto->divisa == 'PEN' ? 'S/' : '$' }} {{ $presupuesto->total }}</p>
+            <p>Estimados {{ $invoice->cliente->razon_social }},</p>
+            <p>BLAS PHARMA, envía una <strong>{{ $invoice->tipoComprobante->descripcion }}</strong>.</p>
+            <p><strong>TIPO:</strong> {{ $invoice->tipoComprobante->descripcion }}</p>
+            <p><strong>SERIE:</strong> {{ $invoice->serie }}</p>
+            <p><strong>NÚMERO:</strong> {{ $invoice->correlativo }}</p>
+            <p><strong>FECHA DE EMISIÓN:</strong> {{ $invoice->fecha_emision->format('d-m-Y') }}</p>
+            <p><strong>TOTAL:</strong> {{ $invoice->divisa == 'PEN' ? 'S/' : '$' }} {{ $invoice->total }}</p>
         </div>
         <div class="footer">
             <p>Consulta en <a href="{{ config('app.url') }}" target="_blank">BLAS PHARMA</a></p>
