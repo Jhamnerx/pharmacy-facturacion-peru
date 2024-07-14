@@ -150,27 +150,20 @@ class Cotizaciones extends Model
         return $venta->detalle;
     }
 
-    public function getPDFData($action)
+    public function getPDFData()
     {
 
         $empresa = Empresa::first();
 
         view()->share([
             'presupuesto' => $this,
-            'plantilla' => $empresa,
+            'empresa' => $empresa,
         ]);
-
 
         //NUEVA VERSION CON DATOS ADICIONALES
 
-        $pdf = PDF::loadView('pdf.cotizacion.pdf')->setPaper('Legal');
-
-        if ($action == 1) {
-
-            return $pdf->download($this->serie_correlativo . '.pdf');
-        } else {
-            return $pdf->stream($this->serie_correlativo . '.pdf');
-        };
+        $pdf = PDF::loadView('pdf.cotizacion.pdf-new')->setPaper('Legal')->setOption(['isHtml5ParserEnabled' => false]);
+        return $pdf->stream($this->serie_correlativo . '.pdf');
     }
 
 

@@ -70,9 +70,9 @@ class CotizacionRequest extends FormRequest
             'items.*.tipo' => 'required',
 
             //pago anticipado
-            'pago_anticipado' => 'boolean',
-            //  'total_cuotas' => 'exclude_if:forma_pago,CONTADO|required|same:total',
-            //'detalle_cuotas.*.importe' => 'required',
+            //'pago_anticipado' => 'boolean',
+            'total_cuotas' => 'exclude_if:forma_pago,CONTADO|required|same:total',
+            // 'detalle_cuotas.*.importe' => 'required',
         ];
 
         return $rules;

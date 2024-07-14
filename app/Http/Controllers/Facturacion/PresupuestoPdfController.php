@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 class PresupuestoPdfController extends Controller
 {
-    public function __invoke(Cotizaciones $presupuesto, $action = null)
+    public function pdf(Cotizaciones $presupuesto, $action = null)
     {
         return $presupuesto->getPDFData($action);
     }

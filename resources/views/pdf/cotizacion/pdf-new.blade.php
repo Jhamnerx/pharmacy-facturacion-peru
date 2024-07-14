@@ -99,9 +99,7 @@
                 <div class="header-contact">
                     <img class="icon-telephone"
                         src="data:image/jpeg;base64, {{ base64_encode(file_get_contents('docs/presupuesto/images/phone.png')) }}">
-                    <p>+51 {{ $empresa->telefono }}<br>
-                        Lunes a Viernes<br>
-                        7am a 9pm</p>
+                    <p>+51 {{ $empresa->telefono }}<br></p>
                 </div>
             </div>
 
@@ -202,7 +200,7 @@
                                 </td>
                                 <td>{{ $detalle->unit }}
                                 </td>
-                                <td>{{ $detalle->cantidad }}
+                                <td>{{ round($detalle->cantidad, 2) }}
 
                                 </td>
                                 <td>{{ $presupuesto->divisa == 'PEN' ? 'S/. ' : '$' }}{{ round($detalle->valor_unitario, 2) }}
@@ -258,8 +256,7 @@
         @endif
         <div class="sub-footer row">
             <div class="large-5 medium-3 columns">
-                <img style="margin-top: -25px"
-                    src="data:image/jpeg;base64, {{ base64_encode(file_get_contents('docs/factura/images/footer-logo.png')) }}">
+
             </div>
             <div class="large-2 medium-3 large-offset-1 columns">
                 <p>+51 {{ $empresa->telefono }}<br>

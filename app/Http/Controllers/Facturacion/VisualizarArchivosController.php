@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Facturacion;
 
 use App\Models\Ventas;
 use App\Models\Comprobantes;
+use App\Models\Cotizaciones;
 use App\Models\EnvioResumen;
 use App\Models\GuiaRemision;
 use Illuminate\Http\Request;
@@ -86,5 +87,13 @@ class VisualizarArchivosController extends Controller
     {
         $envio_resumen = EnvioResumen::where('nombre_cdr', $nombre_cdr)->where('id', $id)->firstOrFail();
         return $envio_resumen->downloadCdr();
+    }
+
+
+    public function pdf_cotizacion($uuid)
+    {
+        $cotizacion = Cotizaciones::where('uuid', $uuid)->firstOrFail();
+
+        return $cotizacion->getPDFData();
     }
 }

@@ -113,6 +113,7 @@
                     </div>
 
 
+
                     <div
                         class="col-span-12 md:col-span-9 grid grid-cols-12 gap-2 bg-white dark:bg-gray-800 items-start border rounded-md m-3 p-4">
 
@@ -141,6 +142,16 @@
                         </div>
                     </div>
                 </div>
+                {{-- componente venta al credito --}}
+                @if ($showCredit)
+                    <div
+                        class="col-span-12 xl:col-span-6 grid grid-cols-12 gap-2 bg-white items-start border border-gray-300 rounded-md m-3">
+
+                        <x-ventas.cotizaciones.detalle-cuotas-table :cuotas="$detalle_cuotas" :totalcuotas="$total_cuotas">
+                        </x-ventas.cotizaciones.detalle-cuotas-table>
+
+                    </div>
+                @endif
             </div>
         </div>
 

@@ -357,6 +357,7 @@ class Emitir extends Component
 
         $request = new CotizacionRequest();
         $datos = $this->validate($request->rules(), $request->messages());
+
         try {
 
             $cotizacion = Cotizaciones::create($datos);
