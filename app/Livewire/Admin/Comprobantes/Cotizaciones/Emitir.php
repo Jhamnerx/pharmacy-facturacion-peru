@@ -13,15 +13,14 @@ use Livewire\Attributes\On;
 use App\Models\Cotizaciones;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use App\Models\CodigosDetracciones;
-use App\Http\Requests\VentasRequest;
 use App\Http\Controllers\UtilesController;
-
+use App\Http\Requests\CotizacionRequest;
 
 class Emitir extends Component
 {
     //PROPIEDADES DE VENTA
-    public $tipo_comprobante_id = '01', $serie, $correlativo, $serie_correlativo, $cliente_id,
+    public $tipo_comprobante_id = '00';
+    public $serie, $correlativo, $serie_correlativo, $cliente_id,
         $direccion, $fecha_emision, $fecha_hora_emision, $fecha_vencimiento,
         $divisa = "PEN", $tipo_cambio, $metodo_pago_id = "009", $comentario,
         $igv_op = 0.00, $tipo_descuento = "cantidad", $descuento_factor,
@@ -35,7 +34,7 @@ class Emitir extends Component
     public Collection $detalle_cuotas;
 
     //PROPIEDADES UTILES
-    public $comprobante_slug;
+    public $comprobante_slug = 'cotizacion';
     public $showCredit = false;
     public $product_selected_id;
     public $descuento_monto = 0.00;
@@ -45,6 +44,10 @@ class Emitir extends Component
     public $cliente;
     public Empresa $empresa;
 
+    //pago anticipado
+    public $pago_anticipado = false;
+    public $deduce_anticipos = false;
+    public Collection $prepayments;
 
     public $simbolo = "S/. ";
 
@@ -52,24 +55,6 @@ class Emitir extends Component
 
     //PROPIEDAD PARA ASIGNAR EL MINIMO DEL CORRELATIVO
     public $min_correlativo;
-
-    //DISMINUIR STOCK
-    public $decrease_stock = false;
-
-
-    public $tipo_operacion = '0101';
-    public $detraccion = false;
-    public $openModalDt = false;
-    public Collection $datosDetraccion;
-
-
-    //pago anticipado
-    public $pago_anticipado = false;
-    public $deduce_anticipos = false;
-    public Collection $prepayments;
-    public $total_anticipos = 0.00;
-    public $igv_anticipos = 0.00;
-
 
     //PROPIEDAD PARA VERIFICAR EMPRESA
     public $local_id;
@@ -87,34 +72,7 @@ class Emitir extends Component
         $this->render();
     }
 
-    public function openModalDetraccion()
-    {
-        $this->openModalDt = true;
-    }
 
-    public function updatedDatosDetraccionCodigoDetraccion($value)
-    {
-        if ($value) {
-            $dt = CodigosDetracciones::where('codigo', $value)->first();
-            $this->datosDetraccion['porcentaje'] = $dt->porcentaje;
-            $this->calcularMontoDetraccion($this->total);
-            $this->calcularCuotas($this->numero_cuotas);
-        } else {
-            $this->datosDetraccion['porcentaje'] = 0.00;
-            $this->datosDetraccion['monto'] = 0.00;
-        }
-    }
-
-    public function calcularMontoDetraccion($total)
-    {
-        $monto = $total * ($this->datosDetraccion['porcentaje'] / 100);
-
-        if ($this->divisa == 'USD') {
-            $this->datosDetraccion['monto'] = round($monto * $this->tipo_cambio);
-        } else {
-            $this->datosDetraccion['monto'] = round($monto);
-        }
-    }
 
     public function mount()
     {
@@ -133,30 +91,7 @@ class Emitir extends Component
         $util = new UtilesController;
         $this->tipo_cambio = $util->tipoCambio();
 
-        //CUANDO ES BOLETA SELECCIONAR EL PRIMER CLIENTES QUE ES 00000 Y NO TIENE DIRECCION
-        if ($this->tipo_comprobante_id == "03") {
-            $this->cliente_id = 1;
-            $this->cliente = Clientes::find(1);
-        }
-
-        //CUANDO ES NOTA DE VENTA SOLO GUARDAR EN BD
-        if ($this->tipo_comprobante_id == '02') {
-
-            $this->metodo_type = '03';
-        }
-
         $this->empresa = Empresa::first();
-
-
-        //DETRACCION INICIALIZAR DATOS
-        $this->datosDetraccion = collect([
-            'codigo_detraccion' => '',
-            'porcentaje' => 0.00,
-            'monto' => 0.00,
-            'metodo_pago_id' => '001',
-            'cuenta_bancaria' => $this->empresa->cuenta_detraccion,
-        ]);
-
         $this->prepayments = collect();
         $this->local_id = session('local_id');
     }
@@ -192,7 +127,6 @@ class Emitir extends Component
     {
         //$this->dispatch('notify-toast', icon: 'success', title: 'VENTA CREADA', mensaje: 'Venta creada desde POS', timer: 5000);
         $serie = Series::where('tipo_comprobante_id', $this->tipo_comprobante_id)->first();
-        //dd($serie);
         $this->serie = $serie->serie;
         $this->correlativo = $serie->correlativo + 1;
         $this->min_correlativo = $serie->correlativo + 1;
@@ -207,7 +141,6 @@ class Emitir extends Component
     //ACTUALIZAR CORRELATIVO DE SERIE
     public function changeSerieUpdate($serie)
     {
-
         if ($serie) {
             $serie = Series::where('serie', $serie)->first();
             $this->serie = $serie->serie;
@@ -229,8 +162,7 @@ class Emitir extends Component
             $this->simbolo = "S/. ";
             $this->convertMontosTotalesToSoles();
         }
-
-        $this->calcularMontoDetraccion($this->total);
+        //$this->calcularMontoDetraccion($this->total);
     }
 
     public function convertMontosTotalesToDolares()
@@ -350,7 +282,7 @@ class Emitir extends Component
                 'dias' => $this->vence_cuotas,
                 'fecha' => $fecha->addDays(intval($this->vence_cuotas))->format('Y-m-d'),
                 'dia_semana' => ucfirst($fecha->dayName),
-                'importe' => $this->total > 0 ? round(floatval(($this->detraccion ? ($this->total - $this->datosDetraccion['monto']) : $this->total) / $nCuotas), 2)  : 0.00,
+                'importe' => $this->total > 0 ? round(floatval($this->total / $nCuotas), 2)  : 0.00,
             ]);
         }
         $this->total_cuotas = round($this->detalle_cuotas->sum('importe'), 2);
@@ -380,7 +312,7 @@ class Emitir extends Component
                 'cantidad' => $selected["cantidad"],
                 'unit' => $selected["unit"],
                 'unit_name' => $selected["unit_name"],
-                'descripcion' => $this->pago_anticipado ? $selected["descripcion"] . "***Pago Anticipado***" : $selected["descripcion"],
+                'descripcion' => $selected["descripcion"],
                 'valor_unitario' => $this->divisa == 'USD' ? round($selected["valor_unitario"] / $this->tipo_cambio, 2) : $selected["valor_unitario"],
                 'precio_unitario' => $this->divisa == 'USD' ? round($selected["precio_unitario"] / $this->tipo_cambio, 2) : $selected["precio_unitario"],
                 'igv' => $this->divisa == 'USD' ? round($selected["igv"] / $this->tipo_cambio, 2) : $selected["igv"],
@@ -409,14 +341,6 @@ class Emitir extends Component
         }
     }
 
-    #[On('add-prepayment')]
-    public function addPrepayment($prepayments)
-    {
-
-        $this->prepayments->push($prepayments);
-        $this->dispatch('reset-prepayments');
-        $this->calcularAnticipos();
-    }
 
     public function save()
     {
@@ -431,13 +355,11 @@ class Emitir extends Component
             return;
         }
 
-        $request = new VentasRequest();
-        $datos = $this->validate($request->rules($this->detraccion), $request->messages());
-
+        $request = new CotizacionRequest();
+        $datos = $this->validate($request->rules(), $request->messages());
         try {
 
-            $venta = Cotizaciones::create($datos);
-
+            $cotizacion = Cotizaciones::create($datos);
 
             //ACTUALIZAR DIRECCION
             if (is_null($this->cliente->direccion)) {
@@ -447,13 +369,13 @@ class Emitir extends Component
             }
 
             //CREAR ITEMS DE LA VENTA
-            Cotizaciones::createItems($venta, $datos["items"]);
+            Cotizaciones::createItems($cotizacion, $datos["items"]);
 
             //ACTUALIZAR CORRELATIVO DE SERIE UTILIZADA
-            $venta->getSerie->increment('correlativo');
+            $cotizacion->getSerie->increment('correlativo');
 
             session()->flash('venta-registrada', 'COTIZACIÓN REGISTRADA' . ': Intenta enviar en un rato');
-            $this->redirectRoute('admin.cotizacion.index');
+            // $this->redirectRoute('admin.cotizacion.index');
         } catch (\Throwable $th) {
             DB::rollBack();
             dd($th);
@@ -494,7 +416,6 @@ class Emitir extends Component
                 $igv = 0.00;
             }
 
-
             $item["sub_total"] =  round($sub_total, 2);
             $item["igv"] =  round($igv, 4);
             $item["total"] =  $item["afecto_icbper"] ? round(floatval($item["cantidad"]) *  floatval($item["valor_unitario"]) + $item["igv"] + $item["total_icbper"], 2)  : round(floatval($item["cantidad"]) *  floatval($item["valor_unitario"]) + $item["igv"], 2);
@@ -521,24 +442,10 @@ class Emitir extends Component
         $this->total =  $this->calcularTotal();
         $this->calcularCuotas($this->numero_cuotas);
 
-        //CALCULAR DETRACCION SI ES TRUE
-        if ($this->detraccion) {
-            $this->calcularMontoDetraccion($this->total);
-        }
-
-
 
         //$this->op_gratuitas = $this->calcularOperacionesGratuitas();
     }
 
-    public function calcularAnticipos()
-    {
-        //CALCULAR ANTICIPOS
-        $this->total_anticipos = $this->calcularTotalAnticipos();
-        $this->igv_anticipos = $this->calcularIvgAnticipos();
-
-        $this->reCalTotal();
-    }
 
     //CALCULAR EL SUB TOTAL DE LOS ITEMS
     public function calcularSubTotal()
@@ -550,24 +457,16 @@ class Emitir extends Component
             return round($sub_total, 2);
         });
 
-        return $this->total_anticipos > 0 ? $sub_total->sum() - $this->total_anticipos : $sub_total->sum();
+        return $sub_total->sum();
     }
 
     //CALCULAR IGV DESDE EL SUB TOTAL - FALTA POR TRAER EL PROCENTAJE DEL IUMPUESTO DE LA DB
     public function calcularIgv()
     {
-        //dd($this->op_gravadas);
 
-        if ($this->igv_anticipos > 0) {
+        $igv = floatval($this->op_gravadas) *  $this->empresa->igv;
 
-            $igv = (floatval($this->op_gravadas) *  $this->empresa->igv);
-            return round($igv, 2);
-        } else {
-
-            $igv = floatval($this->op_gravadas) *  $this->empresa->igv;
-
-            return round($igv, 2);
-        }
+        return round($igv, 2);
     }
 
     //CALCULAR TOTALES DE LOS TIPOS DE AFECTACIONES
@@ -583,13 +482,7 @@ class Emitir extends Component
             }
         })->sum();
 
-        if ($descuento > 0) {
-
-            return round($op_gravadas - $descuento, 4);
-        } else {
-
-            return round($op_gravadas - $this->total_anticipos, 4);
-        }
+        return round($op_gravadas - $descuento, 4);
     }
 
     // public function calcularOperacionesGratuitas()
@@ -653,40 +546,10 @@ class Emitir extends Component
     //CALCUJLAR TOTAL DE ACUERDO AL TIPO DE DESCUENTO Y SI HAY
     public function calcularTotal()
     {
-        if ($this->igv_anticipos > 0) {
 
-            $total = (($this->op_gravadas + $this->op_exoneradas + $this->op_inafectas + $this->icbper) + $this->igv);
+        $total = ($this->op_gravadas + $this->op_exoneradas + $this->op_inafectas + $this->icbper) + $this->igv;
 
-            return round($total, 2);
-        } else {
-            $total = ($this->op_gravadas + $this->op_exoneradas + $this->op_inafectas + $this->icbper) + $this->igv;
-
-            return round($total, 2);
-        }
-    }
-
-    public function calcularTotalAnticipos()
-    {
-        $total_anticipos = $this->prepayments->map(function ($item, $key) {
-
-            $total_anticipos = 0.00;
-            $total_anticipos = $total_anticipos + $item['valor_venta_ref'];
-            return round($total_anticipos, 2);
-        });
-
-        return $total_anticipos->sum();
-    }
-
-    public function calcularIvgAnticipos()
-    {
-        $igv_anticipos = $this->prepayments->map(function ($item, $key) {
-
-            $igv_anticipos = 0.00;
-            $igv_anticipos = $igv_anticipos + $item['igv'];
-            return round($igv_anticipos, 2);
-        });
-
-        return $igv_anticipos->sum();
+        return round($total, 2);
     }
 
     public function updatedDescuentoMonto()
@@ -749,16 +612,9 @@ class Emitir extends Component
         $this->reCalTotal();
     }
 
-    public function eliminarPrepayment($key)
-    {
-        unset($this->prepayments[$key]);
-        $this->prepayments;
-        $this->calcularAnticipos();
-    }
-
     public function updated($propertyName)
     {
-        $request = new VentasRequest();
+        $request = new CotizacionRequest();
         $this->validateOnly($propertyName, $request->rules(), $request->messages());
     }
     // ABRIR MODAL PARA REGISTRAR PRODUCTO Y AÑADIR AL COMPROBANTE
@@ -770,32 +626,5 @@ class Emitir extends Component
     public function OpenModalCliente($busqueda)
     {
         $this->dispatch('open-modal-save-cliente', busqueda: $busqueda);
-    }
-
-    public function updatedDetraccion()
-    {
-        if ($this->detraccion) {
-            $this->tipo_operacion = '1001';
-            $this->calcularMontoDetraccion($this->total);
-        } else {
-            $this->tipo_operacion = '0101';
-        }
-        $this->calcularCuotas($this->numero_cuotas);
-    }
-
-    public function updatedPagoAnticipado($value)
-    {
-
-        if ($value) {
-            $this->items = $this->items->map(function ($item) {
-                $item['descripcion'] .= '***Pago Anticipado***';
-                return $item;
-            });
-        } else {
-            $this->items = $this->items->map(function ($item) {
-                $item['descripcion'] = str_replace('***Pago Anticipado***', '', $item['descripcion']);
-                return $item;
-            });
-        }
     }
 }

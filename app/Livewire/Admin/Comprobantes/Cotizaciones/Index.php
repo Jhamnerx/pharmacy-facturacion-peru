@@ -7,11 +7,9 @@ use Carbon\Carbon;
 use App\Models\Ventas;
 use Livewire\Component;
 use App\Models\Cotizaciones;
-use App\Models\EnvioResumen;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
-use App\Http\Controllers\Facturacion\Api\ApiFacturacion;
-use App\Models\Empresa;
+
 
 class Index extends Component
 {
@@ -32,7 +30,7 @@ class Index extends Component
 
     public function render()
     {
-        $ventas = Cotizaciones::whereHas('cliente', function ($cliente) {
+        $presupuestos = Cotizaciones::whereHas('cliente', function ($cliente) {
             $cliente->where('razon_social', 'LIKE', '%' . $this->search . '%')
                 ->orWhere('numero_documento', 'LIKE', '%' . $this->search . '%');
         })
@@ -56,7 +54,22 @@ class Index extends Component
             'total' => $total,
         ];
 
-        return view('livewire.admin.comprobantes.cotizaciones.index', compact('ventas', 'totales'));
+
+        $estado = $this->estado;
+
+        if ($estado != "null") {
+
+            $presupuestos = Cotizaciones::whereHas('clientes', function ($query) {
+                $query->where('razon_social', 'like', '%' . $this->search . '%');
+            })
+                ->orWhere('numero', 'like', '%' . $this->search . '%')
+                ->orWhere('fecha', 'like', '%' . $this->search . '%')
+                ->orWhere('serie_correlativo', 'like', '%' . $this->search . '%')
+                ->estado($this->estado)
+                ->orderBy('created_at', 'DESC')
+                ->paginate(15);
+        }
+        return view('livewire.admin.comprobantes.cotizaciones.index', compact('presupuestos', 'totales'));
     }
 
 

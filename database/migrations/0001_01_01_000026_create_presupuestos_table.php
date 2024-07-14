@@ -49,7 +49,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->enum('anulado', ['si', 'no'])->default('no');
             $table->enum('resumen', ['si', 'no'])->default('no');
-            $table->enum('estado', ['COMPLETADO', 'BORRADOR'])->default('BORRADOR');
+            $table->enum('estado', [0, 1, 2])->default(0);
             $table->enum('pago_estado', ['UNPAID', 'PAID'])->default('UNPAID');
             $table->enum('forma_pago', ['CONTADO', 'CREDITO'])->default('CONTADO');
             $table->boolean('fe_estado')->default(false);
@@ -74,6 +74,7 @@ return new class extends Migration
             $table->boolean('sent')->default(false);
             $table->longText('clase')->nullable();
             $table->unsignedBigInteger('local_id')->nullable()->index('ventas_local_id_foreign');
+            $table->softDeletes();
             $table->timestamps();
 
 

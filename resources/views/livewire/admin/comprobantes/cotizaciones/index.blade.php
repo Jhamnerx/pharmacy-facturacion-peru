@@ -88,11 +88,11 @@
 
         </div>
         <!-- Table -->
-        <x-ventas.cotizaciones :ventas="$ventas" />
+        <x-ventas.cotizaciones :presupuestos="$presupuestos" />
 
         <!-- Pagination -->
         <div class="mt-8">
-            {{ $ventas->links() }}
+            {{ $presupuestos->links() }}
         </div>
 
     </div>

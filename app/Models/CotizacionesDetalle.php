@@ -15,8 +15,8 @@ class CotizacionesDetalle extends Model
      *
      * @var array
      */
-    protected $guarded = [];
-    protected $table = 'cotizaciones_detalle';
+    protected $guarded = ['id', 'created_at', 'updated_at'];
+    protected $table = 'detalle_presupuestos';
     /**
      * The attributes that should be cast to native types.
      *
@@ -24,9 +24,9 @@ class CotizacionesDetalle extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'cotizacion_id' => 'integer',
-        'cantidad' => 'decimal:2',
-        'valor_unitario' => 'decimal:2',
+        'venta_id' => 'integer',
+        'cantidad' => 'integer:2',
+        'valor_unitario' => 'decimal:6',
         'precio_unitario' => 'decimal:2',
         'icbper' => 'decimal:2',
         'igv' => 'decimal:2',
@@ -38,6 +38,10 @@ class CotizacionesDetalle extends Model
 
     public function cotizacion(): BelongsTo
     {
-        return $this->belongsTo(Cotizacion::class);
+        return $this->belongsTo(Cotizaciones::class);
+    }
+    public function producto(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\Productos::class);
     }
 }

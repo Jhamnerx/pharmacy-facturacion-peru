@@ -4,7 +4,9 @@ namespace App\Models;
 
 use App\Enums\VentasStatus;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Enums\PresupuestosStatus;
 use App\Models\Scopes\LocalScope;
+use App\Observers\CotizacionObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -13,17 +15,21 @@ use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Notifications\Ventas\EnviarPresupuestoCliente;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
+#[ObservedBy(CotizacionObserver::class)]
 class Cotizaciones extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     use HasUuids;
     /**
      * The attributes that aren't mass assignable.
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
     /**
      * The attributes that should be cast to native types.
      *
@@ -63,7 +69,7 @@ class Cotizaciones extends Model
             'servicios_selva' => 'boolean',
             'viewed' => 'boolean',
             'sent' => 'boolean',
-            'estado' => VentasStatus::class,
+            'estado' => PresupuestosStatus::class,
             'detalle_cuotas' => AsCollection::class,
             'nota' => AsCollection::class,
         ];
@@ -73,6 +79,17 @@ class Cotizaciones extends Model
     {
         return ['uuid'];
     }
+
+    // Scope local de estado
+    public function scopeEstado($query, string $status)
+    {
+        return $query->where('estado', $status);
+    }
+    public function scopePendiente($query)
+    {
+        return $query->where('estado', '0');
+    }
+
     // GLOBAL SCOPE LOCAL
     protected static function booted()
     {
@@ -80,7 +97,7 @@ class Cotizaciones extends Model
     }
     public function detalle(): HasMany
     {
-        return $this->hasMany(CotizacionesDetalle::class);
+        return $this->hasMany(CotizacionesDetalle::class, 'presupuestos_id', 'id');
     }
     public function tipoComprobante(): BelongsTo
     {
@@ -122,14 +139,10 @@ class Cotizaciones extends Model
 
         foreach ($ventaItems as $ventaItem) {
 
-            $ventaItem['ventas_id'] = $venta->id;
+            $ventaItem['presupuestos_id'] = $venta->id;
 
             $item = $venta->detalle()->create($ventaItem);
 
-            if ($decrease_stock && $ventaItem['tipo'] == 'producto') {
-
-                $item->producto->decrement('stock', $ventaItem['cantidad']);
-            }
 
             $item->producto->increment('ventas', 1);
         }
@@ -148,7 +161,6 @@ class Cotizaciones extends Model
         ]);
 
 
-
         //NUEVA VERSION CON DATOS ADICIONALES
 
         $pdf = PDF::loadView('pdf.cotizacion.pdf')->setPaper('Legal');
@@ -164,17 +176,16 @@ class Cotizaciones extends Model
 
     public function getPDFDataToMail($data)
     {
-
         $empresa = Empresa::first();
 
         view()->share([
             'presupuesto' => $this,
-            'plantilla' => $empresa,
+            'empresa' => $empresa,
         ]);
 
-        $pdf = PDF::loadHTML(view('pdf.presupuesto.pdf-new'))->setPaper('Legal');
+        $pdf = PDF::loadHTML(view('pdf.cotizacion.pdf-new'))->setPaper('Legal');
 
-
-        $this->clientes->notify(new EnviarPresupuestoCliente($this, $pdf, $data));
+        //return $pdf->download($this->serie_correlativo . '.pdf');
+        $this->cliente->notify(new EnviarPresupuestoCliente($this, $pdf, $data));
     }
 }

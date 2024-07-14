@@ -117,15 +117,15 @@
                 <h3><img class="icon-invoice"
                         src="data:image/jpeg;base64, {{ base64_encode(file_get_contents('docs/presupuesto/images/invoice.png')) }}"></i>
                     COTIZACION A:</h3>
-                <h2>{{ $presupuesto->clientes->razon_social }}</h2>
-                <p style="margin-bottom:10px;line-height:22px;">{{ $presupuesto->clientes->direccion }}<br>
+                <h2>{{ $presupuesto->cliente->razon_social }}</h2>
+                <p style="margin-bottom:10px;line-height:22px;">{{ $presupuesto->cliente->direccion }}<br>
                 </p>
 
                 <p style="margin-bottom:10px;"><img class="icon-mail"
-                        src="data:image/jpeg;base64, {{ base64_encode(file_get_contents('docs/presupuesto/images/mail.png')) }}"></i>{{ $presupuesto->clientes->email }}
+                        src="data:image/jpeg;base64, {{ base64_encode(file_get_contents('docs/presupuesto/images/mail.png')) }}"></i>{{ $presupuesto->cliente->email }}
                 </p>
                 <p><img class="icon-mobile"
-                        src="data:image/jpeg;base64, {{ base64_encode(file_get_contents('docs/presupuesto/images/mobile.png')) }}"></i>{{ $presupuesto->clientes->telefono }}
+                        src="data:image/jpeg;base64, {{ base64_encode(file_get_contents('docs/presupuesto/images/mobile.png')) }}"></i>{{ $presupuesto->cliente->telefono }}
                 </p>
 
             </div>
@@ -163,7 +163,7 @@
                             </td>
                             <td>
                                 Fecha Emisión:<br>
-                                <strong>{{ $presupuesto->fecha->format('d/m/Y') }}</strong>
+                                <strong>{{ $presupuesto->fecha_emision->format('d/m/Y') }}</strong>
                             </td>
                             <td>
                                 Fecha Venc.:<br>
@@ -196,9 +196,9 @@
                         @foreach ($presupuesto->detalle as $detalle)
                             <tr>
                                 <td>
-                                    <p class="producto-titulo"><b>{{ $detalle->info_producto->descripcion }}</b>.
+                                    <p class="producto-titulo"><b>{{ $detalle->descripcion }}</b>.
                                     </p>
-                                    <p class="descripcion">{{ $detalle->descripcion }}</p>
+                                    {{-- <p class="descripcion">{{ $detalle->descripcion }}</p> --}}
                                 </td>
                                 <td>{{ $detalle->unit }}
                                 </td>
@@ -251,7 +251,7 @@
                 </div>
             </div>
         @endif
-        @if (count($presupuesto->detalles) > 2)
+        @if (count($presupuesto->detalle) > 2)
             <div class="footer" style="margin-top: 180px;"></div>
         @else
             <div class="footer" style="margin-top: 120px;"></div>

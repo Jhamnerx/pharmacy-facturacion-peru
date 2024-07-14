@@ -77,13 +77,8 @@
                         class="col-span-12 md:col-span-9 grid grid-cols-12 gap-2 bg-white dark:bg-gray-800 items-start border rounded-md m-3 p-4">
 
                         <div class="col-span-12 xs:col-span-4">
-                            <x-form.select label="Tipo comprobante:" id="tipo_comprobante_id" name="tipo_comprobante_id"
-                                :options="[
-                                    ['name' => 'FACTURA ELECTRONICA', 'id' => '01'],
-                                    ['name' => 'BOLETA ELECTRONICA', 'id' => '03'],
-                                    ['name' => 'N. VENTA ELECTRONICA', 'id' => '02'],
-                                ]" option-label="name" option-value="id"
-                                wire:model.live="tipo_comprobante_id" :clearable="false" />
+
+                            <x-form.input value="COTIZACIÓN" label="Tipo comprobante:" />
                         </div>
 
                         {{-- SERIE --}}
@@ -256,18 +251,6 @@
                                 </div>
                             </div>
 
-                            @if ($deduce_anticipos)
-                                <div class="flex justify-between ">
-                                    <div
-                                        class="text-gray-900 text-right flex-1 font-medium text-sm text-lg dark:text-gray-200">
-                                        ANTICIPOS</div>
-                                    <div class="text-right w-40">
-                                        <div class="text-gray-800 text-sm dark:text-gray-300">
-                                            {{ $simbolo }} <span>{{ round($total_anticipos, 2) }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
 
                             <div class="flex justify-between mt-2">
                                 <div

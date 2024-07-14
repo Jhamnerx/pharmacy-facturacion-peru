@@ -15,4 +15,8 @@ class CotizacionesController extends Controller
     {
         return view('admin.cotizaciones.create');
     }
+    public function editar()
+    {
+        return view('admin.cotizaciones.edit');
+    }
 }

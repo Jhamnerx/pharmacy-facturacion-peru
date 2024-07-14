@@ -39,11 +39,11 @@ class Send extends Component
 
         $this->modalOpenSend = true;
         $this->presupuesto = $presupuesto;
-        $this->to = $presupuesto->clientes->email . " | " . $presupuesto->clientes->razon_social;
-        $this->asunto = "COTIZACIÓN #" . $presupuesto->numero;
-        $this->correo =  $presupuesto->clientes->email;
+        $this->to = $presupuesto->cliente->email . " | " . $presupuesto->cliente->razon_social;
+        $this->asunto = "COTIZACIÓN #" . $presupuesto->serie_correlativo;
+        $this->correo =  $presupuesto->cliente->email;
 
-        if (empty($presupuesto->clientes->email)) {
+        if (empty($presupuesto->cliente->email)) {
 
             $this->disabled = true;
         } else {
@@ -57,7 +57,6 @@ class Send extends Component
         $this->resetPropiedades();
     }
 
-
     public function sendPresupuesto()
     {
 
@@ -70,6 +69,10 @@ class Send extends Component
 
             $pdfPresupuesto = new PresupuestoPdfController();
             $pdfPresupuesto->sendToMail($this->presupuesto, $data);
+
+            $this->modalOpenSend = false;
+            $this->dispatch('presupuesto-send', ['presupuesto' => $this->presupuesto]);
+            $this->resetPropiedades();
         } catch (Exception $e) {
 
             $this->dispatch(
@@ -77,11 +80,6 @@ class Send extends Component
                 title: 'ERROR EN FUNCION: ',
                 mensaje: $e->getMessage(),
             );
-        } finally {
-
-            $this->modalOpenSend = false;
-            $this->dispatch('presupuesto-send', ['presupuesto' => $this->presupuesto]);
-            $this->resetPropiedades();
         }
     }
 }

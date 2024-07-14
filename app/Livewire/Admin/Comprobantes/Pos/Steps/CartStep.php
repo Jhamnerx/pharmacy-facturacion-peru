@@ -82,13 +82,12 @@ class CartStep extends Component
         $this->fecha_emision = Carbon::now()->format('Y-m-d');
         $this->fecha_vencimiento = Carbon::now()->format('Y-m-d');
 
-        //  CONSULTAR TIPO CAMBIO
-        $util = new UtilesController;
-        $this->tipo_cambio = $util->tipoCambio();
-
         //CARGAR SERIES
         $this->series = $this->loadSeries();
         $this->setSerieMount();
+        //  CONSULTAR TIPO CAMBIO
+        $util = new UtilesController;
+        $this->tipo_cambio = $util->tipoCambio();
     }
 
     public function loadSeries()
