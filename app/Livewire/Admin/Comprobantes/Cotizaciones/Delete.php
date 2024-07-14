@@ -42,7 +42,7 @@ class Delete extends Component
             mensaje: 'Se elimino la cotización: ' . $this->presupuesto->serie_correlativo . "."
         );
 
-        $this->dispatch('render');
+        $this->dispatch('render-table');
         $this->closeModal();
     }
     public function closeModal()
