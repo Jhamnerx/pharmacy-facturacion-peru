@@ -34,10 +34,10 @@
             <div x-show="activeTab === 'basic-info'">
                 <div class="grid grid-cols-12 gap-6">
 
-                    <div class="col-span-12 md:col-span-2 ">
+                    {{-- <div class="col-span-12 md:col-span-2 ">
                         <x-form.input name="codigo" wire:model.live="codigo" label="Codigo (*):"
                             placeholder="Codigo Medicamento" />
-                    </div>
+                    </div> --}}
                     <div class="col-span-12 lg:col-span-5">
                         <x-form.input required name="nombre" wire:model="nombre" label="Nombre Medicamento (*):"
                             placeholder="Nombre Medicamento" />
@@ -48,7 +48,7 @@
                             placeholder="Descripcion del producto" />
                     </div>
 
-                    <div class="col-span-12 md:col-span-3">
+                    <div class="col-span-12 md:col-span-2">
                         <x-form.select label="Tipo:" wire:model.live="tipo" placeholder="Selecciona" :options="[
                             ['name' => 'Servicio', 'id' => 'servicio'],
                             ['name' => 'Producto', 'id' => 'producto'],
@@ -80,7 +80,7 @@
                         </x-form.input>
                     </div>
 
-                    <div class="col-span-12 md:col-span-4">
+                    <div class="col-span-12 md:col-span-3">
                         <x-form.select id="categoria_id" name="categoria_id" label="Categoria (*):"
                             wire:model.live="categoria_id" placeholder="Selecciona una categoria" :async-data="['api' => route('api.categorias.index')]"
                             option-label="nombre" option-value="id" />

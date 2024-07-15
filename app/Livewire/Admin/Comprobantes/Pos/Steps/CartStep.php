@@ -563,4 +563,9 @@ class CartStep extends Component
     {
         $this->showModal = false;
     }
+
+    public function addCliente()
+    {
+        $this->dispatch('open-modal-save-cliente');
+    }
 }

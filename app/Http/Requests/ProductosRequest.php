@@ -22,7 +22,7 @@ class ProductosRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'codigo' => 'required',
+            // 'codigo' => 'required',
             'nombre' => 'required|max:255',
             'descripcion' => 'nullable|max:400',
             'forma_farmaceutica' => 'nullable',

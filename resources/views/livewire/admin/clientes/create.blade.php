@@ -8,7 +8,8 @@
         </div>
 
         <div class="col-span-12 sm:col-span-6">
-            <x-form.input label="Número Documento:" placeholder="10203040" wire:model.change='numero_documento' />
+            <x-form.maskable label="Número Documento:" placeholder="10203040" wire:model.blur='numero_documento'
+                mask="###########" />
         </div>
 
         <div class="col-span-12">
@@ -32,7 +33,7 @@
     <x-slot name="footer">
         <div class="flex justify-end gap-x-4">
             <div class="flex gap-2">
-                <x-form.button flat label="Cancelar" x-on:click="close" />
+                <x-form.button flat label="Cancelar" x-on:click="close" wire:click.prevent="close" />
                 <x-form.button primary label="Guardar" wire:click.prevent="save" spinner="save" />
             </div>
         </div>

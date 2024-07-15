@@ -24,6 +24,10 @@ class Create extends Component
 
     public $file;
 
+    public function mount()
+    {
+        $this->tipo_afectacion = 10;
+    }
 
     public function render()
     {

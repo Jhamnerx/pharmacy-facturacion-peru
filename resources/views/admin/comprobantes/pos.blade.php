@@ -8,6 +8,7 @@
 
 @push('modals')
     @livewire('admin.comprobantes.pos.modal-finish')
+    @livewire('admin.clientes.create')
 @endpush
 
 

@@ -48,6 +48,30 @@ class Productos extends Model implements Buyable
         'cantidad_blister' => 'integer',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($producto) {
+            $producto->codigo = self::generateProductCode();
+        });
+    }
+
+    private static function generateProductCode()
+    {
+        $prefix = 'MD'; // Los tres caracteres fijos
+        $latestProduct = self::latest('id')->first();
+
+        if (!$latestProduct) {
+            $number = 1;
+        } else {
+            $number = intval(substr($latestProduct->code, strlen($prefix))) + 1;
+        }
+
+        return $prefix . str_pad($number, 5, '0', STR_PAD_LEFT); // Llenar con ceros a la izquierda para que tenga 6 dígitos
+    }
+
+
     public function getColorFechaVencimiento()
     {
         if ($this->fecha_vencimiento === null) {

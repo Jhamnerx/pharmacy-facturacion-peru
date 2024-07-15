@@ -96,7 +96,7 @@
                         <div class="col-span-12 grid grid-cols-12 gap-2">
 
                             <div class="col-span-12">
-                                <table class="table-auto">
+                                <table class="table-auto w-full">
                                     <thead
                                         class="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/20 border-t border-b border-slate-200 dark:border-slate-700">
                                         <tr>
@@ -359,7 +359,7 @@
                         </div>
 
                         <div class="col-span-3 flex items-center justify-center">
-                            <x-form.button icon="plus" positive />
+                            <x-form.button icon="plus" positive wire:click.prevent="addCliente" />
                         </div>
                         @if (app()->environment('local'))
                             <div class="col-span-12">

@@ -63,6 +63,7 @@ class Create extends Component
 
     public function updatedNumeroDocumento($numero)
     {
+
         if (strlen($numero) == 11) {
             $this->tipo_documento_id = 6;
         } else {
@@ -139,5 +140,10 @@ class Create extends Component
     {
 
         $this->reset('tipo_documento_id', 'numero_documento', 'razon_social', 'telefono', 'email', 'web_site', 'direccion');
+    }
+    public function close()
+    {
+        $this->resetProp();
+        $this->closeModal();
     }
 }

@@ -132,7 +132,7 @@
                                 x-on:clear="$wire.direccion = ''">
                                 <x-slot name="afterOptions" class="p-2 flex justify-center"
                                     x-show="displayOptions.length === 0">
-                                    <x-form.button wire:click.prevent="OpenModalCliente(`${search}`)" x-on:click="close"
+                                    <x-form.button wire:click.prevent="OpenModalCliente(`${search}`)"
                                         primary flat full>
                                         <span x-html="`Crear cliente <b>${search}</b>`"></span>
                                     </x-form.button>
