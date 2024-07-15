@@ -31,13 +31,7 @@ class Compras extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'metodo_pago_id' => 'integer',
-        'op_gravadas' => 'decimal:2',
-        'op_exoneradas' => 'decimal:2',
-        'op_inafectas' => 'decimal:2',
-        'op_gratuitas' => 'decimal:2',
-        'descuento' => 'decimal:2',
-        'icbper' => 'decimal:2',
+        'fecha_emision' => 'date:Y-m-d',
         'sub_total' => 'decimal:2',
         'igv' => 'decimal:2',
         'total' => 'decimal:2',
@@ -69,6 +63,12 @@ class Compras extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function proveedor(): BelongsTo
+    {
+        return $this->belongsTo(Proveedores::class, 'proveedor_id', 'id')->withTrashed()->withoutGlobalScope(LocalScope::class);
+    }
+
 
     //CREAR ITEM DETALLE VENTA
     public static function createItems($items, Compras $compra)

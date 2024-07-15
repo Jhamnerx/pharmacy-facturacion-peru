@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('igv', 11, 4)->nullable();
             $table->decimal('importe_total', 11, 4)->nullable();
             $table->timestamps();
-
+            $table->softDeletes();
             $table->foreign(['compras_id'])->references(['id'])->on('compras')->onUpdate('cascade')->onDelete('cascade');
         });
     }

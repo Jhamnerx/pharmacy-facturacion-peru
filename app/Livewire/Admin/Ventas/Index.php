@@ -8,7 +8,6 @@ use App\Models\Ventas;
 use Livewire\Component;
 use App\Models\EnvioResumen;
 use Livewire\WithPagination;
-use App\Http\Controllers\Admin\ComprobantesController;
 use App\Http\Controllers\Facturacion\Api\ApiFacturacion;
 
 class Index extends Component
@@ -36,7 +35,7 @@ class Index extends Component
             ->orwhereDate('fecha_emision', $this->validateDate($this->search) ? Carbon::createFromFormat('d-m-Y', $this->search)->format('Y-m-d') : '')
             ->orderby('id', 'desc')
             ->with('cliente')
-            ->paginate(10);;;
+            ->paginate(10);
 
         return view('livewire.admin.ventas.index', compact('ventas'));
     }
