@@ -16,7 +16,7 @@ class ComprasDetalle extends Model
      * @var array
      */
     protected $guarded = [];
-    protected $table = 'compras_detalle';
+    protected $table = 'detalle_compras';
     /**
      * The attributes that should be cast to native types.
      *
@@ -39,5 +39,9 @@ class ComprasDetalle extends Model
     public function compra(): BelongsTo
     {
         return $this->belongsTo(\App\Models\Compras::class);
+    }
+    public function producto(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\Productos::class);
     }
 }

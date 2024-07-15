@@ -16,6 +16,7 @@ Route::controller(SelectsController::class)->group(function () {
     Route::get('tipo-afectacion', 'tipoAfectacion')->name('api.tipo-afectacion.index');
     Route::get('unit', 'unit')->name('api.unit.index');
     Route::get('clientes', 'clientes')->name('api.clientes.index');
+    Route::get('proveedores', 'clientes')->name('api.proveedores.index');
     Route::get('series', 'series')->name('api.series.index');
     Route::get('productos', 'productos')->name('api.productos.index');
     Route::get('documentos', 'documentos')->name('api.documentos.index');

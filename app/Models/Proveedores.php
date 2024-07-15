@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use App\Models\Compras;
+use App\Models\TipoDocumento;
 use App\Models\Scopes\LocalScope;
 use App\Observers\ProveedorObserver;
 use Illuminate\Database\Eloquent\Model;
@@ -41,6 +44,18 @@ class Proveedores extends Model
         static::addGlobalScope(new LocalScope);
     }
 
+    // Scope local de activo
+    public function scopeActive($query, $status)
+    {
+        return $query->where('estado', $status);
+    }
+    // Scope local de activo
+    public function scopeTipoDoc($query, $tipo)
+    {
+        return $query->where('tipo_documento_id', $tipo);
+    }
+
+
     public function compras(): HasMany
     {
         return $this->hasMany(Compras::class);
@@ -49,5 +64,9 @@ class Proveedores extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+    public function tipoDocumento(): BelongsTo
+    {
+        return $this->belongsTo(TipoDocumento::class, 'tipo_documento_id', 'codigo');
     }
 }

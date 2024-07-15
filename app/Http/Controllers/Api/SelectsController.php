@@ -22,6 +22,7 @@ use App\Models\TipoComprobantes;
 use App\Models\CodigosDetracciones;
 use App\Models\ModalidadTransporte;
 use App\Http\Controllers\Controller;
+use App\Models\Proveedores;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -106,6 +107,26 @@ class SelectsController extends Controller
                 fn (Builder $query) => $query
 
 
+            )
+            ->when(
+                $request->exists('selected'),
+                fn (Builder $query) => $query->whereIn('id', $request->input('selected', [])),
+
+            )
+            ->active(1)
+            ->get();
+    }
+
+    public function proveedores(Request $request): Collection
+    {
+        return Proveedores::query()
+            ->select('id', 'razon_social', 'numero_documento', 'tipo_documento_id')
+            ->orderBy('id')
+            ->when(
+                $request->search,
+                fn (Builder $query) => $query
+                    ->where('razon_social', 'like', "%{$request->search}%")
+                    ->orWhere('numero_documento', 'like', "%{$request->search}%")
             )
             ->when(
                 $request->exists('selected'),

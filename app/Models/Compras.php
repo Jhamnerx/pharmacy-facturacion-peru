@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Models\Scopes\LocalScope;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Observers\ComprasObserver;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy([ComprasObserver::class])]
 class Compras extends Model
 {
     use HasFactory;
@@ -19,8 +22,8 @@ class Compras extends Model
      *
      * @var array
      */
-    protected $guarded = [];
-    protected $table = 'clientes';
+    protected $guarded = ['id', 'created_at', 'updated_at'];
+    protected $table = 'compras';
     /**
      * The attributes that should be cast to native types.
      *
@@ -65,5 +68,21 @@ class Compras extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    //CREAR ITEM DETALLE VENTA
+    public static function createItems($items, Compras $compra)
+    {
+
+        foreach ($items as $item) {
+
+            $item['compras_id'] = $compra->id;
+
+            $item = $compra->detalle()->create($item);
+
+            $item->producto->increment('stock', $item['cantidad']);
+        }
+
+        return $compra->detalle;
     }
 }

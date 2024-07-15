@@ -2,6 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use App\Models\Ventas;
+use App\Models\Cotizaciones;
+use App\Models\GuiaRemision;
+use App\Models\TipoDocumento;
 use App\Models\Scopes\LocalScope;
 use App\Observers\ClientesObserver;
 use Illuminate\Database\Eloquent\Model;
@@ -34,7 +39,6 @@ class Clientes extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'fecha_nacimiento' => 'date',
         'ultima_compra' => 'datetime',
         'estado' => 'boolean',
         'user_id' => 'integer',
