@@ -22,7 +22,7 @@ class Emitir extends Component
 {
 
     //PROPIEDADES DE VENTA
-    public $tipo_comprobante_id = '01', $serie, $correlativo, $serie_correlativo, $cliente_id,
+    public $tipo_comprobante_id = '02', $serie, $correlativo, $serie_correlativo, $cliente_id,
         $direccion, $fecha_emision, $fecha_hora_emision, $fecha_vencimiento,
         $divisa = "PEN", $tipo_cambio, $metodo_pago_id = "009", $comentario,
         $igv_op = 0.00, $tipo_descuento = "cantidad", $descuento_factor,

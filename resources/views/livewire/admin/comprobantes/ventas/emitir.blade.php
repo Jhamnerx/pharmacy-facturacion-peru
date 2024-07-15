@@ -79,8 +79,8 @@
                         <div class="col-span-12 xs:col-span-4">
                             <x-form.select label="Tipo comprobante:" id="tipo_comprobante_id" name="tipo_comprobante_id"
                                 :options="[
-                                    ['name' => 'FACTURA ELECTRONICA', 'id' => '01'],
-                                    ['name' => 'BOLETA ELECTRONICA', 'id' => '03'],
+                                    // ['name' => 'FACTURA ELECTRONICA', 'id' => '01'],
+                                    // ['name' => 'BOLETA ELECTRONICA', 'id' => '03'],
                                     ['name' => 'N. VENTA ELECTRONICA', 'id' => '02'],
                                 ]" option-label="name" option-value="id"
                                 wire:model.live="tipo_comprobante_id" :clearable="false" />
@@ -132,8 +132,7 @@
                                 x-on:clear="$wire.direccion = ''">
                                 <x-slot name="afterOptions" class="p-2 flex justify-center"
                                     x-show="displayOptions.length === 0">
-                                    <x-form.button wire:click.prevent="OpenModalCliente(`${search}`)"
-                                        primary flat full>
+                                    <x-form.button wire:click.prevent="OpenModalCliente(`${search}`)" primary flat full>
                                         <span x-html="`Crear cliente <b>${search}</b>`"></span>
                                     </x-form.button>
                                 </x-slot>

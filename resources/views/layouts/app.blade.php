@@ -56,6 +56,7 @@
 
             {{-- <x-app.header /> --}}
             @livewire('admin.plantilla.header', ['page' => request()->fullUrl()])
+            @livewire('app.header.reportes')
             {{-- <x-app.comprobantes /> --}}
 
             <main class="grow">
@@ -67,7 +68,7 @@
     </div>
 
     @stack('modals')
-
+    @livewire('admin.reportes.ventas')
     @livewireScripts
 
     @stack('scripts')
