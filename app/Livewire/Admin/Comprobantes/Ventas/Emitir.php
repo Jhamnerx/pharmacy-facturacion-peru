@@ -45,7 +45,7 @@ class Emitir extends Component
     public Collection $items;
     public $cliente;
     public Empresa $empresa;
-
+    public $pago_estado = 'PAID';
 
     public $simbolo = "S/. ";
 
@@ -439,7 +439,7 @@ class Emitir extends Component
         try {
 
             $venta = Ventas::create($datos);
-
+            $venta->update(['estado' => 'COMPLETADO']);
 
             //ACTUALIZAR DIRECCION
             if (is_null($this->cliente->direccion)) {

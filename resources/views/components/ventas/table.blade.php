@@ -878,7 +878,7 @@
                                 <div class=" text-center space-x-1">
                                     <x-form.dropdown class="w-60">
 
-                                        <x-dropdown.item icon='plus' label="Volver a crear" />
+                                        {{-- <x-dropdown.item icon='plus' label="Volver a crear" /> --}}
 
                                         @role('admin')
                                             @if (!$venta->clase && $venta->fe_estado == '0')

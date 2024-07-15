@@ -60,6 +60,7 @@ class VentasRequest extends FormRequest
             'adelanto' => 'exclude_unless:forma_pago,CREDITO|required_if:forma_pago,CREDITO',
             'detalle_cuotas.*' => 'array|between:1,100|required_if:forma_pago,CREDITO',
             'forma_pago' => 'required',
+            'pago_estado' => 'required',
 
             'items' => 'array|between:1,1000',
             'items.*.producto_id' => 'nullable',

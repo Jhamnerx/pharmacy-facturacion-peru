@@ -38,7 +38,7 @@
 
 
             <x-form.button icon="clipboard" secondary label="EXCEl" wire:click.prevent="exportar" spinner="exportar" />
-            <x-form.button icon="clipboard" secondary label="PDF" />
+            {{-- <x-form.button icon="clipboard" secondary label="PDF" /> --}}
         </div>
 
     </div>
