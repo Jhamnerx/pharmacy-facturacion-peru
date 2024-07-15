@@ -51,34 +51,34 @@
                 <!-- Table body -->
                 <tbody class="text-sm divide-y divide-slate-200">
                     <!-- Row -->
-                    @foreach ($presupuestos as $presupuesto)
+                    @foreach ($presupuestos as $cotizacion)
                         <tr>
 
                             <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                <div>{{ $presupuesto->fecha_hora_emision->format('d-m-Y / H:i:s') }}
+                                <div>{{ $cotizacion->fecha_hora_emision->format('d-m-Y / H:i:s') }}
                                 </div>
                             </td>
 
                             <td class="px-2 first:pl-5 last:pr-5 py-3">
                                 <div class="font-medium text-sky-500">
-                                    {{ $presupuesto->serie_correlativo }}
+                                    {{ $cotizacion->serie_correlativo }}
                                 </div>
                             </td>
 
                             <td class="px-2 first:pl-5 last:pr-5 py-3">
                                 <div class="font-medium text-slate-900">
-                                    {{ $presupuesto->cliente->razon_social }}
+                                    {{ $cotizacion->cliente->razon_social }}
                                 </div>
                                 <div class="font-sm text-slate-700">
                                     <p class="text-xs">
-                                        {{ $presupuesto->cliente->numero_documento }}
+                                        {{ $cotizacion->cliente->numero_documento }}
                                     </p>
 
                                 </div>
 
                             </td>
                             <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                @if ($presupuesto->forma_pago == 'CREDITO')
+                                @if ($cotizacion->forma_pago == 'CREDITO')
                                     <div>
                                         <div class="relative inline-flex" x-data="{ open: false }">
                                             <button class="inline-flex justify-center items-center group"
@@ -87,7 +87,7 @@
                                                 <div class="flex items-center truncate">
                                                     <span
                                                         class="truncate ml-2 text-sm font-medium group-hover:text-slate-800">
-                                                        {{ $presupuesto->forma_pago }}
+                                                        {{ $cotizacion->forma_pago }}
                                                     </span>
                                                     <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400"
                                                         viewBox="0 0 12 12">
@@ -109,7 +109,7 @@
                                                     </div>
                                                     {{-- <div class="text-sm text-slate-600">
                                                         Adelanto:
-                                                        {{ $presupuesto->divisa == 'USD' ? "$ " . $presupuesto->adelanto : 'S/. ' . $presupuesto->adelanto }}
+                                                        {{ $cotizacion->divisa == 'USD' ? "$ " . $cotizacion->adelanto : 'S/. ' . $cotizacion->adelanto }}
                                                     </div> --}}
 
                                                 </div>
@@ -131,7 +131,7 @@
                                                     </thead>
                                                     <tbody>
 
-                                                        @foreach ($presupuesto->detalle_cuotas as $key => $cuota)
+                                                        @foreach ($cotizacion->detalle_cuotas as $key => $cuota)
                                                             <tr
                                                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                                                 <th scope="row"
@@ -144,7 +144,7 @@
                                                                     {{ $cuota['fecha'] }}
                                                                 </td>
                                                                 <td class="px-6 py-4">
-                                                                    {{ $presupuesto->divisa == 'PEN ' ? 'S/ ' : '$ ' }}
+                                                                    {{ $cotizacion->divisa == 'PEN ' ? 'S/ ' : '$ ' }}
                                                                     {{ $cuota['importe'] }}
                                                                 </td>
                                                             </tr>
@@ -158,30 +158,30 @@
                                     </div>
                                 @else
                                     <div class="font-medium text-slate-800">
-                                        {{ $presupuesto->forma_pago }}
+                                        {{ $cotizacion->forma_pago }}
                                     </div>
                                 @endif
                             </td>
 
 
                             <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                <div class="font-medium {{ $presupuesto->estado->color() }}">
+                                <div class="font-medium {{ $cotizacion->estado->color() }}">
 
-                                    {{ $presupuesto->divisa == 'PEN' ? 'S/ ' : '$' }} {{ $presupuesto->total }}
+                                    {{ $cotizacion->divisa == 'PEN' ? 'S/ ' : '$' }} {{ $cotizacion->total }}
 
                                 </div>
                             </td>
 
                             <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                 <div
-                                    class="inline-flex font-medium bg-{{ $presupuesto->estado->color() }}-100 text-{{ $presupuesto->estado->color() }}-600 rounded-full text-center px-2.5 py-0.5">
-                                    {{ $presupuesto->estado->name }}
+                                    class="inline-flex font-medium bg-{{ $cotizacion->estado->color() }}-100 text-{{ $cotizacion->estado->color() }}-600 rounded-full text-center px-2.5 py-0.5">
+                                    {{ $cotizacion->estado->name }}
                                 </div>
 
                             </td>
 
                             <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                @switch($presupuesto->pago_estado)
+                                @switch($cotizacion->pago_estado)
                                     @case('UNPAID')
                                         <div
                                             class="inline-flex font-medium bg-orange-100 text-orange-600 rounded-full text-center px-2.5 py-0.5">
@@ -197,10 +197,10 @@
 
                             </td>
                             <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                <div>{{ $presupuesto->fecha_emision->format('Y-m-d') }}</div>
+                                <div>{{ $cotizacion->fecha_emision->format('Y-m-d') }}</div>
                             </td>
                             <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                <div>{{ $presupuesto->fecha_vencimiento->format('Y-m-d') }}</div>
+                                <div>{{ $cotizacion->fecha_vencimiento->format('Y-m-d') }}</div>
                             </td>
 
                             <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
@@ -208,7 +208,7 @@
                                 <div class="space-x-1">
                                     {{-- obtener pdf --}}
                                     <a target="_blank"
-                                        href="{{ route('facturacion.cotizacion.ver.pdf', ['cotizaciones' => $presupuesto]) }}">
+                                        href="{{ route('facturacion.cotizacion.ver.pdf', ['cotizaciones' => $cotizacion]) }}">
                                         <button type="button" class="bg-white ">
                                             <x-iconos.pdf />
                                         </button>
@@ -245,7 +245,7 @@
                                             <ul>
 
                                                 <li>
-                                                    <a href="{{ route('admin.cotizaciones.edit', $presupuesto) }}"
+                                                    <a href="{{ route('admin.cotizaciones.edit', $cotizacion) }}"
                                                         class="text-gray-700 group flex items-center px-4 py-2 text-sm font-normal"
                                                         disabled="false" id="headlessui-menu-item-27" role="menuitem"
                                                         tabindex="-1">
@@ -263,7 +263,7 @@
 
                                                 <li>
                                                     <a href="javascript: void(0)"
-                                                        wire:click.prevent='openModalDelete({{ $presupuesto->id }})'
+                                                        wire:click.prevent='openModalDelete({{ $cotizacion->id }})'
                                                         class="text-gray-700 group flex items-center px-4 py-2 text-sm font-normal"
                                                         disabled="false" id="headlessui-menu-item-28" role="menuitem"
                                                         tabindex="-1">
@@ -283,7 +283,7 @@
 
                                                 <li>
                                                     <a href="javascript: void(0)"
-                                                        wire:click="modalOpenSend({{ $presupuesto->id }})"
+                                                        wire:click="modalOpenSend({{ $cotizacion->id }})"
                                                         class="text-gray-700 group flex items-center px-4 py-2 text-sm font-normal"
                                                         disabled="false" id="headlessui-menu-item-32" role="menuitem"
                                                         tabindex="-1">
@@ -299,7 +299,7 @@
 
                                                 <li>
                                                     <a href="javascript: void(0)"
-                                                        wire:click.prevent="markAccept({{ $presupuesto->id }})"
+                                                        wire:click.prevent="markAccept({{ $cotizacion->id }})"
                                                         class="text-gray-700 group flex items-center px-4 py-2 text-sm font-normal"
                                                         disabled="false" id="headlessui-menu-item-33" role="menuitem"
                                                         tabindex="-1">
@@ -317,7 +317,7 @@
 
                                                 <li>
                                                     <a href="javascript: void(0)"
-                                                        wire:click.prevent="markReject({{ $presupuesto->id }})"
+                                                        wire:click.prevent="markReject({{ $cotizacion->id }})"
                                                         class="text-gray-700 group flex items-center px-4 py-2 text-sm font-normal"
                                                         disabled="false" id="headlessui-menu-item-34" role="menuitem"
                                                         tabindex="-1">

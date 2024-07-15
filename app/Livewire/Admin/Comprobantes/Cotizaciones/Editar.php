@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Admin\Comprobantes\Cotizaciones;
 
-
 use Carbon\Carbon;
 use App\Models\Series;
 use App\Models\Empresa;
@@ -15,15 +14,17 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UtilesController;
 use App\Http\Requests\CotizacionRequest;
 
-class Emitir extends Component
+class Editar extends Component
 {
+
     //PROPIEDADES DE VENTA
     public $tipo_comprobante_id = '00';
     public $serie, $correlativo, $serie_correlativo, $cliente_id,
         $direccion, $fecha_emision, $fecha_hora_emision, $fecha_vencimiento,
         $divisa = "PEN", $tipo_cambio, $metodo_pago_id = "009", $comentario,
         $igv_op = 0.00, $tipo_descuento = "cantidad", $descuento_factor,
-        $numero_cuotas = 0, $vence_cuotas = 30, $forma_pago = "CONTADO";
+        $adelanto = 0.00,  $numero_cuotas = 0,
+        $vence_cuotas = 30, $forma_pago = "CONTADO";
 
     public $sub_total = 0.00, $op_gravadas = 0.00, $op_exoneradas = 0.00, $op_inafectas = 0.00,
         $op_gratuitas = 0.00, $descuento = 0.00, $igv = 0.00, $icbper = 0.00,  $total = 0.00;
@@ -59,55 +60,69 @@ class Emitir extends Component
 
     public $series = [];
 
-    public function render()
+    public $cotizacion;
+
+    public function mount(Cotizaciones $cotizacion)
     {
-        return view('livewire.admin.comprobantes.cotizaciones.emitir');
-    }
-
-    #[On('echo:ventas,VentaCreada')]
-    public function actualizarVista()
-    {
-        $this->render();
-    }
-
-
-
-    public function mount()
-    {
-        //CARGAR SERIES
+        $this->cotizacion = $cotizacion;
         $this->series = $this->loadSeries();
         $this->setSerieMount();
-
-        //ESTABLACER FECHAS DEFAULT
-        $this->fecha_emision = Carbon::now()->format('Y-m-d');
-        $this->fecha_vencimiento = Carbon::now()->format('Y-m-d');
-
-        $this->items = collect();
-        $this->detalle_cuotas = collect();
 
         //  CONSULTAR TIPO CAMBIO
         $util = new UtilesController;
         $this->tipo_cambio = $util->tipoCambio();
 
+        //  CONSULTAR EMPRESA
         $this->empresa = Empresa::first();
         $this->prepayments = collect();
         $this->local_id = session('local_id');
-    }
 
-    //CARGAR SERIES DE ACUERDO AL TIPO DE COMPROBANTE
-    public function updatedTipoComprobanteId($value)
-    {
-        $this->series = $this->loadSeries();
-        $this->setSerieMount();
-    }
+        //  CONSULTAR CLIENTE
+        $this->cliente_id = $cotizacion->cliente_id;
+        $this->direccion = $cotizacion->cliente->direccion;
 
-    //CARGAR DIRECCION DEL CLIENTE
-    public function updatedClienteId($value)
-    {
-        if ($value) {
-            $this->cliente = Clientes::findOrFail($value);
-            $this->direccion =  $this->cliente->direccion;
+        $this->serie = $cotizacion->serie;
+        $this->correlativo = $cotizacion->correlativo;
+        $this->serie_correlativo = $cotizacion->serie_correlativo;
+        $this->fecha_emision = $cotizacion->fecha_emision->format('Y-m-d');
+        $this->fecha_vencimiento = $cotizacion->fecha_vencimiento->format('Y-m-d');
+        $this->divisa = $cotizacion->divisa;
+        $this->tipo_cambio = $cotizacion->tipo_cambio;
+        $this->metodo_pago_id = $cotizacion->metodo_pago_id;
+        $this->comentario = $cotizacion->comentario;
+        $this->igv_op = $cotizacion->igv_op;
+        $this->tipo_descuento = $cotizacion->tipo_descuento;
+        $this->descuento_factor = $cotizacion->descuento_factor;
+        $this->numero_cuotas = $cotizacion->numero_cuotas ? $cotizacion->numero_cuotas : 30;
+        $this->vence_cuotas = $cotizacion->vence_cuotas;
+        $this->forma_pago = $cotizacion->forma_pago;
+        $this->sub_total = $cotizacion->sub_total;
+        $this->op_gravadas = $cotizacion->op_gravadas;
+        $this->op_exoneradas = $cotizacion->op_exoneradas;
+        $this->op_inafectas = $cotizacion->op_inafectas;
+        $this->op_gratuitas = $cotizacion->op_gratuitas;
+        $this->descuento = $cotizacion->descuento;
+        $this->igv = $cotizacion->igv;
+        $this->icbper = $cotizacion->icbper;
+        $this->total = $cotizacion->total;
+
+
+        //DATOS ITEMS
+        $this->items = collect($cotizacion->detalle->toArray());
+        $this->detalle_cuotas = collect($cotizacion->detalle_cuotas);
+
+        if ($cotizacion->forma_pago == "CREDITO") {
+
+            $this->showCredit = true;
+            $this->total_cuotas = $this->detalle_cuotas->sum('importe');
+        } else {
+            $this->showCredit = false;
         }
+    }
+
+    public function render()
+    {
+        return view('livewire.admin.comprobantes.cotizaciones.editar');
     }
 
     //CARGAR SERIES DE ACUERDO AL TIPO DE COMPROBANTE
@@ -125,9 +140,6 @@ class Emitir extends Component
         //$this->dispatch('notify-toast', icon: 'success', title: 'VENTA CREADA', mensaje: 'Venta creada desde POS', timer: 5000);
         $serie = Series::where('tipo_comprobante_id', $this->tipo_comprobante_id)->first();
         $this->serie = $serie->serie;
-        $this->correlativo = $serie->correlativo + 1;
-        $this->min_correlativo = $serie->correlativo + 1;
-        $this->serie_correlativo = $this->serie . "-" . $this->correlativo;
     }
 
     public function updatedSerie($value)
@@ -162,7 +174,6 @@ class Emitir extends Component
         $this->calcularCuotas($this->numero_cuotas);
         //$this->calcularMontoDetraccion($this->total);
     }
-
     public function convertMontosTotalesToDolares()
     {
         $this->sub_total =  $this->sub_total / $this->tipo_cambio;
@@ -177,37 +188,26 @@ class Emitir extends Component
 
         $this->items = $this->items->map(function ($item) {
             $item['valor_unitario'] = round($item['valor_unitario'] / $this->tipo_cambio, 6);
-            // $item['precio_unitario'] = round($item['precio_unitario'] / $this->tipo_cambio, 6);
-            // $item['igv'] = round($item['igv'] / $this->tipo_cambio, 2);
-            // $item['icbper'] = round($item['icbper'] / $this->tipo_cambio, 2);
-            // $item['total_icbper'] = round($item['total_icbper'] / $this->tipo_cambio, 2);
-            // $item['sub_total'] = round($item['sub_total'] / $this->tipo_cambio, 2);
-            // $item['total'] = round($item['total'] / $this->tipo_cambio, 2);
+
             return $item;
         });
 
         $this->calcularMontosLinea();
     }
-
     public function convertMontosTotalesToSoles()
     {
-        $this->sub_total =  $this->sub_total * $this->tipo_cambio;
-        $this->op_gravadas = $this->op_gravadas * $this->tipo_cambio;
-        $this->op_exoneradas = $this->op_exoneradas * $this->tipo_cambio;
-        $this->op_inafectas = $this->op_inafectas *   $this->tipo_cambio;
-        $this->icbper = $this->icbper * $this->tipo_cambio;
-        $this->igv =  $this->igv * $this->tipo_cambio;
-        $this->total =  $this->total * $this->tipo_cambio;
-        $this->descuento =  $this->descuento * $this->tipo_cambio;
+        $this->sub_total =  round($this->sub_total * $this->tipo_cambio, 2);
+        $this->op_gravadas = round($this->op_gravadas * $this->tipo_cambio, 2);
+        $this->op_exoneradas = round($this->op_exoneradas * $this->tipo_cambio, 2);
+        $this->op_inafectas = round($this->op_inafectas *   $this->tipo_cambio, 2);
+        $this->icbper = round($this->icbper * $this->tipo_cambio, 2);
+        $this->igv =  round($this->igv * $this->tipo_cambio, 2);
+        $this->total =  round($this->total * $this->tipo_cambio, 2);
+        $this->descuento =  round($this->descuento * $this->tipo_cambio, 4);
 
         $this->items = $this->items->map(function ($item) {
             $item['valor_unitario'] = round($item['valor_unitario'] * $this->tipo_cambio, 6);
-            // $item['precio_unitario'] = round($item['precio_unitario'] * $this->tipo_cambio, 2);
-            // $item['igv'] = round($item['igv'] * $this->tipo_cambio, 2);
-            // $item['icbper'] = round($item['icbper'] * $this->tipo_cambio, 2);
-            // $item['total_icbper'] = round($item['total_icbper'] * $this->tipo_cambio, 2);
-            // $item['sub_total'] = round($item['sub_total'] * $this->tipo_cambio, 2);
-            // $item['total'] = round($item['total'] * $this->tipo_cambio, 2);
+
             return $item;
         });
         $this->calcularMontosLinea();
@@ -217,12 +217,12 @@ class Emitir extends Component
     {
         $this->toggleShowCredit();
     }
-
-
     public function toggleShowCredit()
     {
 
-        if ($this->forma_pago == "CREDITO") {
+        if (
+            $this->forma_pago == "CREDITO"
+        ) {
 
             $this->showCredit = true;
             $this->resetCrediFields();
@@ -279,7 +279,7 @@ class Emitir extends Component
                 'dias' => $this->vence_cuotas,
                 'fecha' => $fecha->addDays(intval($this->vence_cuotas))->format('Y-m-d'),
                 'dia_semana' => ucfirst($fecha->dayName),
-                'importe' => $this->total > 0 ? round(floatval($this->total / $nCuotas), 2)  : 0.00,
+                'importe' => $this->total > 0 ? round(floatval(round($this->total, 2) / $nCuotas), 2)  : 0.00,
             ]);
         }
         $this->total_cuotas = round($this->detalle_cuotas->sum('importe'), 2);
@@ -290,13 +290,10 @@ class Emitir extends Component
 
         $this->total_cuotas = round($this->detalle_cuotas->sum('importe'), 2);
     }
-
     public function openModalCreateProduct()
     {
         $this->dispatch('openModalCreate');
     }
-
-
     //AÑADIR ITEM SELECCIONADO A LA LISTA DE ITEMS
     #[On('add-producto-selected')]
     function addProducto($selected)
@@ -338,7 +335,6 @@ class Emitir extends Component
         }
     }
 
-
     public function save()
     {
 
@@ -353,26 +349,24 @@ class Emitir extends Component
         }
 
         $request = new CotizacionRequest();
-        $datos = $this->validate($request->rules(), $request->messages());
+        $datos = $this->validate($request->rules($this->cotizacion), $request->messages());
 
         try {
 
-            $cotizacion = Cotizaciones::create($datos);
+            $this->cotizacion->update($datos);
+            $this->cotizacion->detalle()->delete();
 
             //ACTUALIZAR DIRECCION
-            if (is_null($this->cliente->direccion)) {
+            // if (is_null($this->cliente->direccion)) {
 
-                $this->cliente->direccion = $datos["direccion"];
-                $this->cliente->save();
-            }
+            //     $this->cliente->direccion = $datos["direccion"];
+            //     $this->cliente->save();
+            // }
 
             //CREAR ITEMS DE LA VENTA
-            Cotizaciones::createItems($cotizacion, $datos["items"]);
+            Cotizaciones::createItems($this->cotizacion, $datos["items"]);
 
-            //ACTUALIZAR CORRELATIVO DE SERIE UTILIZADA
-            $cotizacion->getSerie->increment('correlativo');
-
-            session()->flash('venta-registrada', 'COTIZACIÓN REGISTRADA' . ': Intenta enviar en un rato');
+            session()->flash('venta-registrada', 'COTIZACIÓN ACTUALIZADA' . ': Intenta enviar en un rato');
             // $this->redirectRoute('admin.cotizacion.index');
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -383,7 +377,6 @@ class Emitir extends Component
             );
         }
     }
-
     public function afterSave($mensaje)
     {
         $this->dispatch(
@@ -580,14 +573,19 @@ class Emitir extends Component
                 ]);
             }
 
-            if ($this->sub_total && $this->descuento_monto > 0) {
+            if (
+                $this->sub_total && $this->descuento_monto > 0
+            ) {
 
                 $descuento = $this->descuento_monto;
                 $this->descuento_factor = round($this->descuento_monto / $this->sub_total, 5);
             }
         }
 
-        return round($descuento, 4);
+        return round(
+            $descuento,
+            4
+        );
     }
 
     public function eliminarProducto($key)

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id');
             $table->unsignedBigInteger('ventas_id')->index('ventas_detalles_ventas_id_foreign');
             $table->string('producto_id')->nullable();
+            $table->string('codigo')->nullable();
             $table->text('descripcion')->nullable();
             $table->text('unit')->nullable();
             $table->text('unit_name')->nullable();

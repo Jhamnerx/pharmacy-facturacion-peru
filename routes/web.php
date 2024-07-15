@@ -65,7 +65,7 @@ Route::controller(CotizacionesController::class)->middleware(['auth:sanctum'])->
 
     Route::get('cotizaciones', 'index')->name('admin.cotizaciones.index');
     Route::get('cotizaciones/emitir', 'emitir')->name('admin.cotizaciones.create');
-    Route::get('cotizaciones/{cotizaciones::uid}/editar', 'editar')->name('admin.cotizaciones.edit');
+    Route::get('cotizaciones/{cotizacion}/editar', 'editar')->name('admin.cotizaciones.edit');
 });
 
 

@@ -2,7 +2,7 @@
 
 @section('contenido')
 
-    @livewire('admin.comprobantes.cotizaciones.emitir')
+    @livewire('admin.comprobantes.cotizaciones.editar', ['cotizacion' => $cotizacion])
 
 @stop
 

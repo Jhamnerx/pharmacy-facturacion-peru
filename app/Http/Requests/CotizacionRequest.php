@@ -10,7 +10,7 @@ class CotizacionRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function rules(): array
+    public function rules($cotizacion = null): array
     {
         $rules = [
             'tipo_comprobante_id' => 'required|exists:tipo_comprobantes,codigo',
@@ -42,17 +42,15 @@ class CotizacionRequest extends FormRequest
             'icbper' => 'nullable',
             'igv' => 'required',
             'sub_total' => 'required',
-            'adelanto' => 'nullable',
             'total' => 'required',
             'numero_cuotas' => 'exclude_unless:forma_pago,CREDITO|integer|required_if:forma_pago,CREDITO|min:1',
             'vence_cuotas' => 'exclude_unless:forma_pago,CREDITO|integer|required_if:forma_pago,CREDITO|min:1',
-            'adelanto' => 'exclude_unless:forma_pago,CREDITO|required_if:forma_pago,CREDITO',
             'detalle_cuotas.*' => 'array|between:1,100|required_if:forma_pago,CREDITO',
             'forma_pago' => 'required',
 
             'items' => 'array|between:1,1000',
             'items.*.producto_id' => 'nullable',
-            'items.*.codigo' => 'required',
+            //'items.*.codigo' => 'required',
             'items.*.cantidad' => 'required|gte:1',
             'items.*.unit' => 'required',
             'items.*.unit_name' => 'required',
@@ -67,7 +65,7 @@ class CotizacionRequest extends FormRequest
             'items.*.total' => 'required',
             'items.*.codigo_afectacion' => 'required',
             'items.*.afecto_icbper' => 'required',
-            'items.*.tipo' => 'required',
+            //'items.*.tipo' => 'required',
 
             //pago anticipado
             //'pago_anticipado' => 'boolean',

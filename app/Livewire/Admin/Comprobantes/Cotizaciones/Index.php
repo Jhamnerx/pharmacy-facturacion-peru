@@ -40,7 +40,7 @@ class Index extends Component
             ->orwhereDate('fecha_emision', $this->validateDate($this->search) ? Carbon::createFromFormat('d-m-Y', $this->search)->format('Y-m-d') : '')
             ->orderby('id', 'desc')
             ->with('cliente')
-            ->paginate(10);;;
+            ->paginate(15);
 
         $pendientes = Cotizaciones::where('estado', '0')->count();
         $aceptadas = Cotizaciones::where('estado', '1')->count();
@@ -59,12 +59,13 @@ class Index extends Component
 
         if ($estado != "null") {
 
-            $presupuestos = Cotizaciones::whereHas('clientes', function ($query) {
+            $presupuestos = Cotizaciones::whereHas('cliente', function ($query) {
                 $query->where('razon_social', 'like', '%' . $this->search . '%');
             })
-                ->orWhere('numero', 'like', '%' . $this->search . '%')
-                ->orWhere('fecha', 'like', '%' . $this->search . '%')
-                ->orWhere('serie_correlativo', 'like', '%' . $this->search . '%')
+                ->orWhere('fecha_emision', 'like', '%' . $this->search . '%')
+                ->orWhere('serie', 'LIKE', '%' . $this->search . '%')
+                ->orWhere('correlativo', 'LIKE', '%' . $this->search . '%')
+                ->orWhere('serie_correlativo', 'LIKE', '%' . $this->search . '%')
                 ->estado($this->estado)
                 ->orderBy('created_at', 'DESC')
                 ->paginate(15);

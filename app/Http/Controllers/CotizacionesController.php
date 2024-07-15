@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cotizaciones;
 use Illuminate\Http\Request;
 
 class CotizacionesController extends Controller
@@ -15,8 +16,9 @@ class CotizacionesController extends Controller
     {
         return view('admin.cotizaciones.create');
     }
-    public function editar()
+    public function editar($id)
     {
-        return view('admin.cotizaciones.edit');
+        $cotizacion = Cotizaciones::findOrFail($id);
+        return view('admin.cotizaciones.edit', compact('cotizacion'));
     }
 }

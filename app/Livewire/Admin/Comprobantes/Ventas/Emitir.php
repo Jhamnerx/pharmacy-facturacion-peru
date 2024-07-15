@@ -232,6 +232,7 @@ class Emitir extends Component
         }
 
         $this->calcularMontoDetraccion($this->total);
+        $this->calcularCuotas($this->numero_cuotas);
     }
 
     public function convertMontosTotalesToDolares()

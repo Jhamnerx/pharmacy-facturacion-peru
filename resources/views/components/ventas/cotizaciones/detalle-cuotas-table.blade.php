@@ -76,7 +76,7 @@
                                     <td class="py-2 px-2 min-w-36 text-center">
                                         <x-form.currency class="text-xs"
                                             wire:model.blur="detalle_cuotas.{{ $clave }}.importe"
-                                            precision="4" />
+                                            precision="2" />
 
                                     </td>
 

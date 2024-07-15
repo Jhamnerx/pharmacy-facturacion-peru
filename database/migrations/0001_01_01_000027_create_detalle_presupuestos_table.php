@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id');
             $table->unsignedBigInteger('presupuestos_id')->nullable()->index('detalle_presupuestos_presupuestos_id_foreign');
             $table->string('producto_id')->nullable();
+            $table->string('codigo')->nullable();
             $table->text('descripcion')->nullable();
             $table->text('unit')->nullable();
             $table->text('unit_name')->nullable();

@@ -14,7 +14,7 @@
             </button>
         </a>
         <div class="mt-2 md:mt-0">
-            <h4 class="text-2xl font-bold leading-tight text-gray-800 dark:text-gray-200">REGISTRAR COTIZACION</h4>
+            <h4 class="text-2xl font-bold leading-tight text-gray-800 dark:text-gray-200">ACTUALIZAR COTIZACION</h4>
             <ul aria-label="current Status"
                 class="flex flex-col md:flex-row items-start md:items-center text-gray-600 dark:text-gray-400 text-sm mt-3">
             </ul>
@@ -55,16 +55,14 @@
                             <div class="grid grid-cols-12 gap-2">
                                 <div class="col-span-6">
                                     <x-form.datetime.picker label="Fec. Emision:" id="fecha_emision"
-                                        name="fecha_emision" wire:model.live="fecha_emision" :min="now()->subDays(1)"
-                                        :max="now()" without-time parse-format="YYYY-MM-DD"
-                                        display-format="DD-MM-YYYY" :clearable="false" />
+                                        name="fecha_emision" wire:model.live="fecha_emision" without-time
+                                        parse-format="YYYY-MM-DD" display-format="DD-MM-YYYY" :clearable="false" />
                                 </div>
 
                                 <div class="col-span-6">
                                     <x-form.datetime.picker label="Fec. Vencimiento:" id="fecha_vencimiento"
-                                        name="fecha_vencimiento" wire:model.live="fecha_vencimiento" :min="now()->subDays(1)"
-                                        :max="now()->addDays(90)" without-time parse-format="YYYY-MM-DD"
-                                        display-format="DD-MM-YYYY" :clearable="false" />
+                                        name="fecha_vencimiento" wire:model.live="fecha_vencimiento" without-time
+                                        parse-format="YYYY-MM-DD" display-format="DD-MM-YYYY" :clearable="false" />
                                 </div>
                             </div>
 
@@ -112,8 +110,6 @@
 
                     </div>
 
-
-
                     <div
                         class="col-span-12 md:col-span-9 grid grid-cols-12 gap-2 bg-white dark:bg-gray-800 items-start border rounded-md m-3 p-4">
 
@@ -151,6 +147,9 @@
                         </x-ventas.cotizaciones.detalle-cuotas-table>
 
                     </div>
+                    @if (app()->environment('local'))
+                        {{ $total_cuotas }} - {{ $total }}
+                    @endif
                 @endif
             </div>
         </div>
@@ -370,7 +369,7 @@
                 <div class="grid { gap-2 content-end">
 
                     <div class="text-center md:text-right">
-                        <x-form.button wire:click.prevent="save" spinner="save" label="REGISTRAR" black md
+                        <x-form.button wire:click.prevent="save" spinner="save" label="Actualizar" black md
                             icon="shopping-cart" />
                     </div>
                 </div>
