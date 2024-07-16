@@ -22,4 +22,4 @@ auth-image.psd
 /storage/app/public/livewire-tmp/
 /storage\app\public\profile-photos/
 /storage/framework/cache/*
-/storage/framework/cache/
+storage/framework/cache/
