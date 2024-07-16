@@ -27,12 +27,12 @@ return new class extends Migration
             $table->decimal('tipo_cambio', 11)->nullable();
             $table->string('metodo_pago_id');
             $table->text('comentario')->nullable();
-            $table->decimal('op_gravadas', 11)->nullable();
-            $table->decimal('op_exoneradas', 11)->nullable();
-            $table->decimal('op_inafectas', 11)->nullable();
-            $table->decimal('op_gratuitas', 11)->nullable();
-            $table->decimal('igv_op', 11)->default(0);
-            $table->decimal('descuento', 11);
+            $table->decimal('op_gravadas', 11, 4)->nullable();
+            $table->decimal('op_exoneradas', 11, 4)->nullable();
+            $table->decimal('op_inafectas', 11, 4)->nullable();
+            $table->decimal('op_gratuitas', 11, 4)->nullable();
+            $table->decimal('igv_op', 11, 4)->default(0);
+            $table->decimal('descuento', 11, 4);
             $table->string('tipo_descuento')->nullable();
             $table->decimal('descuento_factor', 11, 5)->nullable();
             $table->decimal('icbper', 11, 4)->nullable();

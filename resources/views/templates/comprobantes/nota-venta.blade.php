@@ -610,7 +610,7 @@
                             </td>
                             <td align="center">
                                 {{ $moneda }}
-                                {{ round($item->subt_total, 2) }}
+                                {{ round($item->sub_total, 2) }}
                             </td>
                         </tr>
                     @endforeach

@@ -880,12 +880,12 @@
 
                                         {{-- <x-dropdown.item icon='plus' label="Volver a crear" /> --}}
 
-                                        @role('admin')
-                                            @if (!$venta->clase && $venta->fe_estado == '0')
-                                                <x-dropdown.item wire:click.prevent='createXml({{ $venta->id }})'
-                                                    icon='arrow-path' label="Crear XML" />
-                                            @endif
-                                        @endrole
+
+                                        @if (!$venta->clase && $venta->fe_estado == '0')
+                                            <x-dropdown.item wire:click.prevent='createXml({{ $venta->id }})'
+                                                icon='arrow-path' label="Crear XML" />
+                                        @endif
+
 
                                         {{-- <x-dropdown.item icon='envelope' label="Enviar a cliente" /> --}}
 

@@ -165,6 +165,7 @@ class Emitir extends Component
     //CARGAR SERIES DE ACUERDO AL TIPO DE COMPROBANTE
     public function updatedTipoComprobanteId($value)
     {
+        $this->metodo_type = "02";
         $this->series = $this->loadSeries();
         $this->setSerieMount();
     }
@@ -389,8 +390,8 @@ class Emitir extends Component
                 'porcentaje_igv' => $selected["porcentaje_igv"],
                 'icbper' => $this->divisa == 'USD' ? round($selected["icbper"] / $this->tipo_cambio, 2) : $selected["icbper"],
                 'total_icbper' => $this->divisa == 'USD' ? round($selected["total_icbper"] / $this->tipo_cambio, 2) : $selected["total_icbper"],
-                'sub_total' =>  $this->divisa == 'USD' ? round($selected["valor_unitario"] * $selected["cantidad"] / $this->tipo_cambio, 2) : round($selected["valor_unitario"] * $selected["cantidad"], 2),
-                'total' => $this->divisa == 'USD' ? round($selected["total"] / $this->tipo_cambio, 2) : $selected["total"],
+                'sub_total' =>  $this->divisa == 'USD' ? round($selected["valor_unitario"] * $selected["cantidad"] / $this->tipo_cambio, 4) : round($selected["valor_unitario"] * $selected["cantidad"], 4),
+                'total' => $this->divisa == 'USD' ? round($selected["total"] / $this->tipo_cambio, 4) : $selected["total"],
                 'codigo_afectacion' => $selected["codigo_afectacion"],
                 'afecto_icbper' => $selected["afecto_icbper"],
                 'tipo' => $selected["tipo"],
