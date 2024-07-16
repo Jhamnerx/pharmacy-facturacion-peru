@@ -80,34 +80,32 @@
 
 @push('scripts')
     <script>
-        document.addEventListener('livewire:initialized', () => {
-            console.log(navigator.userAgent.toLowerCase());
-            Livewire.on('print', (event) => {
-                console.log(event.data);
-                pc_print(event.data);
-            });
+        const obtenerListaDeImpresoras = async () => {
+            return await ConectorPluginV3.obtenerImpresoras();
+        }
 
-            function pc_print(data) {
-                var socket = new WebSocket("ws://127.0.0.1:40213/");
-                socket.binaryType = "arraybuffer";
+        const URLPlugin = "http://localhost:8000"
+        const IMPRESORA_POR_DEFECTO = "POS-80";
 
-                socket.onerror = function(error) {
-                    alert("Error");
-                };
-
-                socket.onopen = function() {
-                    // Decodificar base64 a arraybuffer
-                    var binaryString = window.atob(data);
-                    var len = binaryString.length;
-                    var bytes = new Uint8Array(len);
-                    for (var i = 0; i < len; i++) {
-                        bytes[i] = binaryString.charCodeAt(i);
-                    }
-
-                    socket.send(bytes.buffer);
-                    socket.close(1000, "Work complete");
-                };
+        const imprimirHolaMundo = async (nombreImpresora) => {
+            const conector = new ConectorPluginV3(URLPlugin);
+            conector.Iniciar();
+            conector.EscribirTexto("Hola mundo\nParzibyte.me");
+            conector.Feed(1);
+            const respuesta = await conector
+                .imprimirEn(nombreImpresora);
+            if (respuesta === true) {
+                alert("Impreso correctamente");
+            } else {
+                alert("Error: " + respuesta);
             }
+        }
+        init();
+    </script>
+
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+            imprimirHolaMundo(IMPRESORA_POR_DEFECTO);
         });
     </script>
 @endpush
