@@ -37,7 +37,7 @@ class PermisosSeeder extends Seeder
 
         $permisos_punto_venta = [
             [
-                'name' => 'punto_venta.ver',
+                'name' => 'punto.venta.ver',
                 'description' => 'Ver el punto de venta',
             ]
         ];

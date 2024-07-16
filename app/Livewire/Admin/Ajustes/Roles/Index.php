@@ -18,7 +18,7 @@ class Index extends Component
 
     public function openModalSave()
     {
-        $this->dispatch('open-moda-save');
+        $this->dispatch('open-modal-save');
     }
 
     public function openModalEdit(Role $rol)

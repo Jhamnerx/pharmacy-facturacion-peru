@@ -34,6 +34,8 @@
 @stop
 
 @push('modals')
+    @livewire('admin.ajustes.roles.save')
+    @livewire('admin.ajustes.roles.edit')
 @endpush
 
 

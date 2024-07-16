@@ -18,41 +18,41 @@ use App\Http\Controllers\Comprobantes\ComprobantesController;
 
 
 Route::middleware([
-    'auth:sanctum',
+    'auth',
     config('jetstream.auth_session'),
 ])->controller(DashboardController::class)->group(function () {
     Route::get('/', 'dashboard')->name('dashboard');
     //  Route::get('dashboard', 'dashboard')->name('dashboard');
 });
 
-Route::controller(ComprasController::class)->middleware(['auth:sanctum'])->group(function () {
+Route::controller(ComprasController::class)->middleware(['auth'])->group(function () {
 
     Route::get('compras', 'index')->name('admin.compras.index');
     Route::get('compras/registrar', 'create')->name('admin.compras.create');
 });
 
-Route::controller(ClientesController::class)->middleware(['auth:sanctum'])->group(function () {
+Route::controller(ClientesController::class)->middleware(['auth'])->group(function () {
 
     Route::get('clientes', 'index')->name('admin.clientes.index');
 });
 
-Route::controller(ProveedoresController::class)->middleware(['auth:sanctum'])->group(function () {
+Route::controller(ProveedoresController::class)->middleware(['auth'])->group(function () {
 
     Route::get('proveedores', 'index')->name('admin.proveedores.index');
 });
 
-Route::controller(ProductosController::class)->middleware(['auth:sanctum'])->group(function () {
+Route::controller(ProductosController::class)->middleware(['auth'])->group(function () {
 
     Route::get('productos', 'index')->name('admin.productos.index');
 });
 
-Route::controller(CategoriasController::class)->middleware(['auth:sanctum'])->group(function () {
+Route::controller(CategoriasController::class)->middleware(['auth'])->group(function () {
 
     Route::get('categorias', 'index')->name('admin.categorias.index');
 });
 
 
-Route::controller(ComprobantesController::class)->middleware(['auth:sanctum'])->group(function () {
+Route::controller(ComprobantesController::class)->middleware(['auth'])->group(function () {
 
     Route::get('ventas', 'index')->name('admin.ventas.index');
     Route::get('pos/invoice', 'pos')->name('admin.pos.create');
@@ -62,7 +62,7 @@ Route::controller(ComprobantesController::class)->middleware(['auth:sanctum'])->
 });
 
 
-Route::controller(CotizacionesController::class)->middleware(['auth:sanctum'])->group(function () {
+Route::controller(CotizacionesController::class)->middleware(['auth'])->group(function () {
 
     Route::get('cotizaciones', 'index')->name('admin.cotizaciones.index');
     Route::get('cotizaciones/emitir', 'emitir')->name('admin.cotizaciones.create');
@@ -73,7 +73,7 @@ Route::controller(CotizacionesController::class)->middleware(['auth:sanctum'])->
 
 
 
-Route::controller(AdministracionController::class)->middleware(['auth:sanctum'])->group(function () {
+Route::controller(AdministracionController::class)->middleware(['auth'])->group(function () {
     Route::get('ajustes/empresa', 'ajustes')->name('admin.ajustes.empresa');
     Route::get('ajustes/sunat', 'sunat')->name('admin.ajustes.sunat');
     Route::get('ajustes/cuenta', 'cuenta')->name('admin.ajustes.cuenta');
@@ -82,7 +82,7 @@ Route::controller(AdministracionController::class)->middleware(['auth:sanctum'])
     Route::get('ajustes/roles', 'roles')->name('admin.ajustes.roles');
 });
 
-Route::controller(UsuariosController::class)->middleware(['auth:sanctum'])->group(function () {
+Route::controller(UsuariosController::class)->middleware(['auth'])->group(function () {
 
     Route::get('usuarios', 'index')->name('admin.usuarios.index');
 });
