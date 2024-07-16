@@ -100,12 +100,15 @@
                 alert("Error: " + respuesta);
             }
         }
-        init();
     </script>
 
     <script>
         document.addEventListener('livewire:initialized', () => {
-            imprimirHolaMundo(IMPRESORA_POR_DEFECTO);
+            Livewire.on('nuevaVenta-prueba', (event) => {
+                imprimirHolaMundo(IMPRESORA_POR_DEFECTO);
+
+            });
+
         });
     </script>
 @endpush

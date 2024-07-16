@@ -39,6 +39,7 @@ class ModalFinish extends Component
 
     public function nuevaVenta()
     {
+        //$this->dispatch('nuevaVenta-prueba');
 
         $printerName = "POS-80"; // Asegúrate de que este nombre coincida con el nombre de tu impresora en Windows
         // $profile = CapabilityProfile::load("POS-5890");
