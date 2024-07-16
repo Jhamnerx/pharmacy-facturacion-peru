@@ -365,9 +365,8 @@ class Editar extends Component
 
             //CREAR ITEMS DE LA VENTA
             Cotizaciones::createItems($this->cotizacion, $datos["items"]);
-
-            session()->flash('venta-registrada', 'COTIZACIÓN ACTUALIZADA' . ': Intenta enviar en un rato');
-            // $this->redirectRoute('admin.cotizacion.index');
+            session()->flash('cotizacion-actualizada', 'Actualizada ' . $this->cotizacion->serie_correlativo);
+            $this->redirectRoute('admin.cotizaciones.index');
         } catch (\Throwable $th) {
             DB::rollBack();
             $this->dispatch(

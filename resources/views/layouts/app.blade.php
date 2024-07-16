@@ -148,6 +148,34 @@
         });
     </script>
 @endif
+@if (session('cotizacion-registrada'))
+    <script>
+        $(document).ready(function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'COTIZACION REGISTRADA',
+                text: '{{ session('cotizacion-registrada') }}',
+                showConfirmButton: true,
+                confirmButtonText: "Cerrar"
+
+            })
+        });
+    </script>
+@endif
+@if (session('cotizacion-actualizada'))
+    <script>
+        $(document).ready(function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'COTIZACION ACTUALIZADA',
+                text: '{{ session('actualizada-registrada') }}',
+                showConfirmButton: true,
+                confirmButtonText: "Cerrar"
+
+            })
+        });
+    </script>
+@endif
 @if (session('nota-registrada'))
     <script>
         $(document).ready(function() {

@@ -18,7 +18,7 @@ class CotizacionRequest extends FormRequest
             'correlativo' => 'required',
             'serie_correlativo' => [
                 'required',
-                Rule::unique('ventas', 'serie_correlativo')->where(
+                Rule::unique('presupuestos', 'serie_correlativo')->where(
                     fn ($query) =>
                     $query->where('local_id', session('local_id'))
                 )
@@ -72,6 +72,69 @@ class CotizacionRequest extends FormRequest
             'total_cuotas' => 'exclude_if:forma_pago,CONTADO|required|same:total',
             // 'detalle_cuotas.*.importe' => 'required',
         ];
+
+        if ($cotizacion) {
+            $rules = [
+                'tipo_comprobante_id' => 'required|exists:tipo_comprobantes,codigo',
+                'serie' => 'required|exists:series,serie',
+                'correlativo' => 'required',
+                'serie_correlativo' => [
+                    'required',
+                    Rule::unique('presupuestos', 'serie_correlativo')->where(
+                        fn ($query) =>
+                        $query->where('local_id', session('local_id'))
+                    )->ignore($cotizacion->id)
+                ],
+                'cliente_id' => 'required|exists:clientes,id',
+                'direccion' => 'required',
+                'fecha_emision' => 'required|date',
+                'fecha_vencimiento' => 'required|date',
+                'divisa' => 'required',
+                'tipo_cambio' => 'required_if:divisa,USD',
+                'metodo_pago_id' => 'required',
+                'comentario' => 'nullable',
+                'op_gravadas' => 'required',
+                'op_exoneradas' => 'required',
+                'op_inafectas' => 'required',
+                'op_gratuitas' => 'required',
+                'igv_op' => 'nullable',
+                'descuento' => 'required',
+                'tipo_descuento' => 'required',
+                'descuento_factor' => 'nullable',
+                'icbper' => 'nullable',
+                'igv' => 'required',
+                'sub_total' => 'required',
+                'total' => 'required',
+                'numero_cuotas' => 'exclude_unless:forma_pago,CREDITO|integer|required_if:forma_pago,CREDITO|min:1',
+                'vence_cuotas' => 'exclude_unless:forma_pago,CREDITO|integer|required_if:forma_pago,CREDITO|min:1',
+                'detalle_cuotas.*' => 'array|between:1,100|required_if:forma_pago,CREDITO',
+                'forma_pago' => 'required',
+
+                'items' => 'array|between:1,1000',
+                'items.*.producto_id' => 'nullable',
+                //'items.*.codigo' => 'required',
+                'items.*.cantidad' => 'required|gte:1',
+                'items.*.unit' => 'required',
+                'items.*.unit_name' => 'required',
+                'items.*.descripcion' => 'required',
+                'items.*.valor_unitario' => 'required',
+                'items.*.precio_unitario' => 'required',
+                'items.*.porcentaje_igv' => 'required',
+                'items.*.igv' => 'required',
+                'items.*.icbper' => 'required',
+                'items.*.total_icbper' => 'required',
+                'items.*.sub_total' => 'required',
+                'items.*.total' => 'required',
+                'items.*.codigo_afectacion' => 'required',
+                'items.*.afecto_icbper' => 'required',
+                //'items.*.tipo' => 'required',
+
+                //pago anticipado
+                //'pago_anticipado' => 'boolean',
+                'total_cuotas' => 'exclude_if:forma_pago,CONTADO|required|same:total',
+                // 'detalle_cuotas.*.importe' => 'required',
+            ];
+        }
 
         return $rules;
     }
