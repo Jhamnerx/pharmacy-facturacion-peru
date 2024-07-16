@@ -2,12 +2,17 @@
 
 namespace App\Livewire\Admin\Comprobantes\Pos;
 
-use App\Mail\EnviarComprobanteCliente;
-use App\Models\Comprobantes;
+use Exception;
 use App\Models\Ventas;
-use Livewire\Attributes\On;
 use Livewire\Component;
-use Illuminate\Support\Facades\Mail;
+use Mike42\Escpos\Printer;
+use Livewire\Attributes\On;
+use Mike42\Escpos\CapabilityProfile;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\PrintConnectors\RawbtPrintConnector;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+
+
 
 class ModalFinish extends Component
 {
@@ -34,8 +39,29 @@ class ModalFinish extends Component
 
     public function nuevaVenta()
     {
-        $this->showModal = false;
+
+        $printerName = "POS-80"; // Asegúrate de que este nombre coincida con el nombre de tu impresora en Windows
+        // $profile = CapabilityProfile::load("POS-5890");
+        try {
+
+            $connector = new WindowsPrintConnector($printerName);
+
+            $printer = new Printer($connector);
+
+            // Imprimir el contenido recibido
+            $printer->text("Hello World!\n");
+            $printer->cut();
+
+            $printer->close();
+            dd('Impresión exitosa');
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
+        //$this->showModal = false;
     }
+
+
+
 
     public function updatedNumeroCelular($value)
     {

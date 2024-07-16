@@ -74,6 +74,40 @@
     </div>
 
     <x-slot name="footer" class="flex justify-end gap-x-4">
-        <x-form.button primary label="Nueva Venta" wire:click="nuevaVenta" />
+        <x-form.button primary label="Nueva Venta" wire:click.prevent="nuevaVenta()" />
     </x-slot>
 </x-form.modal.card>
+
+@push('scripts')
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+            console.log(navigator.userAgent.toLowerCase());
+            Livewire.on('print', (event) => {
+                console.log(event.data);
+                pc_print(event.data);
+            });
+
+            function pc_print(data) {
+                var socket = new WebSocket("ws://127.0.0.1:40213/");
+                socket.binaryType = "arraybuffer";
+
+                socket.onerror = function(error) {
+                    alert("Error");
+                };
+
+                socket.onopen = function() {
+                    // Decodificar base64 a arraybuffer
+                    var binaryString = window.atob(data);
+                    var len = binaryString.length;
+                    var bytes = new Uint8Array(len);
+                    for (var i = 0; i < len; i++) {
+                        bytes[i] = binaryString.charCodeAt(i);
+                    }
+
+                    socket.send(bytes.buffer);
+                    socket.close(1000, "Work complete");
+                };
+            }
+        });
+    </script>
+@endpush
