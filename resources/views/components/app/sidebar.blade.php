@@ -67,14 +67,8 @@
                         <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(1), ['ventas'])) {{ 'hover:text-slate-200' }} @endif"
                             href="{{ route('admin.pos.create') }}">
                             <div class="flex items-center">
-                                <svg class="shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                                    <path
-                                        class="fill-current @if (in_array(Request::segment(1), ['pos'])) {{ 'text-teal-500' }}@else{{ 'text-slate-600' }} @endif"
-                                        d="M16 13v4H8v-4H0l3-9h18l3 9h-8Z" />
-                                    <path
-                                        class="fill-current @if (in_array(Request::segment(1), ['pos'])) {{ 'text-teal-300' }}@else{{ 'text-slate-400' }} @endif"
-                                        d="m23.72 12 .229.686A.984.984 0 0 1 24 13v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1v-8c0-.107.017-.213.051-.314L.28 12H8v4h8v-4H23.72ZM13 0v7h3l-4 5-4-5h3V0h2Z" />
-                                </svg>
+                                <x-iconos.basket class="shrink-0 h-6 w-6" />
+
                                 <span
                                     class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                     Punto de venta
@@ -89,17 +83,7 @@
                             href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
-                                    <svg class="shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                                        <path
-                                            class="fill-current @if (in_array(Request::segment(1), ['emitir', 'ventas'])) {{ 'text-teal-300' }}@else{{ 'text-slate-400' }} @endif"
-                                            d="M13 15l11-7L11.504.136a1 1 0 00-1.019.007L0 7l13 8z" />
-                                        <path
-                                            class="fill-current @if (in_array(Request::segment(1), ['emitir', 'ventas'])) {{ 'text-teal-600' }}@else{{ 'text-slate-700' }} @endif"
-                                            d="M13 15L0 7v9c0 .355.189.685.496.864L13 24v-9z" />
-                                        <path
-                                            class="fill-current @if (in_array(Request::segment(1), ['emitir', 'ventas'])) {{ 'text-teal-500' }}@else{{ 'text-slate-600' }} @endif"
-                                            d="M13 15.047V24l10.573-7.181A.999.999 0 0024 16V8l-11 7.047z" />
-                                    </svg>
+                                    <x-iconos.invoice class="shrink-0 h-6 w-6" />
                                     <span
                                         class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                         Comprobantes
@@ -187,14 +171,7 @@
                         <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(1), ['cotizaciones'])) {{ 'hover:text-slate-200' }} @endif"
                             href="{{ route('admin.cotizaciones.index') }}">
                             <div class="flex items-center">
-                                <svg class="shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                                    <path
-                                        class="fill-current @if (in_array(Request::segment(1), ['cotizaciones'])) {{ 'text-teal-500' }}@else{{ 'text-slate-600' }} @endif"
-                                        d="M16 13v4H8v-4H0l3-9h18l3 9h-8Z" />
-                                    <path
-                                        class="fill-current @if (in_array(Request::segment(1), ['cotizaciones'])) {{ 'text-teal-300' }}@else{{ 'text-slate-400' }} @endif"
-                                        d="m23.72 12 .229.686A.984.984 0 0 1 24 13v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1v-8c0-.107.017-.213.051-.314L.28 12H8v4h8v-4H23.72ZM13 0v7h3l-4 5-4-5h3V0h2Z" />
-                                </svg>
+                                <x-iconos.invoice class="shrink-0 h-6 w-6" />
                                 <span
                                     class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                     Cotizaciones
@@ -284,14 +261,7 @@
                         <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(1), ['compras'])) {{ 'hover:text-slate-200' }} @endif"
                             href="{{ route('admin.compras.index') }}">
                             <div class="flex items-center">
-                                <svg class="shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                                    <path
-                                        class="fill-current @if (in_array(Request::segment(1), ['compras'])) {{ 'text-teal-500' }}@else{{ 'text-slate-600' }} @endif"
-                                        d="M16 13v4H8v-4H0l3-9h18l3 9h-8Z" />
-                                    <path
-                                        class="fill-current @if (in_array(Request::segment(1), ['compras'])) {{ 'text-teal-300' }}@else{{ 'text-slate-400' }} @endif"
-                                        d="m23.72 12 .229.686A.984.984 0 0 1 24 13v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1v-8c0-.107.017-.213.051-.314L.28 12H8v4h8v-4H23.72ZM13 0v7h3l-4 5-4-5h3V0h2Z" />
-                                </svg>
+                                <x-iconos.cart class="shrink-0 h-6 w-6" />
                                 <span
                                     class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                     Compras
@@ -328,14 +298,7 @@
                         <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(1), ['productos'])) {{ 'hover:text-slate-200' }} @endif"
                             href="{{ route('admin.productos.index') }}">
                             <div class="flex items-center">
-                                <svg class="shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                                    <path
-                                        class="fill-current @if (in_array(Request::segment(1), ['productos'])) {{ 'text-teal-500' }}@else{{ 'text-slate-600' }} @endif"
-                                        d="M16 13v4H8v-4H0l3-9h18l3 9h-8Z" />
-                                    <path
-                                        class="fill-current @if (in_array(Request::segment(1), ['productos'])) {{ 'text-teal-300' }}@else{{ 'text-slate-400' }} @endif"
-                                        d="m23.72 12 .229.686A.984.984 0 0 1 24 13v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1v-8c0-.107.017-.213.051-.314L.28 12H8v4h8v-4H23.72ZM13 0v7h3l-4 5-4-5h3V0h2Z" />
-                                </svg>
+                                <x-iconos.tag class="shrink-0 h-6 w-6" />
                                 <span
                                     class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                     Productos o servicios
@@ -370,13 +333,16 @@
                         <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(1), ['clientes'])) {{ 'hover:text-slate-200' }} @endif"
                             href="{{ route('admin.clientes.index') }}">
                             <div class="flex items-center">
-                                <svg class="shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                                    <path
-                                        class="fill-current @if (in_array(Request::segment(1), ['clientes'])) {{ 'text-teal-500' }}@else{{ 'text-slate-600' }} @endif"
-                                        d="M16 13v4H8v-4H0l3-9h18l3 9h-8Z" />
-                                    <path
-                                        class="fill-current @if (in_array(Request::segment(1), ['clientes'])) {{ 'text-teal-300' }}@else{{ 'text-slate-400' }} @endif"
-                                        d="m23.72 12 .229.686A.984.984 0 0 1 24 13v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1v-8c0-.107.017-.213.051-.314L.28 12H8v4h8v-4H23.72ZM13 0v7h3l-4 5-4-5h3V0h2Z" />
+                                <svg class="shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                                    <g fill="currentColor" stroke="currentColor" class="nc-icon-wrapper">
+                                        <path d="M38,39H26A18,18,0,0,0,8,57H8s9,4,24,4,24-4,24-4h0A18,18,0,0,0,38,39Z"
+                                            fill="none" stroke="currentColor" stroke-linecap="square"
+                                            stroke-miterlimit="10" stroke-width="2"></path>
+                                        <path data-color="color-2"
+                                            d="M19,17.067a13,13,0,1,1,26,0C45,24.283,39.18,32,32,32S19,24.283,19,17.067Z"
+                                            fill="none" stroke-linecap="square" stroke-miterlimit="10"
+                                            stroke-width="2"></path>
+                                    </g>
                                 </svg>
                                 <span
                                     class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
@@ -391,13 +357,16 @@
                         <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(1), ['proveedores'])) {{ 'hover:text-slate-200' }} @endif"
                             href="{{ route('admin.proveedores.index') }}">
                             <div class="flex items-center">
-                                <svg class="shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                                    <path
-                                        class="fill-current @if (in_array(Request::segment(1), ['proveedores'])) {{ 'text-teal-500' }}@else{{ 'text-slate-600' }} @endif"
-                                        d="M16 13v4H8v-4H0l3-9h18l3 9h-8Z" />
-                                    <path
-                                        class="fill-current @if (in_array(Request::segment(1), ['proveedores'])) {{ 'text-teal-300' }}@else{{ 'text-slate-400' }} @endif"
-                                        d="m23.72 12 .229.686A.984.984 0 0 1 24 13v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1v-8c0-.107.017-.213.051-.314L.28 12H8v4h8v-4H23.72ZM13 0v7h3l-4 5-4-5h3V0h2Z" />
+                                <svg class="shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                                    <g fill="currentColor" stroke="currentColor" class="nc-icon-wrapper">
+                                        <path d="M38,39H26A18,18,0,0,0,8,57H8s9,4,24,4,24-4,24-4h0A18,18,0,0,0,38,39Z"
+                                            fill="none" stroke="currentColor" stroke-linecap="square"
+                                            stroke-miterlimit="10" stroke-width="2"></path>
+                                        <path data-color="color-2"
+                                            d="M19,17.067a13,13,0,1,1,26,0C45,24.283,39.18,32,32,32S19,24.283,19,17.067Z"
+                                            fill="none" stroke-linecap="square" stroke-miterlimit="10"
+                                            stroke-width="2"></path>
+                                    </g>
                                 </svg>
                                 <span
                                     class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
