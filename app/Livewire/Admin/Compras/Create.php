@@ -192,6 +192,5 @@ class Create extends Component
         $compra = Compras::create($datos);
 
         $items = Compras::createItems($datos['items'], $compra);
-        dd($compra, $items);
     }
 }

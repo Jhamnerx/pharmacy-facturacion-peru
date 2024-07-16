@@ -19,11 +19,15 @@ class UserSeeder extends Seeder
             'password' => bcrypt('12345678'),
             'local_id' => 1
         ]);
-        $user = User::create([
+
+        $lizeth = User::create([
             'name' => 'Lizeth Ramirez Blas',
             'email' => 'lizethramirezblas21102000@gmail.com',
             'password' => bcrypt('12345678'),
             'local_id' => 1
         ]);
+
+        $user->assignRole('admin');
+        $lizeth->assignRole('admin');
     }
 }

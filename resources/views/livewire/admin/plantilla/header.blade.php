@@ -50,7 +50,7 @@
 
 
                 <!-- Notifications button -->
-                <x-dropdown-notifications align="right" />
+                {{-- <x-dropdown-notifications align="right" /> --}}
 
                 <!-- Empresa button -->
                 <div class="relative inline-flex" x-data="{ open: false }">

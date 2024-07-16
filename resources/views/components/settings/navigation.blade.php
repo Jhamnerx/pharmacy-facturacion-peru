@@ -34,7 +34,7 @@
                     </span>
                 </a>
             </li>
-
+            {{-- 
             <li class="mr-0.5 md:mr-0 md:mb-0.5">
                 <a class="flex items-center px-2.5 py-2 rounded whitespace-nowrap @if (Route::is('admin.ajustes.notificaciones')) {{ 'bg-indigo-50 dark:bg-indigo-500/30' }} @endif"
                     href="{{ route('admin.ajustes.notificaciones') }}">
@@ -48,7 +48,7 @@
                         Mis Notificaciones
                     </span>
                 </a>
-            </li>
+            </li> --}}
 
             <li class="mr-0.5 md:mr-0 md:mb-0.5">
                 <a class="flex items-center px-2.5 py-2 rounded whitespace-nowrap @if (Route::is('admin.ajustes.empresa')) {{ 'bg-indigo-50 dark:bg-indigo-500/30' }} @endif"

@@ -17,8 +17,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(EmpresaSeeder::class);
         $this->call(LocalesSeeder::class);
-
-
         $this->call(MetodoPagoSeeder::class);
         $this->call(ModalidadTransporteSeeder::class);
         $this->call(MotivoTrasladoSeeder::class);
@@ -27,11 +25,12 @@ class DatabaseSeeder extends Seeder
         $this->call(tipoComprobanteSeeder::class);
         $this->call(tipoDocumentosSeeder::class);
         $this->call(UbigeosSeeder::class);
-        $this->call(UserSeeder::class);
         $this->call(SerieSeeder::class);
         $this->call(ClientesSeeder::class);
         $this->call(CategoriasSeeder::class);
         $this->call(ProductosSeeder::class);
         $this->call(CodigosDetraccionesSeeder::class);
+        $this->call(PermisosSeeder::class);
+        $this->call(UserSeeder::class);
     }
 }

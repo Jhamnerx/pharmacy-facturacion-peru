@@ -30,6 +30,7 @@ return new class extends Migration
             $table->enum('forma_pago', ['CONTADO', 'CREDITO'])->default('CONTADO');
             $table->unsignedBigInteger('local_id')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign(['local_id'])->references(['id'])->on('locales')->onUpdate('restrict')->onDelete('set null');
         });

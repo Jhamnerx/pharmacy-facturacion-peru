@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Admin\Plantilla;
 
-use App\Http\Controllers\UtilesController;
 use App\Models\Locales;
 use Livewire\Component;
+use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Http\Controllers\UtilesController;
 
 class Header extends Component
 {
@@ -36,6 +37,7 @@ class Header extends Component
     {
 
         session()->put('local_id', $local->id);
+        Cart::destroy();
         $this->dispatch('render');
         $mensaje = "SE CAMBIO DE LOCAL, ahora veras los registros deL LOCAL: " . $local->nombre . "";
         return redirect($this->page)->with('flash.banner', $mensaje);

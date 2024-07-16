@@ -12,12 +12,11 @@
 
         <div class="col-span-12 md:col-span-6">
             <x-form.select autocomplete="off" id="cliente_id" name="cliente_id" label="Selecciona un cliente:"
-                wire:model.live="cliente_id" :clearable="false"
-                placeholder="Escriba el nombre o número de documento del cliente" :async-data="[
+                wire:model.live="cliente_id" placeholder="Escriba el nombre o número de documento del cliente"
+                :async-data="[
                     'api' => route('api.clientes.index'),
                     'params' => ['tipo_comprobante' => $tipo_comprobante_id],
-                ]"
-                option-label="razon_social" option-value="id" option-description="numero_documento">
+                ]" option-label="razon_social" option-value="id" option-description="numero_documento">
 
             </x-form.select>
         </div>
@@ -46,7 +45,7 @@
     <x-slot name="footer" class="flex justify-between gap-x-4">
 
         <div class="flex gap-x-4">
-            <x-form.button flat label="Cancel" x-on:click="close" />
+            <x-form.button flat label="Cancelar" x-on:click="close" />
 
         </div>
     </x-slot>

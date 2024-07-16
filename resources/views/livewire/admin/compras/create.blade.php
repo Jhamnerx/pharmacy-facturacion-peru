@@ -35,12 +35,7 @@
                                 'api' => route('api.proveedores.index'),
                             ]"
                             option-label="razon_social" option-value="id" option-description="numero_documento">
-                            <x-slot name="afterOptions" class="p-2 flex justify-center"
-                                x-show="displayOptions.length === 0">
-                                <x-form.button wire:click.prevent="OpenModalProveedor(`${search}`)" primary flat full>
-                                    <span x-html="`Crear Proveedor <b>${search}</b>`"></span>
-                                </x-form.button>
-                            </x-slot>
+
                         </x-form.select>
                     </div>
 
@@ -148,8 +143,8 @@
                                     </td>
                                     <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap min-w-36 lg:min-w-0">
 
-                                        <x-form.number wire:model.live="selected.cantidad" min="1"
-                                            step="1" placeholder="Cantidad" />
+                                        <x-form.number wire:model.live="selected.cantidad" min="1" step="1"
+                                            placeholder="Cantidad" />
 
                                         @if ($errors->has('selected.cantidad'))
                                             <p class="mt-2 text-pink-600 text-sm">

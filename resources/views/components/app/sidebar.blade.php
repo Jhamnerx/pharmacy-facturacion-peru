@@ -120,7 +120,7 @@
                                         </span>
                                     </a>
                                 </li>
-
+                                {{-- 
                                 <li class="mb-1 last:mb-0">
                                     <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.nota.credito.create')) {{ '!text-teal-500' }} @endif"
                                         href="{{ route('admin.nota.credito.create') }}">
@@ -138,7 +138,7 @@
                                             Emitir nota de debito
                                         </span>
                                     </a>
-                                </li>
+                                </li> --}}
 
                             </ul>
                         </div>

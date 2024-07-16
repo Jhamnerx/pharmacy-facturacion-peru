@@ -58,6 +58,7 @@
 
             {{-- <x-app.header /> --}}
             @livewire('admin.plantilla.header', ['page' => request()->fullUrl()])
+            <x-banner />
             @livewire('app.header.reportes')
             {{-- <x-app.comprobantes /> --}}
 

@@ -11,16 +11,12 @@ use Livewire\Component;
 use App\Models\Clientes;
 use App\Models\Productos;
 use App\Models\Categorias;
-use App\Events\VentaCreada;
-use GuzzleHttp\Psr7\Request;
 use Livewire\WithPagination;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\VentasPosRequest;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\UtilesController;
-use App\Http\Controllers\Utiles\PrintController;
-use App\Livewire\Admin\Comprobantes\Ventas\Emitir;
 use App\Http\Controllers\Facturacion\Api\ApiFacturacion;
 
 class CartStep extends Component
@@ -155,6 +151,7 @@ class CartStep extends Component
 
     public function loadCart()
     {
+
         $this->cart = Cart::content()->map(function ($item) {
 
             $valor_unitario = $item->model->tipo_afectacion == '10' ? round($item->price / $this->empresa->igvbase, 6) : $item->price;
