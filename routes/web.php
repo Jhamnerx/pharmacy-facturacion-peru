@@ -1,17 +1,18 @@
 <?php
 
-use App\Http\Controllers\AdministracionController;
-use App\Http\Controllers\CategoriasController;
-use App\Http\Controllers\ClientesController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ComprasController;
-use App\Http\Controllers\Comprobantes\ComprobantesController;
-use App\Http\Controllers\CotizacionesController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProductosController;
-use App\Http\Controllers\ProveedoresController;
+use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\UsuariosController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductosController;
+use App\Http\Controllers\CategoriasController;
+use App\Http\Controllers\ProveedoresController;
+use App\Http\Controllers\CotizacionesController;
+use App\Http\Controllers\Utiles\PrintController;
+use App\Http\Controllers\AdministracionController;
+use App\Http\Controllers\Comprobantes\ComprobantesController;
 
 
 
@@ -91,3 +92,5 @@ Route::controller(ReportesController::class)->group(function () {
     Route::get('reportes/ventas', 'ventas')->name('admin.reportes.ventas');
     Route::get('reportes/compras', 'compras')->name('admin.reportes.compras');
 });
+
+Route::get('/print-receipt', [PrintController::class, 'printReceipt'])->name('print.receipt');

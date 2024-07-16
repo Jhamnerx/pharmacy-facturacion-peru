@@ -74,41 +74,6 @@
     </div>
 
     <x-slot name="footer" class="flex justify-end gap-x-4">
-        <x-form.button primary label="Nueva Venta" wire:click.prevent="nuevaVenta()" />
+        <x-form.button primary label="Nueva Venta" id="btn-print" />
     </x-slot>
 </x-form.modal.card>
-
-@push('scripts')
-    <script>
-        const obtenerListaDeImpresoras = async () => {
-            return await ConectorPluginV3.obtenerImpresoras();
-        }
-
-        const URLPlugin = "http://localhost:8000"
-        const IMPRESORA_POR_DEFECTO = "POS-80";
-
-        const imprimirHolaMundo = async (nombreImpresora) => {
-            const conector = new ConectorPluginV3(URLPlugin);
-            conector.Iniciar();
-            conector.EscribirTexto("Hola mundo\nParzibyte.me");
-            conector.Feed(1);
-            const respuesta = await conector
-                .imprimirEn(nombreImpresora);
-            if (respuesta === true) {
-                alert("Impreso correctamente");
-            } else {
-                alert("Error: " + respuesta);
-            }
-        }
-    </script>
-
-    <script>
-        document.addEventListener('livewire:initialized', () => {
-            Livewire.on('nuevaVenta-prueba', (event) => {
-                imprimirHolaMundo(IMPRESORA_POR_DEFECTO);
-
-            });
-
-        });
-    </script>
-@endpush

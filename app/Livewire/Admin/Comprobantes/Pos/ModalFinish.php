@@ -39,22 +39,22 @@ class ModalFinish extends Component
 
     public function nuevaVenta()
     {
-        //$this->dispatch('nuevaVenta-prueba');
+        $this->dispatch('nuevaVenta-prueba');
 
         $printerName = "POS-80"; // Asegúrate de que este nombre coincida con el nombre de tu impresora en Windows
         // $profile = CapabilityProfile::load("POS-5890");
         try {
 
-            $connector = new WindowsPrintConnector($printerName);
+            // $connector = new WindowsPrintConnector($printerName);
 
-            $printer = new Printer($connector);
+            // $printer = new Printer($connector);
 
-            // Imprimir el contenido recibido
-            $printer->text("Hello World!\n");
-            $printer->cut();
+            // // Imprimir el contenido recibido
+            // $printer->text("Hello World!\n");
+            // $printer->cut();
 
-            $printer->close();
-            dd('Impresión exitosa');
+            // $printer->close();
+            // dd('Impresión exitosa');
         } catch (Exception $e) {
             dd($e->getMessage());
         }
