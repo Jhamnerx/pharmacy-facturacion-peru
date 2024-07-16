@@ -92,5 +92,3 @@ Route::controller(ReportesController::class)->group(function () {
     Route::get('reportes/ventas', 'ventas')->name('admin.reportes.ventas');
     Route::get('reportes/compras', 'compras')->name('admin.reportes.compras');
 });
-
-Route::get('/print-receipt', [PrintController::class, 'printReceipt'])->name('print.receipt');

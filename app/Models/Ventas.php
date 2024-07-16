@@ -289,6 +289,28 @@ class Ventas extends Model
         return $pdf->stream('COMPROBANTE-' . $this->serie_correlativo . '.pdf');
     }
 
+    //FUNCION QUE LLAMA A LA CLASE UTIL PARA RENDERIZAR EL PDF NOTA VENTA
+    public function getPdfNotaVentaHtml($formato)
+    {
+
+        $empresa = Empresa::first();
+        view()->share(
+            [
+                'venta' => $this,
+                'empresa', $empresa,
+            ]
+        );
+
+
+        if ($formato == 'ticket') {
+
+            $customPaper = array(0, 0, 219, 850.39);
+
+            return Pdf::loadView('templates.comprobantes.ticket.nota-venta', ['venta' => $this, 'empresa' => $empresa])->setPaper($customPaper);
+            // return view('templates.comprobantes.ticket.invoice', ['venta' => $this, 'empresa' => $empresa]);
+        }
+    }
+
     public function downloadXml()
     {
         $util = Util::getInstance();

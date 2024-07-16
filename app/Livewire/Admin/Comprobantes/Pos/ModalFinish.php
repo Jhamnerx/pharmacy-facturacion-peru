@@ -5,14 +5,9 @@ namespace App\Livewire\Admin\Comprobantes\Pos;
 use Exception;
 use App\Models\Ventas;
 use Livewire\Component;
-use Mike42\Escpos\Printer;
 use Livewire\Attributes\On;
-use Mike42\Escpos\CapabilityProfile;
-use Mike42\Escpos\PrintConnectors\FilePrintConnector;
-use Mike42\Escpos\PrintConnectors\RawbtPrintConnector;
-use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
-
-
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Client;
 
 class ModalFinish extends Component
 {
@@ -35,33 +30,27 @@ class ModalFinish extends Component
     {
         $this->venta = $venta;
         $this->showModal = true;
+        $this->imprimirTicket();
+    }
+
+    public function imprimirTicket()
+    {
+        $client = new Client();
+        // $headers = [
+        //     'Cookie' => 'XSRF-TOKEN=eyJpdiI6Ikh1d1FYQ0ttcEdqRm5iampiWUtzSEE9PSIsInZhbHVlIjoiNi9UVnVidHFVTmtKWlI4ZHNaV0pSbHh5bWQ5TlYwQ1QvWEZkK09Gdnk5WTVocDZmdTMwN1ZBS0VyeGc4cXFaRCtIRTdDVTJYSXRJbkMvOEhhdVRXU2Z4aW8rZjlMRlJYd2g3amVZU2FVRFpwelFlUWZVcnRRM29nSFNGa0dBbEkiLCJtYWMiOiI5MmRhOTYwYjE5NGQ0MzI1NTBlZDc1MjdlYTFhMGJmMTFkNDVmYjJjMGM5NDBkOGZlYTA4NGYxZGM1MTBhZTc1IiwidGFnIjoiIn0%3D; laravel_session=eyJpdiI6IjZxcVFscGF2QXJjbS94SGxrT01QK1E9PSIsInZhbHVlIjoiRklsUjRpUDk5UldobDk5TlVjTy9PRGhnMjJUeEhmblV5VWZMNGxmKzBFdlo3ekdCSXk1OHpnVDNhV3hxWUtYNWgxSUFWdlgrRmVoYlJWTy92c3RhUnFKdkpCcVRKbFZhc0wxNVN5NVNwb3crWUw2V3h2aExyNERWS0J0T25ncW4iLCJtYWMiOiI2ZDFhNWJhZjFjMDgyOWJhOTVhZmIwOTRkYzE4Yjk5MGY3NTAwMDJlZDc0YTgzYzI4YjQzOWFhN2ZhZTQ2YWI0IiwidGFnIjoiIn0%3D'
+        // ];
+        $request = new Request('GET', route('api.print.receipt', ['venta' => $this->venta->id]));
+        $res = $client->sendAsync($request)->wait();
+        $datos = $res->getBody()->getContents();
+
+        $this->dispatch('imprimir-ticket', datos: $datos);
     }
 
     public function nuevaVenta()
     {
-        $this->dispatch('nuevaVenta-prueba');
 
-        $printerName = "POS-80"; // Asegúrate de que este nombre coincida con el nombre de tu impresora en Windows
-        // $profile = CapabilityProfile::load("POS-5890");
-        try {
-
-            // $connector = new WindowsPrintConnector($printerName);
-
-            // $printer = new Printer($connector);
-
-            // // Imprimir el contenido recibido
-            // $printer->text("Hello World!\n");
-            // $printer->cut();
-
-            // $printer->close();
-            // dd('Impresión exitosa');
-        } catch (Exception $e) {
-            dd($e->getMessage());
-        }
-        //$this->showModal = false;
+        $this->showModal = false;
     }
-
-
 
 
     public function updatedNumeroCelular($value)

@@ -80,7 +80,7 @@
                             <x-form.select label="Tipo comprobante:" id="tipo_comprobante_id" name="tipo_comprobante_id"
                                 :options="[
                                     // ['name' => 'FACTURA ELECTRONICA', 'id' => '01'],
-                                    // ['name' => 'BOLETA ELECTRONICA', 'id' => '03'],
+                                    ['name' => 'BOLETA ELECTRONICA', 'id' => '03'],
                                     ['name' => 'N. VENTA ELECTRONICA', 'id' => '02'],
                                 ]" option-label="name" option-value="id"
                                 wire:model.live="tipo_comprobante_id" :clearable="false" />

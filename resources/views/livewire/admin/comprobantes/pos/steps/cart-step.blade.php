@@ -475,12 +475,12 @@
                                 <div class="py-2">
                                     <div class="flex justify-between">
                                         @if ($cart->count() > 0)
-                                            <x-form.button onclick="ajax_print()" class="w-full" md warning
-                                                label="PAGAR {{ $simbolo }} {{ round($total, 2) }}"
-                                                right-icon="arrow-right" />
-                                            {{-- <x-form.button wire:click.prevent="nextStep" class="w-full" md warning
+                                            {{-- <x-form.button onclick="ajax_print()" class="w-full" md warning
                                                 label="PAGAR {{ $simbolo }} {{ round($total, 2) }}"
                                                 right-icon="arrow-right" /> --}}
+                                            <x-form.button wire:click.prevent="nextStep" class="w-full" md warning
+                                                label="PAGAR {{ $simbolo }} {{ round($total, 2) }}"
+                                                right-icon="arrow-right" />
                                         @else
                                             <x-form.button disabled class="w-full" md warning
                                                 label="AÑADE PRODUCTOS AL CARRITO" right-icon="arrow-right" />
@@ -802,62 +802,3 @@
         </x-slot>
     </x-form.modal.card>
 </div>
-@push('scripts')
-    <script>
-        const obtenerListaDeImpresoras = async () => {
-            return await ConectorPluginV3.obtenerImpresoras();
-        }
-
-        const URLPlugin = "http://localhost:8000"
-        const IMPRESORA_POR_DEFECTO = "POS-80";
-
-        const imprimirHolaMundo = async (nombreImpresora) => {
-            const conector = new ConectorPluginV3(URLPlugin);
-            conector.Iniciar();
-            conector.EscribirTexto("Hola mundo\nParzibyte.me");
-            conector.Feed(1);
-            const respuesta = await conector
-                .imprimirEn(nombreImpresora);
-            if (respuesta === true) {
-                alert("Impreso correctamente");
-            } else {
-                alert("Error: " + respuesta);
-            }
-        }
-    </script>
-
-    <script>
-        document.addEventListener('livewire:initialized', () => {
-            Livewire.on('nuevaVenta-prueba', (event) => {
-                //imprimirHolaMundo(IMPRESORA_POR_DEFECTO);
-                ajax_print();
-            });
-
-        });
-    </script>
-
-    <script>
-        function ajax_print() {
-
-            $.get("{{ route('print.receipt') }}", function(data) {
-                console.log(data);
-                pc_print(data);
-                //alert("Recibo impreso correctamente");
-            }).fail(function(error) {
-                alert("ajax error".error);
-            });
-        }
-
-        function pc_print(data) {
-            var socket = new WebSocket("ws://127.0.0.1:40213/");
-            socket.bufferType = "arraybuffer";
-            socket.onerror = function(error) {
-                alert("Error");
-            };
-            socket.onopen = function() {
-                socket.send(data);
-                socket.close(1000, "Work complete");
-            };
-        }
-    </script>
-@endpush

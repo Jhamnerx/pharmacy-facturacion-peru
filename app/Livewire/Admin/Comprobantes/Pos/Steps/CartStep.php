@@ -5,18 +5,21 @@ namespace App\Livewire\Admin\Comprobantes\Pos\Steps;
 use Carbon\Carbon;
 use App\Models\Series;
 use App\Models\Ventas;
+use GuzzleHttp\Client;
 use App\Models\Empresa;
 use Livewire\Component;
 use App\Models\Clientes;
 use App\Models\Productos;
 use App\Models\Categorias;
 use App\Events\VentaCreada;
+use GuzzleHttp\Psr7\Request;
 use Livewire\WithPagination;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\VentasPosRequest;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\UtilesController;
+use App\Http\Controllers\Utiles\PrintController;
 use App\Livewire\Admin\Comprobantes\Ventas\Emitir;
 use App\Http\Controllers\Facturacion\Api\ApiFacturacion;
 
@@ -458,6 +461,7 @@ class CartStep extends Component
 
     public function nextStep()
     {
+
         $this->showModal = true;
         $this->pago = floatval($this->total);
         $this->calcularVuelto();

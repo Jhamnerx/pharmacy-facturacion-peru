@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\SelectsController;
-use App\Http\Controllers\UtilesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UtilesController;
+use App\Http\Controllers\Api\SelectsController;
+use App\Http\Controllers\Utiles\PrintController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -40,3 +41,7 @@ Route::controller(UtilesController::class)->group(function () {
 
     Route::get('tipo_cambio', 'tipoCambio')->name('api.tipo-cambio.index');
 });
+
+
+
+Route::get('/print-receipt/{venta}', [PrintController::class, 'printReceipt'])->name('api.print.receipt');
