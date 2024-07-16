@@ -79,6 +79,10 @@ class PermisosSeeder extends Seeder
             [
                 'name' => 'comprobantes.emitir.notas',
                 'description' => 'Emitir notas de crédito y débito',
+            ],
+            [
+                'name' => 'comprobantes.ver_notas',
+                'description' => 'Ver notas de crédito y débito',
             ]
         ];
 
@@ -95,6 +99,10 @@ class PermisosSeeder extends Seeder
             [
                 'name' => 'cotizaciones.crear',
                 'description' => 'Crear cotizaciones',
+            ],
+            [
+                'name' => 'cotizaciones.editar',
+                'description' => 'Editar cotizaciones',
             ],
             [
                 'name' => 'cotizaciones.eliminar',
@@ -245,32 +253,32 @@ class PermisosSeeder extends Seeder
             $c_proveedores->permisos()->create($permiso);
         }
 
-        $c_usuarios = CategoriaPermisos::create(['nombre' => 'Usuarios']);
-        $permisos_usuarios = [
-            [
-                'name' => 'usuarios.ver',
-                'description' => 'Ver los usuarios',
-            ],
-            [
-                'name' => 'usuarios.crear',
-                'description' => 'Crear usuarios',
-            ],
-            [
-                'name' => 'usuarios.editar',
-                'description' => 'Editar usuarios',
-            ],
-            [
-                'name' => 'usuarios.eliminar',
-                'description' => 'Eliminar usuarios',
-            ],
-            [
-                'name' => 'usuarios.cambiar_estado',
-                'description' => 'Cambiar estado de usuarios',
-            ]
-        ];
-        foreach ($permisos_usuarios as $permiso) {
-            $c_usuarios->permisos()->create($permiso);
-        }
+        // $c_usuarios = CategoriaPermisos::create(['nombre' => 'Usuarios']);
+        // $permisos_usuarios = [
+        //     [
+        //         'name' => 'usuarios.ver',
+        //         'description' => 'Ver los usuarios',
+        //     ],
+        //     [
+        //         'name' => 'usuarios.crear',
+        //         'description' => 'Crear usuarios',
+        //     ],
+        //     [
+        //         'name' => 'usuarios.editar',
+        //         'description' => 'Editar usuarios',
+        //     ],
+        //     [
+        //         'name' => 'usuarios.eliminar',
+        //         'description' => 'Eliminar usuarios',
+        //     ],
+        //     [
+        //         'name' => 'usuarios.cambiar_estado',
+        //         'description' => 'Cambiar estado de usuarios',
+        //     ]
+        // ];
+        // foreach ($permisos_usuarios as $permiso) {
+        //     $c_usuarios->permisos()->create($permiso);
+        // }
 
         //DAR PERMISOS AL ROL ADMIN
         $admin->givePermissionTo(Permission::all());

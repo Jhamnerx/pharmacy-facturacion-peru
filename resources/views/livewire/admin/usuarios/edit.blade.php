@@ -3,36 +3,37 @@
     <div class="grid grid-cols-12 gap-6">
         <div class="col-span-12 sm:col-span-6">
 
-            <x-form.input wire:model.change="name" label="Nombre (*):" />
+            <x-form.input id="name-e" wire:model.change="name" label="Nombre (*):" />
 
         </div>
         <div class="col-span-12 sm:col-span-6">
 
-            <x-form.input wire:model.live="email" type="email" label="Correo Electronico (*):" />
+            <x-form.input id="email-e" wire:model.live="email" type="email" label="Correo Electronico (*):" />
 
         </div>
         <div class="col-span-12 sm:col-span-6">
 
-            <x-form.password label="Contraseña 🙈" wire:model.live="password"
+            <x-form.password label="Contraseña 🙈" wire:model.live="password" id="password-e"
                 placeholder="Ingresa tu contraseña (*):" />
         </div>
         <div class="col-span-12 sm:col-span-6">
 
             <x-form.password label="Confirma tu Contraseña" wire:model.live="password_confirmation"
-                placeholder="Confirma tu contraseña (*):" />
+                id="password_confirmation-e" placeholder="Confirma tu contraseña (*):" />
         </div>
 
         <div class="col-span-12 md:col-span-6">
 
             <x-form.select label="Rol (*):" wire:model.live="roles_id" placeholder="Selecciona" :options="$roles"
-                option-label="name" option-value="id" :clearable="false" :searchable="false" multiselect />
+                option-label="name" option-value="id" :searchable="false" multiselect />
 
         </div>
         <div class="col-span-12 md:col-span-6">
 
             <x-form.select label="Asignar Local (*):" wire:model.live="local_id" placeholder="Selecciona"
-                :options="$locales" option-label="nombre" option-value="id" :clearable="false" :searchable="false" />
-
+                :async-data="[
+                    'api' => route('api.locales.index'),
+                ]" option-label="nombre" option-value="id" :clearable="false" :searchable="false" />
         </div>
 
     </div>

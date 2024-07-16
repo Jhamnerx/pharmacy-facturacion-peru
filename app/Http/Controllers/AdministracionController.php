@@ -4,9 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Empresa;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class AdministracionController extends Controller
+class AdministracionController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('role_or_permission:admin', only: ['ajustes', 'cuenta', 'sunat', 'notificaciones', 'roles', 'series']),
+        ];
+    }
+
     public function ajustes()
     {
         return view('admin.administracion.ajustes');

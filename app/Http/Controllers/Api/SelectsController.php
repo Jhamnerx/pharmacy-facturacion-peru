@@ -285,12 +285,12 @@ class SelectsController extends Controller
     {
 
         return Locales::query()
-            ->select('id', 'nombre', 'descripcion')
+            ->select('id', 'nombre', 'direccion')
             ->orderBy('nombre')
             ->when(
                 $request->search,
                 fn (Builder $query) => $query
-                    ->where('descripcion', 'like', "%{$request->search}%")
+                    ->where('nombre', 'like', "%{$request->search}%")
 
             )
             ->when(

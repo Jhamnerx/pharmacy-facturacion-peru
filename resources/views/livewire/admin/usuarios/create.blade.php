@@ -25,14 +25,15 @@
         <div class="col-span-12 md:col-span-6">
 
             <x-form.select label="Rol (*):" wire:model.live="roles_id" placeholder="Selecciona" :options="$roles"
-                option-label="name" option-value="id" :clearable="false" :searchable="false" multiselect />
+                option-label="name" option-value="id" :searchable="false" multiselect />
 
         </div>
         <div class="col-span-12 md:col-span-6">
 
             <x-form.select label="Asignar Local (*):" wire:model.live="local_id" placeholder="Selecciona"
-                :options="$locales" option-label="nombre" option-value="id" :clearable="false" :searchable="false" />
-
+                :async-data="[
+                    'api' => route('api.locales.index'),
+                ]" option-label="nombre" option-value="id" :clearable="false" :searchable="false" />
         </div>
 
     </div>

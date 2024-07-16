@@ -372,7 +372,7 @@ class Emitir extends Component
             //ACTUALIZAR CORRELATIVO DE SERIE UTILIZADA
             $cotizacion->getSerie->increment('correlativo');
 
-            session()->flash('venta-registrada', 'Registrado ' . $cotizacion->serie_correlativo);
+            session()->flash('cotizacion-registrada', 'Registrado ' . $cotizacion->serie_correlativo);
             $this->redirectRoute('admin.cotizaciones.index');
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -389,7 +389,7 @@ class Emitir extends Component
         $this->dispatch(
             'notify',
             icon: 'success',
-            title: 'VENTA REGISTRADA',
+            title: 'COTIZACION REGISTRADA',
             mensaje: $mensaje,
         );
     }

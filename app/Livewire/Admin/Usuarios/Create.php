@@ -13,7 +13,7 @@ class Create extends Component
 {
 
     public $name, $email, $password, $password_confirmation;
-    public $roles_id, $local_id;
+    public $roles_id = [], $local_id;
     public $showModal = false;
 
 
@@ -55,20 +55,33 @@ class Create extends Component
     {
         $this->validate();
 
-        $user = User::create([
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => Hash::make($this->password),
-            'local_id' => $this->local_id,
-        ]);
+        try {
+            $user = User::create([
+                'name' => $this->name,
+                'email' => $this->email,
+                'password' => Hash::make($this->password),
+                'local_id' => $this->local_id,
+            ]);
 
-        // ASIGNAR ROLES
-        $user->assignRole($this->roles_id);
-        $user->save();
-
-        $this->dispatch('update-table');
-
-        $this->closeModal();
+            // ASIGNAR ROLES
+            $user->assignRole($this->roles_id);
+            $user->save();
+            $this->dispatch(
+                'notify',
+                icon: 'success',
+                title: 'USUARIO CREADO',
+                mensaje: 'El usuario se ha creado correctamente'
+            );
+            $this->closeModal();
+            $this->dispatch('update-table');
+        } catch (\Throwable $th) {
+            $this->dispatch(
+                'notify',
+                icon: 'error',
+                title: 'ERROR',
+                mensaje: 'Ha ocurrido un error al intentar guardar el usuario'
+            );
+        }
     }
 
     #[On('open-modal-create')]

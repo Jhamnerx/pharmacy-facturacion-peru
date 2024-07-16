@@ -40,12 +40,17 @@
                         <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                             <div class="font-semibold text-left">Vence el</div>
                         </th>
-                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                            <div class="font-semibold text-center">PDF</div>
-                        </th>
-                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                            <div class="font-semibold text-left">ACCIONES</div>
-                        </th>
+                        @can('cotizaciones.ver_pdf')
+                            <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                <div class="font-semibold text-center">PDF</div>
+                            </th>
+                        @endcan
+                        @canany(['cotizaciones.editar', 'cotizaciones.eliminar', 'cotizaciones.enviar',
+                            'cotizaciones.cambiar_estado'])
+                            <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                <div class="font-semibold text-left">ACCIONES</div>
+                            </th>
+                        @endcan
                     </tr>
                 </thead>
                 <!-- Table body -->
@@ -203,139 +208,146 @@
                                 <div>{{ $cotizacion->fecha_vencimiento->format('Y-m-d') }}</div>
                             </td>
 
-                            <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
+                            @can('cotizaciones.ver_pdf')
+                                <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
 
-                                <div class="space-x-1">
-                                    {{-- obtener pdf --}}
-                                    <a target="_blank"
-                                        href="{{ route('facturacion.cotizacion.ver.pdf', ['cotizaciones' => $cotizacion]) }}">
-                                        <button type="button" class="bg-white ">
-                                            <x-iconos.pdf />
-                                        </button>
-                                    </a>
-                                </div>
-
-
-                            </td>
+                                    <div class="space-x-1">
+                                        {{-- obtener pdf --}}
+                                        <a target="_blank"
+                                            href="{{ route('facturacion.cotizacion.ver.pdf', ['cotizaciones' => $cotizacion]) }}">
+                                            <button type="button" class="bg-white ">
+                                                <x-iconos.pdf />
+                                            </button>
+                                        </a>
+                                    </div>
 
 
-                            <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
-                                <div class="relative inline-flex" x-data="{ open: false }">
-                                    <div class="relative inline-block h-full text-left">
-                                        <button class="text-slate-400 hover:text-slate-500 rounded-full"
-                                            :class="{ 'bg-slate-100 text-slate-500': open }" aria-haspopup="true"
-                                            @click.prevent="open = !open" :aria-expanded="open">
-                                            <span class="sr-only">Menu</span>
-                                            <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32">
-                                                <circle cx="16" cy="16" r="2" />
-                                                <circle cx="10" cy="16" r="2" />
-                                                <circle cx="22" cy="16" r="2" />
-                                            </svg>
-                                        </button>
-                                        <div class="origin-top-right  z-10 absolute transform  -translate-x-3/4  top-full left-0 min-w-36 bg-white border border-slate-200 py-1.5 rounded shadow-lg overflow-hidden mt-1  ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"
-                                            @click.outside="open = false" @keydown.escape.window="open = false"
-                                            x-show="open"
-                                            x-transition:enter="transition ease-out duration-200 transform"
-                                            x-transition:enter-start="opacity-0 -translate-y-2"
-                                            x-transition:enter-end="opacity-100 translate-y-0"
-                                            x-transition:leave="transition ease-out duration-200"
-                                            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-                                            x-cloak>
+                                </td>
+                            @endcan
 
-                                            <ul>
+                            @canany(['cotizaciones.editar', 'cotizaciones.eliminar', 'cotizaciones.enviar',
+                                'cotizaciones.cambiar_estado'])
+                                <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
+                                    <div class="relative inline-flex" x-data="{ open: false }">
+                                        <div class="relative inline-block h-full text-left">
+                                            <button class="text-slate-400 hover:text-slate-500 rounded-full"
+                                                :class="{ 'bg-slate-100 text-slate-500': open }" aria-haspopup="true"
+                                                @click.prevent="open = !open" :aria-expanded="open">
+                                                <span class="sr-only">Menu</span>
+                                                <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32">
+                                                    <circle cx="16" cy="16" r="2" />
+                                                    <circle cx="10" cy="16" r="2" />
+                                                    <circle cx="22" cy="16" r="2" />
+                                                </svg>
+                                            </button>
+                                            <div class="origin-top-right  z-10 absolute transform  -translate-x-3/4  top-full left-0 min-w-36 bg-white border border-slate-200 py-1.5 rounded shadow-lg overflow-hidden mt-1  ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"
+                                                @click.outside="open = false" @keydown.escape.window="open = false"
+                                                x-show="open"
+                                                x-transition:enter="transition ease-out duration-200 transform"
+                                                x-transition:enter-start="opacity-0 -translate-y-2"
+                                                x-transition:enter-end="opacity-100 translate-y-0"
+                                                x-transition:leave="transition ease-out duration-200"
+                                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                                                x-cloak>
 
-                                                <li>
-                                                    <a href="{{ route('admin.cotizaciones.edit', $cotizacion) }}"
-                                                        class="text-gray-700 group flex items-center px-4 py-2 text-sm font-normal"
-                                                        disabled="false" id="headlessui-menu-item-27" role="menuitem"
-                                                        tabindex="-1">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                            viewBox="0 0 24 24" stroke="currentColor"
-                                                            class="w-5 h-5 mr-3 text-gray-400 group-hover:text-blue-500">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
-                                                            </path>
-                                                        </svg> Editar
+                                                <ul>
+                                                    @can('cotizaciones.editar')
+                                                        <li>
+                                                            <a href="{{ route('admin.cotizaciones.edit', $cotizacion) }}"
+                                                                class="text-gray-700 group flex items-center px-4 py-2 text-sm font-normal"
+                                                                disabled="false" id="headlessui-menu-item-27" role="menuitem"
+                                                                tabindex="-1">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke="currentColor"
+                                                                    class="w-5 h-5 mr-3 text-gray-400 group-hover:text-blue-500">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                        stroke-width="2"
+                                                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
+                                                                    </path>
+                                                                </svg> Editar
 
-                                                    </a>
-                                                </li>
+                                                            </a>
+                                                        </li>
+                                                    @endcan
+                                                    @can('cotizaciones.eliminar')
+                                                        <li>
+                                                            <a href="javascript: void(0)"
+                                                                wire:click.prevent='openModalDelete({{ $cotizacion->id }})'
+                                                                class="text-gray-700 group flex items-center px-4 py-2 text-sm font-normal"
+                                                                disabled="false" id="headlessui-menu-item-28" role="menuitem"
+                                                                tabindex="-1">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke="currentColor"
+                                                                    class="h-5 w-5 mr-3 text-gray-400 group-hover:text-red-500">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                        stroke-width="2"
+                                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                                    </path>
+                                                                </svg>
+                                                                Eliminar
+                                                            </a>
+                                                        </li>
+                                                    @endcan
 
-                                                <li>
-                                                    <a href="javascript: void(0)"
-                                                        wire:click.prevent='openModalDelete({{ $cotizacion->id }})'
-                                                        class="text-gray-700 group flex items-center px-4 py-2 text-sm font-normal"
-                                                        disabled="false" id="headlessui-menu-item-28" role="menuitem"
-                                                        tabindex="-1">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                            viewBox="0 0 24 24" stroke="currentColor"
-                                                            class="h-5 w-5 mr-3 text-gray-400 group-hover:text-red-500">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                                            </path>
-                                                        </svg>
-                                                        Eliminar
-                                                    </a>
-                                                </li>
+                                                    @can('cotizaciones.enviar')
+                                                        <li>
+                                                            <a href="javascript: void(0)"
+                                                                wire:click="modalOpenSend({{ $cotizacion->id }})"
+                                                                class="text-gray-700 group flex items-center px-4 py-2 text-sm font-normal"
+                                                                disabled="false" id="headlessui-menu-item-32" role="menuitem"
+                                                                tabindex="-1">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke="currentColor"
+                                                                    class="h-5 w-5 mr-3 text-gray-400 group-hover:text-cyan-600">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                        stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8">
+                                                                    </path>
+                                                                </svg> Enviar
+                                                            </a>
+                                                        </li>
+                                                    @endcan
+                                                    @can('cotizaciones.cambiar_estado')
+                                                        <li>
+                                                            <a href="javascript: void(0)"
+                                                                wire:click.prevent="markAccept({{ $cotizacion->id }})"
+                                                                class="text-gray-700 group flex items-center px-4 py-2 text-sm font-normal"
+                                                                disabled="false" id="headlessui-menu-item-33" role="menuitem"
+                                                                tabindex="-1">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke="currentColor"
+                                                                    class="h-5 w-5  mr-3 text-gray-400 group-hover:text-lime-500">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                        stroke-width="2"
+                                                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z">
+                                                                    </path>
+                                                                </svg>
+                                                                Marcar como Aceptada
+                                                            </a>
+                                                        </li>
 
-
-
-                                                <li>
-                                                    <a href="javascript: void(0)"
-                                                        wire:click="modalOpenSend({{ $cotizacion->id }})"
-                                                        class="text-gray-700 group flex items-center px-4 py-2 text-sm font-normal"
-                                                        disabled="false" id="headlessui-menu-item-32" role="menuitem"
-                                                        tabindex="-1">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                            viewBox="0 0 24 24" stroke="currentColor"
-                                                            class="h-5 w-5 mr-3 text-gray-400 group-hover:text-cyan-600">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8">
-                                                            </path>
-                                                        </svg> Enviar
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a href="javascript: void(0)"
-                                                        wire:click.prevent="markAccept({{ $cotizacion->id }})"
-                                                        class="text-gray-700 group flex items-center px-4 py-2 text-sm font-normal"
-                                                        disabled="false" id="headlessui-menu-item-33" role="menuitem"
-                                                        tabindex="-1">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                            viewBox="0 0 24 24" stroke="currentColor"
-                                                            class="h-5 w-5  mr-3 text-gray-400 group-hover:text-lime-500">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z">
-                                                            </path>
-                                                        </svg>
-                                                        Marcar como Aceptada
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a href="javascript: void(0)"
-                                                        wire:click.prevent="markReject({{ $cotizacion->id }})"
-                                                        class="text-gray-700 group flex items-center px-4 py-2 text-sm font-normal"
-                                                        disabled="false" id="headlessui-menu-item-34" role="menuitem"
-                                                        tabindex="-1">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                            viewBox="0 0 24 24" stroke="currentColor"
-                                                            class="h-5 w-5  mr-3 text-gray-400 group-hover:text-red-400">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z">
-                                                            </path>
-                                                        </svg> Marcar como Rechazada
-                                                    </a>
-                                                </li>
-                                            </ul>
+                                                        <li>
+                                                            <a href="javascript: void(0)"
+                                                                wire:click.prevent="markReject({{ $cotizacion->id }})"
+                                                                class="text-gray-700 group flex items-center px-4 py-2 text-sm font-normal"
+                                                                disabled="false" id="headlessui-menu-item-34" role="menuitem"
+                                                                tabindex="-1">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke="currentColor"
+                                                                    class="h-5 w-5  mr-3 text-gray-400 group-hover:text-red-400">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                        stroke-width="2"
+                                                                        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z">
+                                                                    </path>
+                                                                </svg> Marcar como Rechazada
+                                                            </a>
+                                                        </li>
+                                                    @endcan
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
+                            @endcanany
 
                             {{-- Crear nota de crédito
                             Crear nota de débito

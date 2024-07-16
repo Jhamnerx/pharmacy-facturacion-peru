@@ -189,8 +189,14 @@ class Create extends Component
 
         $datos = $this->validate($rules);
 
-        $compra = Compras::create($datos);
+        try {
+            $compra = Compras::create($datos);
 
-        $items = Compras::createItems($datos['items'], $compra);
+            $items = Compras::createItems($datos['items'], $compra);
+            session()->flash('compra-registrada', 'Se registro la compra ' . $this->cotizacion->serie_correlativo);
+            $this->redirectRoute('admin.compras.index');
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 }

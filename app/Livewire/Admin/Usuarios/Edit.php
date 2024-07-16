@@ -13,8 +13,9 @@ class Edit extends Component
 {
     public $showModal = false;
     public $usuario;
-    public $name, $email, $password, $password_confirmation, $roles_id, $local_id;
+    public $name, $email, $password, $password_confirmation, $roles_id = [], $local_id;
 
+    public $locales = [];
 
     protected function rules()
     {
@@ -40,18 +41,21 @@ class Edit extends Component
         ];
     }
 
+    public function mount()
+    {
+    }
 
     public function render()
     {
         $roles = Role::all()->select('name', 'id');
-        $locales = Locales::all()->select('nombre', 'id');
-        return view('livewire.admin.usuarios.edit', compact('roles', 'locales'));
+
+        return view('livewire.admin.usuarios.edit', compact('roles'));
     }
 
     #[On('open-modal-edit')]
     public function openModal(User $usuario)
     {
-
+        //$this->locales = Locales::all()->select('nombre', 'id');
         $this->showModal = true;
         $this->usuario = $usuario;
         $this->name = $usuario->name;
@@ -70,9 +74,25 @@ class Edit extends Component
             'password' => $this->password ? Hash::make($this->password) : $this->usuario->password,
             'local_id' => $this->local_id
         ]);
+        try {
+            $this->usuario->syncRoles($this->roles_id);
+            $this->dispatch('update-table');
+            $this->dispatch(
+                'notify',
+                icon: 'success',
+                title: 'USUARIO ACTUALIZADO',
+                mensaje: 'El usuario se ha actualizado correctamente'
+            );
 
-        $this->usuario->syncRoles($this->roles_id);
-        $this->dispatch('update-table');
+            $this->closeModal();
+        } catch (\Throwable $th) {
+            $this->dispatch(
+                'notify',
+                icon: 'error',
+                title: 'ERROR',
+                mensaje: 'Ha ocurrido un error al actualizar el usuario'
+            );
+        }
     }
 
     public function closeModal()

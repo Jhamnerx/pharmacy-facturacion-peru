@@ -381,7 +381,7 @@ class Editar extends Component
         $this->dispatch(
             'notify',
             icon: 'success',
-            title: 'VENTA REGISTRADA',
+            title: 'COTIZACION ACTUALIZADA',
             mensaje: $mensaje,
         );
     }
