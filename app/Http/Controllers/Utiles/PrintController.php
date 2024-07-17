@@ -303,4 +303,24 @@ class PrintController extends Controller
             }
         }
     }
+
+    public function test()
+    {
+        $profile = CapabilityProfile::load("POS-5890");
+
+        /* Fill in your own connector here */
+        $connector = new RawbtPrintConnector();
+
+        /* Start the printer */
+        $printer = new Printer($connector, $profile);
+
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
+        $printer->text("Prueba de impresion!!\n");
+
+        // Cortar el papel
+        $printer->cut();
+
+        // Cerrar la conexión
+        $printer->close();
+    }
 }

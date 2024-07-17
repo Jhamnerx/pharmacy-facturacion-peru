@@ -11,6 +11,8 @@ use App\Imports\CatalagoImport;
 use App\Models\CatalogoDigemid;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Client;
 
 class DatosEmpresa extends Component
 {
@@ -196,5 +198,29 @@ class DatosEmpresa extends Component
                 mensaje: 'Error' . $th->getMessage() . "."
             );
         }
+    }
+
+    public function testPrint()
+    {
+
+        $client = new Client([
+            'verify' => false,
+        ]);
+
+        $request = new Request('GET', route('api.print.test'));
+        $res = $client->sendAsync($request)->wait();
+        $datos = $res->getBody()->getContents();
+
+        $this->dispatch('imprimir-test', datos: $datos);
+    }
+
+    public function notifyError()
+    {
+        $this->dispatch(
+            'notify-toast',
+            icon: 'error',
+            title: 'ERROR',
+            mensaje: 'Ocurrió un error al imprimir el ticket'
+        );
     }
 }

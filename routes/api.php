@@ -45,3 +45,4 @@ Route::controller(UtilesController::class)->group(function () {
 
 
 Route::get('/print-receipt/{venta}', [PrintController::class, 'printReceipt'])->name('api.print.receipt');
+Route::get('/print-receipt-test', [PrintController::class, 'test'])->name('api.print.test');

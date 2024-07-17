@@ -123,7 +123,7 @@ class ModalFinish extends Component
             'notify-toast',
             icon: 'error',
             title: 'ERROR',
-            mensaje: 'Ocurrió un error '
+            mensaje: 'Ocurrió un error Al imprimir'
         );
     }
 }

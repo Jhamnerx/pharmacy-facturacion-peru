@@ -112,6 +112,12 @@
 
                                 </div>
 
+                            </div>
+
+                            <div class="col-span-12 sm:col-span-3">
+
+                                <x-form.button wire:click="testPrint" spinner="testPrint" loading-delay="short" black
+                                    label="Probar Impresora" />
 
                             </div>
                         </div>
@@ -357,3 +363,28 @@
     </div>
 
 </div>
+
+@push('scripts')
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+            Livewire.on('imprimir-test', (event) => {
+                //imprimirHolaMundo(IMPRESORA_POR_DEFECTO);
+                pc_print(event.datos);
+            });
+
+
+            function pc_print(data) {
+                var socket = new WebSocket("ws://127.0.0.1:40213/");
+                socket.bufferType = "arraybuffer";
+                socket.onerror = function(error) {
+                    @this.notifyError();
+                };
+                socket.onopen = function() {
+                    socket.send(data);
+                    socket.close(1000, "Work complete");
+                };
+            }
+
+        });
+    </script>
+@endpush
