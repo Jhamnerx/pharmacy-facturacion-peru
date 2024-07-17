@@ -228,7 +228,7 @@
 
         Echo.channel('ventas')
             .listen('VentaCreada', e => {
-                console.log(e)
+                console.log('evento venta creada', e);
             })
 
     });
