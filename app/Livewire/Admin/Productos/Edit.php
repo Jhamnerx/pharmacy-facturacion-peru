@@ -61,7 +61,7 @@ class Edit extends Component
         $this->precio_caja = $producto->precio_caja;
         $this->cantidad_caja = $producto->cantidad_caja;
         $this->costo_unitario = $producto->costo_unitario;
-        $this->fecha_vencimiento = $producto->fecha_vencimiento->format('Y-m-d');
+        $this->fecha_vencimiento = $producto->fecha_vencimiento ? $producto->fecha_vencimiento->format('Y-m-d') : null;
         $this->lote = $producto->lote;
         $this->dispatch('reset-search-medicamento');
         if ($producto->image) {
