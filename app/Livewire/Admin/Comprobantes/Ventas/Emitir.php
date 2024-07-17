@@ -85,6 +85,7 @@ class Emitir extends Component
     #[On('echo:ventas,VentaCreada')]
     public function actualizarVista()
     {
+        dd('prueba');
         $this->render();
     }
 

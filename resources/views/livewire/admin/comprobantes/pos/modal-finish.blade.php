@@ -74,7 +74,7 @@
     </div>
 
     <x-slot name="footer" class="flex justify-end gap-x-4">
-        <x-form.button primary label="Nueva Venta" id="btn-print" />
+        <x-form.button primary label="Nueva Venta" id="btn-print" wire:click.prevent="nuevaVenta()" />
     </x-slot>
 </x-form.modal.card>
 @push('scripts')

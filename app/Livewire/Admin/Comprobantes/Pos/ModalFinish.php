@@ -116,4 +116,14 @@ class ModalFinish extends Component
         $this->reset('ruta');
         $this->reset('cel_verificado');
     }
+
+    public function notifyError($mensaje)
+    {
+        $this->dispatch(
+            'notify-toast',
+            icon: 'error',
+            title: 'ERROR',
+            mensaje: $mensaje
+        );
+    }
 }
