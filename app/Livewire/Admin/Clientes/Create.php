@@ -87,7 +87,9 @@ class Create extends Component
                     if ($resultado["nombres"]) {
                         $this->reset('errorConsulta');
                         $this->razon_social = $resultado["nombres"] . " " . $resultado["apellidoPaterno"] . " " . $resultado["apellidoMaterno"];
-                        // $this->direccion = $resultado["direccion"] . "" . $resultado["provincia"] . " - " . $resultado["departamento"];
+                        //$this->direccion = $resultado["direccion"] . "" . $resultado["provincia"] . " - " . $resultado["departamento"];
+                        $this->direccion = '---';
+                        #
                     } else {
                         $this->errorConsulta = "No se encuentra el nombre";
                     }
