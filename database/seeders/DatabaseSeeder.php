@@ -27,8 +27,8 @@ class DatabaseSeeder extends Seeder
         $this->call(UbigeosSeeder::class);
         $this->call(SerieSeeder::class);
         $this->call(ClientesSeeder::class);
-        $this->call(CategoriasSeeder::class);
-        $this->call(ProductosSeeder::class);
+        //$this->call(CategoriasSeeder::class);
+        // $this->call(ProductosSeeder::class);
         $this->call(CodigosDetraccionesSeeder::class);
         $this->call(PermisosSeeder::class);
         $this->call(UserSeeder::class);

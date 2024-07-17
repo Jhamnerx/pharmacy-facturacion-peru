@@ -106,7 +106,7 @@ class ModalAddProducto extends Component
 
         if ($producto->stock <= 0) {
             $this->dispatch(
-                'notify-toast',
+                'notify',
                 icon: 'error',
                 title: 'ERROR',
                 mensaje: 'Producto sin stock',

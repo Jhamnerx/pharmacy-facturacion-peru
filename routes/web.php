@@ -12,6 +12,7 @@ use App\Http\Controllers\ProveedoresController;
 use App\Http\Controllers\CotizacionesController;
 use App\Http\Controllers\Utiles\PrintController;
 use App\Http\Controllers\AdministracionController;
+use App\Http\Controllers\Clientes\ClienteUtilController;
 use App\Http\Controllers\Comprobantes\ComprobantesController;
 
 
@@ -91,4 +92,8 @@ Route::controller(ReportesController::class)->group(function () {
 
     Route::get('reportes/ventas', 'ventas')->name('admin.reportes.ventas');
     Route::get('reportes/compras', 'compras')->name('admin.reportes.compras');
+});
+
+route::controller(ClienteUtilController::class)->group(function () {
+    route::get('consulta/invoice', 'consultaInvoice')->name('admin.consulta.invoice');
 });

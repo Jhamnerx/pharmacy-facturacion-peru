@@ -283,7 +283,15 @@ class CartStep extends Component
     public function addToCart($id)
     {
         $producto = Productos::find($id)->load('unit');
-
+        if ($producto->stock < 1) {
+            $this->dispatch(
+                'notify',
+                icon: 'error',
+                title: 'ERROR',
+                mensaje: 'El producto no cuenta con stock suficiente',
+            );
+            return;
+        }
         Cart::add($producto);
         $this->loadCart();
         $this->notify();

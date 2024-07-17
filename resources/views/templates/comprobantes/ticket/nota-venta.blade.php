@@ -520,7 +520,7 @@
                     </tr>
                     <tr>
                         <td>
-                            Consulte su documento electrónico en: {{ env('APP_URL') }}/consulta/invoice</td>
+                            Consulte su documento electrónico en: {{ route('admin.consulta.invoice') }}</td>
                         </td>
                     </tr>
                 </tbody>

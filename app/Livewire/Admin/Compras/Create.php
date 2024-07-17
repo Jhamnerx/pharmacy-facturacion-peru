@@ -44,6 +44,11 @@ class Create extends Component
         return view('livewire.admin.compras.create');
     }
 
+    public function updatedSerie($value)
+    {
+        $this->serie = strtoupper($this->serie);
+    }
+
     public function updatedProductSelectedId($value)
     {
         if ($value != "") {
@@ -96,9 +101,14 @@ class Create extends Component
         }
     }
 
-    public function updatedSelected($value)
+    public function updatedSelected($value, $name)
     {
-        $this->selected['importe_total'] = $this->selected['cantidad'] * $this->selected['precio'];
+
+        if ($name  == "cantidad" && $value == "") {
+            $this->selected['cantidad'] = 1;
+        }
+
+        $this->selected['importe_total'] = floatval($this->selected['cantidad']) * floatval($this->selected['precio']);
     }
 
     public function updatedItems($value)
@@ -123,8 +133,6 @@ class Create extends Component
         $this->sub_total =   $this->calcularSubTotal();
         $this->igv =  $this->calcularIgv();
     }
-
-
 
 
     //CALCULAR IGV DESDE EL SUB TOTAL - FALTA POR TRAER EL PROCENTAJE DEL IUMPUESTO DE LA DB

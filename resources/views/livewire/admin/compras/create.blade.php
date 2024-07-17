@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="col-span-12 md:col-span-3">
-                        <x-form.input label="Serie Doc.:" wire:model.live="serie" placeholder="F001" />
+                        <x-form.input label="Serie Doc.:" wire:model.blur="serie" placeholder="F001" />
                     </div>
 
                     <div class="col-span-12 md:col-span-3">

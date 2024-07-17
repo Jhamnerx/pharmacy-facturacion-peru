@@ -782,7 +782,8 @@
                         <td width="85%">
                             <blockquote>
 
-                                <h6> Consulte su documento electrónico en: {{ env('APP_URL') }}/consulta/invoice</h6>
+                                <h6> Consulte su documento electrónico en: {{ route('admin.consulta.invoice') }}
+                                </h6>
                             </blockquote>
                         </td>
                         {{-- <td width="15%" align="right">

@@ -163,10 +163,11 @@
                                                     <div class="flex items-center ">
 
                                                         <div
-                                                            class="font-medium text-slate-800 dark:text-slate-50 text-left">
-                                                            {{ $producto->nombre }} -
-                                                            {{ $producto->forma_farmaceutica }} -
-                                                            {{ $producto->presentacion }}
+                                                            class="font-medium 0 {{ $producto->stock < 1 ? 'text-red-600' : 'text-slate-80' }} dark:text-slate-50 text-left">
+                                                            {{ $producto->nombre }}
+                                                            {{ $producto->forma_farmaceutica != '' ? '-' . $producto->forma_farmaceutica : '' }}
+                                                            {{ $producto->presentacion != '' ? '-' . $producto->presentacion : '' }}
+
                                                         </div>
                                                     </div>
                                                 </td>
@@ -178,16 +179,22 @@
                                                 </td>
 
                                                 <td class="px-2 first:pl-5 last:pr-5 py-3">
-                                                    <div class="text-left">
+                                                    <div
+                                                        class="text-left {{ $producto->stock < 2 ? 'text-red-600' : '' }}">
                                                         {{ $producto->stock }}
                                                     </div>
                                                 </td>
 
                                                 <td class="px-2 first:pl-5 last:pr-5 py-3">
-                                                    <div class="text-left font-medium text-emerald-500">
+                                                    <div class="text-left text-lg font-medium text-emerald-500">
 
                                                         {{ $producto->divisa = 'USD' ? '$ ' : 'S/ ' }}
                                                         {{ $producto->precio_unitario }}
+                                                    </div>
+                                                    <div class="text-left text-xs text-red-500">
+
+                                                        {{ $producto->divisa = 'USD' ? '$ ' : 'S/ ' }}
+                                                        {{ $producto->precio_minimo }}
                                                     </div>
                                                 </td>
 
