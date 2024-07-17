@@ -13,13 +13,12 @@ class Cards extends Component
     public $TotalFacturas = 0.00;
     public $totalBoletas = 0.00;
     public $totalNotasVenta = 0.00;
+    public $total_ventas = 0.00;
 
     public function mount()
     {
         $this->fecha = Carbon::now()->format('Y-m-d');
-        $this->calcularTotalFacturas();
-        $this->calcularTotalBoletas();
-        $this->calcularTotalNotasVenta();
+        $this->setMontos();
     }
 
     public function render()
@@ -110,12 +109,24 @@ class Cards extends Component
         $this->totalNotasVenta = $totalSoles + $totalDolaresConvertidos;
     }
 
+    public function calcularTotalVentas()
+    {
+        $total = round($this->TotalFacturas + $this->totalBoletas + $this->totalNotasVenta, 2);
+        return $total;
+    }
+
     #[On('search-card-totales')]
     public function setFecha($fecha)
     {
         $this->fecha = $fecha;
+        $this->setMontos();
+    }
+    #[On('echo:ventas,VentaCreada')]
+    public function setMontos()
+    {
         $this->calcularTotalFacturas();
         $this->calcularTotalBoletas();
         $this->calcularTotalNotasVenta();
+        $this->total_ventas = $this->calcularTotalVentas();
     }
 }

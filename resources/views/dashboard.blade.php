@@ -50,7 +50,7 @@
 
             <!-- Content -->
             <div class="relative">
-                <h1 class="text-2xl md:text-3xl text-slate-800 font-bold mb-1">Bienvenido al Facturacion
+                <h1 class="text-2xl md:text-3xl text-slate-800 font-bold mb-1">Bienvenido a Facturacion
                     {{ $empresa->nombre_comercial }}. 👋
                 </h1>
                 <p>Aqui veras el resumen de todo el sistema:</p>
