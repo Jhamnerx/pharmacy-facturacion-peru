@@ -203,6 +203,6 @@ class Edit extends Component
         $this->costo_unitario = 0.00;
         $this->fecha_vencimiento = null;
         $this->lote = null;
-        $this->$this->dispatch('reset-search-medicamento');
+        $this->dispatch('reset-search-medicamento');
     }
 }

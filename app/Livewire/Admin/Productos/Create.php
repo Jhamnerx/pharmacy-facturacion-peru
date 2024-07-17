@@ -161,7 +161,7 @@ class Create extends Component
         $this->fecha_vencimiento = null;
         $this->lote = null;
 
-        $this->$this->dispatch('reset-search-medicamento');
+        $this->dispatch('reset-search-medicamento');
     }
 
     #[On('send-data-digemid')]
