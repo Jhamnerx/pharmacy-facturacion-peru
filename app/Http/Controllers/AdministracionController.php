@@ -12,7 +12,7 @@ class AdministracionController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('role_or_permission:admin', only: ['ajustes', 'cuenta', 'sunat', 'notificaciones', 'roles', 'series']),
+            new Middleware('role_or_permission:admin', only: ['ajustes', 'sunat', 'notificaciones', 'roles', 'series']),
         ];
     }
 

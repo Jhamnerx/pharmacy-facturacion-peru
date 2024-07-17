@@ -2,18 +2,19 @@
 
 namespace App\Providers;
 
-use App\Actions\Fortify\CreateNewUser;
-use App\Actions\Fortify\ResetUserPassword;
-use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Models\User;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
 use Illuminate\Support\Facades\Hash;
+use App\Actions\Fortify\CreateNewUser;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Cache\RateLimiting\Limit;
+use App\Actions\Fortify\ResetUserPassword;
+use App\Http\Controllers\UtilesController;
+use App\Actions\Fortify\UpdateUserPassword;
+use Illuminate\Support\Facades\RateLimiter;
+use App\Actions\Fortify\UpdateUserProfileInformation;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -40,7 +41,7 @@ class FortifyServiceProvider extends ServiceProvider
             $user = User::where('email', $request->email)->first();
             //$user->createToken();
             if ($user && Hash::check($request->password, $user->password)) {
-                //$this->getTipoCambioLogin();
+                $this->getTipoCambioLogin();
                 $request->session()->put('local_id', $user->local_id);
                 return $user;
             }
@@ -58,10 +59,10 @@ class FortifyServiceProvider extends ServiceProvider
         });
     }
 
-    // public function getTipoCambioLogin(): void
-    // {
-    //     $util = new UtilesController();
+    public function getTipoCambioLogin(): void
+    {
+        $util = new UtilesController();
 
-    //     $util->tipoCambio();
-    // }
+        $util->tipoCambio();
+    }
 }
