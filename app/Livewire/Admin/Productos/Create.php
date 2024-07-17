@@ -19,7 +19,7 @@ class Create extends Component
 
     public $codigo, $nombre, $descripcion, $forma_farmaceutica, $presentacion, $numero_registro_sanitario, $laboratorio, $stock_minimo = 1, $stock = 1, $afecto_icbper = false;
     public $divisa = 'PEN', $tipo = 'producto', $tipo_afectacion = 10, $categoria_id, $unit_code = 'NIU';
-    public $precio_unitario, $precio_minimo = 0.00, $precio_blister = 0.00, $cantidad_blister = 0, $precio_caja, $cantidad_caja, $costo_unitario;
+    public $precio_unitario = 0.00, $precio_minimo = 0.00, $precio_blister = 0.00, $cantidad_blister = 0, $precio_caja = 0.00, $cantidad_caja = 0, $costo_unitario = 0.00;
     public $fecha_vencimiento, $lote;
 
     public $file;
@@ -56,6 +56,7 @@ class Create extends Component
         $request = new ProductosRequest();
 
         $datos = $this->validate($request->rules(), $request->messages());
+
         if ($this->getErrorBag()->isNotEmpty()) {
             $this->dispatch('formValidated', $this->getErrorBag()->toArray());
         }
@@ -135,8 +136,32 @@ class Create extends Component
 
     public function resetProps()
     {
-        $this->reset();
-        $this->dispatch('reset-search-medicamento');
+        $this->codigo = null;
+        $this->nombre = null;
+        $this->descripcion = null;
+        $this->forma_farmaceutica = null;
+        $this->presentacion = null;
+        $this->numero_registro_sanitario = null;
+        $this->laboratorio = null;
+        $this->stock_minimo = 1;
+        $this->stock = 1;
+        $this->afecto_icbper = false;
+        $this->divisa = 'PEN';
+        $this->tipo = 'producto';
+        $this->tipo_afectacion = 10;
+        $this->categoria_id = null;
+        $this->unit_code = 'NIU';
+        $this->precio_unitario = 0.00;
+        $this->precio_minimo = 0.00;
+        $this->precio_blister = 0.00;
+        $this->cantidad_blister = 0;
+        $this->precio_caja = 0.00;
+        $this->cantidad_caja = 0;
+        $this->costo_unitario = 0.00;
+        $this->fecha_vencimiento = null;
+        $this->lote = null;
+
+        $this->$this->dispatch('reset-search-medicamento');
     }
 
     #[On('send-data-digemid')]

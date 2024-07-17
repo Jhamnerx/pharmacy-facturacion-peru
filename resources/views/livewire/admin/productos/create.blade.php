@@ -1,5 +1,5 @@
 <x-form.modal.card title="Registrar Medicamento" wire:model.live="showModal" align="center" persistent width="6xl">
-    <div x-data="{ activeTab: 'basic-info' }" class="grid grid-cols-12 gap-6">
+    <div class="grid grid-cols-12 gap-6" x-data="{ activeTab: 'basic-info' }">
 
         <!-- General -->
         <div class="mb-4 col-span-12">
