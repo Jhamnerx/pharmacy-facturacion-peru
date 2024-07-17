@@ -35,7 +35,22 @@
             document.querySelector('html').style.colorScheme = 'dark';
         }
     </script>
+    <style>
+        #status {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+        }
 
+        .connected {
+            background-color: green;
+        }
+
+        .disconnected {
+            background-color: red;
+        }
+    </style>
 </head>
 
 <body class="font-inter antialiased bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400"

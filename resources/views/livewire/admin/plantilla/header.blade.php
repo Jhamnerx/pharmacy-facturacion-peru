@@ -23,6 +23,10 @@
                         class="hover:text-talentus-200">{{ $local_actual }}</b>
                 </p>
             </div>
+            <div class="relative inline-flex gap-1">
+                <div id="status" class="disconnected"></div>
+                <span id="status-text">Disconnected</span>
+            </div>
 
             <!-- Header: Right side -->
             <div class="flex items-center space-x-3">
@@ -106,6 +110,7 @@
                 <!-- Info button -->
                 {{-- <x-dropdown-help align="right" /> --}}
 
+
                 <!-- Dark mode toggle -->
                 <x-theme-toggle />
 
@@ -120,3 +125,47 @@
         </div>
     </div>
 </header>
+
+@push('scripts')
+    <script>
+        const statusElement = document.getElementById('status');
+        const statusTextElement = document.getElementById('status-text');
+
+        function updateStatus(connected) {
+            console.log('updateStatus', connected);
+            if (connected) {
+                statusElement.classList.remove('disconnected');
+                statusElement.classList.add('connected');
+                statusTextElement.textContent = ' Impresora Conectada';
+            } else {
+                statusElement.classList.remove('connected');
+                statusElement.classList.add('disconnected');
+                statusTextElement.textContent = ' Impresora Desconectada';
+            }
+        }
+
+        const socket = new WebSocket("ws://127.0.0.1:40213/");
+
+        socket.addEventListener('open', function(event) {
+            console.log('WebSocket is connected.');
+            updateStatus(true);
+        });
+
+        socket.addEventListener('close', function(event) {
+            console.log('WebSocket is closed.');
+            updateStatus(false);
+        });
+
+        socket.addEventListener('error', function(event) {
+            console.log('WebSocket error:', event);
+            updateStatus(false);
+        });
+
+        // Check periodically to see if the connection is still open
+        setInterval(function() {
+            if (socket.readyState !== WebSocket.OPEN) {
+                updateStatus(false);
+            }
+        }, 5000); // Check every 5 seconds
+    </script>
+@endpush
