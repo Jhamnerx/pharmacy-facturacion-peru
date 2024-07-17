@@ -117,13 +117,13 @@ class ModalFinish extends Component
         $this->reset('cel_verificado');
     }
 
-    public function notifyError($mensaje)
+    public function notifyError()
     {
         $this->dispatch(
             'notify-toast',
             icon: 'error',
             title: 'ERROR',
-            mensaje: $mensaje
+            mensaje: 'Ocurrió un error '
         );
     }
 }
