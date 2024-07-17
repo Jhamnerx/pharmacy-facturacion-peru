@@ -6,7 +6,9 @@ use App\Models\User;
 use App\Models\Locales;
 use Livewire\Component;
 use Livewire\Attributes\On;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class Edit extends Component
@@ -74,6 +76,7 @@ class Edit extends Component
             'password' => $this->password ? Hash::make($this->password) : $this->usuario->password,
             'local_id' => $this->local_id
         ]);
+
         try {
             $this->usuario->syncRoles($this->roles_id);
             $this->dispatch('update-table');
@@ -83,7 +86,7 @@ class Edit extends Component
                 title: 'USUARIO ACTUALIZADO',
                 mensaje: 'El usuario se ha actualizado correctamente'
             );
-
+            $this->logoutUser($this->usuario->id);
             $this->closeModal();
         } catch (\Throwable $th) {
             $this->dispatch(
@@ -92,6 +95,22 @@ class Edit extends Component
                 title: 'ERROR',
                 mensaje: 'Ha ocurrido un error al actualizar el usuario'
             );
+        }
+    }
+
+    public function logoutUser($userId)
+    {
+        // Encuentra todas las sesiones del usuario
+        $sessions = DB::table('sessions')->where('user_id', $userId)->get();
+
+        // Elimina cada sesión
+        foreach ($sessions as $session) {
+            DB::table('sessions')->where('id', $session->id)->delete();
+        }
+
+        // Cierra la sesión del usuario actual si es necesario
+        if (Auth::id() == $userId) {
+            Auth::logout();
         }
     }
 
