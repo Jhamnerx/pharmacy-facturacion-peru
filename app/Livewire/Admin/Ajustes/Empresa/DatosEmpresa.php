@@ -190,6 +190,7 @@ class DatosEmpresa extends Component
                 title: 'ERROR EN LA IMPORTACION',
                 mensaje: 'Se encontraron errores en la importacion'
             );
+            $this->file = null;
         } catch (\Throwable $th) {
             $this->dispatch(
                 'notify-toast',

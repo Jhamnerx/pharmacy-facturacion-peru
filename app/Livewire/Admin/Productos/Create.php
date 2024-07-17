@@ -38,6 +38,7 @@ class Create extends Component
     public function openModal()
     {
         $this->showModal = true;
+        $this->resetErrorBag();
         $this->dispatch('reset-search-medicamento');
         //  $this->codigo = $this->generateCodeProduct();
     }
@@ -134,30 +135,7 @@ class Create extends Component
 
     public function resetProps()
     {
-        $this->codigo = '';
-        $this->nombre = '';
-        $this->descripcion = '';
-        $this->forma_farmaceutica = '';
-        $this->presentacion = '';
-        $this->numero_registro_sanitario = '';
-        $this->laboratorio = '';
-        $this->stock_minimo = 1;
-        $this->stock = 1;
-        $this->afecto_icbper = false;
-        $this->divisa = 'PEN';
-        $this->tipo = 'producto';
-        $this->tipo_afectacion = 10;
-        $this->categoria_id = '';
-        $this->unit_code = 'NIU';
-        $this->precio_unitario = '';
-        $this->precio_minimo = '';
-        $this->precio_blister = '';
-        $this->cantidad_blister = 0;
-        $this->precio_caja = '';
-        $this->cantidad_caja = '';
-        $this->costo_unitario = '';
-        $this->file = '';
-
+        $this->reset();
         $this->dispatch('reset-search-medicamento');
     }
 

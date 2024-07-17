@@ -36,6 +36,7 @@ class Edit extends Component
     #[On('open-modal-edit')]
     public function openModal(Productos $producto)
     {
+        $this->resetErrorBag();
         $this->showModal = true;
         $this->categoria_id = $producto->categoria_id;
         $this->producto = $producto;
@@ -60,7 +61,7 @@ class Edit extends Component
         $this->precio_caja = $producto->precio_caja;
         $this->cantidad_caja = $producto->cantidad_caja;
         $this->costo_unitario = $producto->costo_unitario;
-        $this->fecha_vencimiento = $producto->fecha_vencimiento;
+        $this->fecha_vencimiento = $producto->fecha_vencimiento->format('Y-m-d');
         $this->lote = $producto->lote;
         $this->dispatch('reset-search-medicamento');
         if ($producto->image) {
@@ -178,28 +179,6 @@ class Edit extends Component
 
     public function resetProps()
     {
-        $this->codigo = '';
-        $this->nombre = '';
-        $this->descripcion = '';
-        $this->forma_farmaceutica = '';
-        $this->presentacion = '';
-        $this->numero_registro_sanitario = '';
-        $this->laboratorio = '';
-        $this->stock_minimo = 1;
-        $this->stock = 1;
-        $this->afecto_icbper = false;
-        $this->divisa = 'PEN';
-        $this->tipo = 'producto';
-        $this->tipo_afectacion = 10;
-        $this->categoria_id = '';
-        $this->unit_code = 'NIU';
-        $this->precio_unitario = '';
-        $this->precio_minimo = '';
-        $this->precio_blister = '';
-        $this->cantidad_blister = 0;
-        $this->precio_caja = '';
-        $this->cantidad_caja = '';
-        $this->costo_unitario = '';
-        $this->file = '';
+        $this->reset();
     }
 }
