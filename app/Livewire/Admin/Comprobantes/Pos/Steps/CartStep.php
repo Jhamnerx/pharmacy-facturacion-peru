@@ -11,6 +11,7 @@ use Livewire\Component;
 use App\Models\Clientes;
 use App\Models\Productos;
 use App\Models\Categorias;
+use App\Events\VentaCreada;
 use Livewire\WithPagination;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -564,7 +565,7 @@ class CartStep extends Component
         $this->loadCart();
         $this->tipo_comprobante_id = "02";
         $this->setSerieMount();
-        //VentaCreada::dispatch();
+        VentaCreada::dispatch();
         // $this->dispatch('venta-creada-from-pos')->to(Emitir::class);
     }
 
