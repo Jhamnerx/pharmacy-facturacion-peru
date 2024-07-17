@@ -34,6 +34,7 @@ return [
             'hostname' => env('REVERB_HOST'),
             'options' => [
                 'tls' => [
+                    'security_level'  => 0,
                     'local_cert' => storage_path('app/reverb/server.pem'),
                 ],
             ],
