@@ -79,41 +79,30 @@
 </x-form.modal.card>
 @push('scripts')
     <script>
-        const obtenerListaDeImpresoras = async () => {
-            return await ConectorPluginV3.obtenerImpresoras();
-        }
-
-        const URLPlugin = "http://localhost:8000"
-        const IMPRESORA_POR_DEFECTO = "POS-80";
-
-        const imprimirHolaMundo = async (nombreImpresora) => {
-            const conector = new ConectorPluginV3(URLPlugin);
-            conector.Iniciar();
-            conector.EscribirTexto("Hola mundo\nParzibyte.me");
-            conector.Feed(1);
-            const respuesta = await conector
-                .imprimirEn(nombreImpresora);
-            if (respuesta === true) {
-                alert("Impreso correctamente");
-            } else {
-                alert("Error: " + respuesta);
-            }
-        }
-    </script>
-
-    <script>
         document.addEventListener('livewire:initialized', () => {
             Livewire.on('imprimir-ticket', (event) => {
                 //imprimirHolaMundo(IMPRESORA_POR_DEFECTO);
                 pc_print(event.datos);
             });
 
+
+            function pc_print(data) {
+                var socket = new WebSocket("ws://127.0.0.1:40213/");
+                socket.bufferType = "arraybuffer";
+                socket.onerror = function(error) {
+                    @this.notifyError(error);
+                };
+                socket.onopen = function() {
+                    socket.send(data);
+                    socket.close(1000, "Work complete");
+                };
+            }
+
         });
     </script>
 
-    <script>
+    {{-- <script>
         function pc_print(data) {
-            console.log(data);
             var socket = new WebSocket("ws://127.0.0.1:40213/");
             socket.bufferType = "arraybuffer";
             socket.onerror = function(error) {
@@ -124,5 +113,5 @@
                 socket.close(1000, "Work complete");
             };
         }
-    </script>
+    </script> --}}
 @endpush

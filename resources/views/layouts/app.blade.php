@@ -16,7 +16,7 @@
 
     {{-- plugins --}}
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('plugins/conector.js') }}" type="text/javascript"></script>
+
 
 
     <!-- Scripts -->
