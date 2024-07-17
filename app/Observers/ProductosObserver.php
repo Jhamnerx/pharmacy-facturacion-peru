@@ -15,6 +15,21 @@ class ProductosObserver
             $productos->local_id = session('local_id');
             $productos->user_id = auth()->id();
         }
+        $productos->codigo = self::generateProductCode();
+    }
+
+    private static function generateProductCode()
+    {
+        $prefix = 'MD'; // Los tres caracteres fijos
+        $latestProduct = Productos::latest('id')->first();
+
+        if (!$latestProduct) {
+            $number = 1;
+        } else {
+            $number = intval(substr($latestProduct->codigo, strlen($prefix))) + 1;
+        }
+
+        return $prefix . str_pad($number, 5, '0', STR_PAD_LEFT); // Llenar con ceros a la izquierda para que tenga 6 dígitos
     }
 
     /**
