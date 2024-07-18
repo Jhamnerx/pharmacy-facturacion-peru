@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Models\Lote;
 use App\Models\Scopes\LocalScope;
 use App\Observers\ProductosObserver;
 use Illuminate\Database\Eloquent\Model;
@@ -166,5 +167,10 @@ class Productos extends Model implements Buyable
     public function image()
     {
         return $this->morphOne(Imagen::class, 'imageable');
+    }
+
+    public function lotes()
+    {
+        return $this->hasMany(Lote::class);
     }
 }

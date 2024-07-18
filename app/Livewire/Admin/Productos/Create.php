@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Productos;
 
+use App\Models\Lote;
 use Livewire\Component;
 use App\Models\Productos;
 use Livewire\Attributes\On;
@@ -70,6 +71,19 @@ class Create extends Component
             if ($this->file) {
                 $this->saveImage($producto);
             }
+
+            // Crear lote si los campos no están vacíos
+            if (!empty($this->lote) && !empty($this->fecha_vencimiento)) {
+                Lote::create([
+                    'producto_id' => $producto->id,
+                    'codigo_lote' => $this->lote,
+                    'fecha_vencimiento' => $this->fecha_vencimiento,
+                    'stock' => $this->stock,
+                    'precio_compra' => $this->costo_unitario,  // Asumiendo que el costo unitario es el precio de compra
+                    'precio_venta' => $this->precio_unitario   // Asumiendo que el precio unitario es el precio de venta
+                ]);
+            }
+
             $this->afterSave();
         } catch (\Exception $e) {
 
