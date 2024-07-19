@@ -509,7 +509,8 @@ class CartStep extends Component
         }
 
         try {
-
+            // Iniciar una transacción para asegurar la consistencia de los datos
+            DB::beginTransaction();
             $venta = Ventas::create($datos);
 
             //ACTUALIZAR DIRECCION
@@ -546,7 +547,7 @@ class CartStep extends Component
                 $this->dispatch('notify-toast', icon: 'success', title: 'NOTA DE VENTA REGISTRADA', mensaje: 'La nota de venta ha sido registrada correctamente');
                 $this->dispatch('finishVenta', venta: $venta->id);
             }
-
+            DB::commit();
             $this->afterVenta();
         } catch (\Throwable $th) {
             DB::rollBack();

@@ -45,6 +45,7 @@ Route::controller(ProveedoresController::class)->middleware(['auth'])->group(fun
 Route::controller(ProductosController::class)->middleware(['auth'])->group(function () {
 
     Route::get('productos', 'index')->name('admin.productos.index');
+    Route::get('lotes', 'lotes')->name('admin.lotes.index');
 });
 
 Route::controller(CategoriasController::class)->middleware(['auth'])->group(function () {

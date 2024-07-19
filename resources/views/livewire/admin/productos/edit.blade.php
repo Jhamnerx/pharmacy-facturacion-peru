@@ -35,7 +35,7 @@
                 <div class="grid grid-cols-12 gap-6">
 
                     <div class="col-span-12 md:col-span-2 ">
-                        <x-form.input name="codigo" wire:model.live="codigo" label="Codigo (*):"
+                        <x-form.input name="codigo" wire:model.live="codigo" label="Codigo (*):" readonly
                             placeholder="Codigo Medicamento" />
                     </div>
                     <div class="col-span-12 lg:col-span-5">
@@ -90,6 +90,10 @@
                         <x-form.input name="forma_farmaceutica" wire:model="forma_farmaceutica" label="F. Farmaceutica:"
                             placeholder="Forma Farmaceutica" />
                     </div>
+                    <div class="col-span-12 md:col-span-4">
+                        <x-form.input name="concentracion" wire:model="concentracion" label="Concentración:"
+                            placeholder="0.1 %" />
+                    </div>
 
                     <div class="col-span-12 md:col-span-4">
                         <x-form.input name="presentacion" wire:model="presentacion" label="Presentación:"
@@ -129,9 +133,15 @@
                         <x-form.number name="stock_minimo" wire:model="stock_minimo" label="Stock Minimo:"
                             min="0" />
                     </div>
-                    <div class="col-span-12 md:col-span-2">
-                        <x-form.number name="stock" wire:model="stock" label="Stock:" min="0" />
-                    </div>
+                    @if ($producto)
+                        @if ($producto->cantidad_lotes == 1 || $producto->cantidad_lotes == 0)
+                            <div class="col-span-12 md:col-span-2">
+                                <x-form.number name="stock" wire:model.live="stock" label="Stock:"
+                                    min="0" />
+                            </div>
+                        @endif
+                    @endif
+
 
 
                 </div>
@@ -139,18 +149,23 @@
 
             <div x-show="activeTab === 'additional-info'">
                 <div class="grid grid-cols-12 gap-6">
+                    @if ($producto)
+                        <!-- Additional fields for Lot and Expiry Date -->
+                        @if ($producto->cantidad_lotes == 1 || $producto->cantidad_lotes == 0)
+                            <div class="col-span-12 md:col-span-3">
+                                <x-form.input name="lote" wire:model.live="lote" label="Lote:"
+                                    placeholder="Lote" />
+                            </div>
+                            <div class="col-span-12 md:col-span-3">
 
-                    <!-- Additional fields for Lot and Expiry Date -->
-                    <div class="col-span-12 md:col-span-3">
-                        <x-form.input name="lote" wire:model.live="lote" label="Lote:" placeholder="Lote" />
-                    </div>
-                    <div class="col-span-12 md:col-span-3">
+                                <x-form.datetime.picker label="Fecha de Vencimiento:" id="fecha_emision"
+                                    name="fecha_vencimiento" wire:model.live="fecha_vencimiento" :min="now()->subDays(90)"
+                                    :max="now()->addYear(30)" without-time parse-format="YYYY-MM-DD"
+                                    display-format="DD-MM-YYYY" :clearable="false" />
+                            </div>
+                        @endif
 
-                        <x-form.datetime.picker label="Fecha de Vencimiento:" id="fecha_emision"
-                            name="fecha_vencimiento" wire:model.live="fecha_vencimiento" :min="now()->subDays(90)"
-                            :max="now()->addYear(20)" without-time parse-format="YYYY-MM-DD" display-format="DD-MM-YYYY"
-                            :clearable="false" />
-                    </div>
+                    @endif
 
                     <div class="col-span-full">
                         <x-section-border />

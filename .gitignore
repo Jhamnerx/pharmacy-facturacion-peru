@@ -21,6 +21,7 @@ yarn-error.log
 /.vscode
 auth-image.psd
 /storage/app/facturacion/
+/storage/app/public/productos/
 /storage/app/public/livewire-tmp/
 /storage\app\public\profile-photos/
 /storage/framework/cache/*

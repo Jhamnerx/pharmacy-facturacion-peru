@@ -90,6 +90,10 @@
                         <x-form.input name="forma_farmaceutica" wire:model="forma_farmaceutica" label="F. Farmaceutica:"
                             placeholder="Forma Farmaceutica" />
                     </div>
+                    <div class="col-span-12 md:col-span-4">
+                        <x-form.input name="concentracion" wire:model="concentracion" label="Concentración:"
+                            placeholder="0.1 %" />
+                    </div>
 
                     <div class="col-span-12 md:col-span-4">
                         <x-form.input name="presentacion" wire:model="presentacion" label="Presentación:"
@@ -148,7 +152,7 @@
 
                         <x-form.datetime.picker label="Fecha de Vencimiento:" id="fecha_emision"
                             name="fecha_vencimiento" wire:model.live="fecha_vencimiento" :min="now()->subDays(90)"
-                            :max="now()->addYear(20)" without-time parse-format="YYYY-MM-DD" display-format="DD-MM-YYYY"
+                            :max="now()->addYear(30)" without-time parse-format="YYYY-MM-DD" display-format="DD-MM-YYYY"
                             :clearable="false" />
                     </div>
 

@@ -439,6 +439,7 @@ class Emitir extends Component
         $datos = $this->validate($request->rules($this->detraccion), $request->messages());
 
         try {
+            DB::beginTransaction();
 
             $venta = Ventas::create($datos);
             $venta->update(['estado' => 'COMPLETADO']);
@@ -471,7 +472,7 @@ class Emitir extends Component
 
                 Ventas::createPrepayments($venta, $this->prepayments);
             }
-
+            DB::commit();
             //ACTUALIZAR CORRELATIVO DE SERIE UTILIZADA
             $venta->getSerie->increment('correlativo');
 

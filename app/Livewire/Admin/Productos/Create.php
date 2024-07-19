@@ -23,6 +23,7 @@ class Create extends Component
     public $precio_unitario = 0.00, $precio_minimo = 0.00, $precio_blister = 0.00, $cantidad_blister = 0, $precio_caja = 0.00, $cantidad_caja = 0, $costo_unitario = 0.00;
     public $fecha_vencimiento, $lote;
 
+    public $concentracion = null;
     public $file;
 
     public function mount()
@@ -73,14 +74,12 @@ class Create extends Component
             }
 
             // Crear lote si los campos no están vacíos
-            if (!empty($this->lote) && !empty($this->fecha_vencimiento)) {
+            if (!empty($this->lote)) {
                 Lote::create([
                     'producto_id' => $producto->id,
                     'codigo_lote' => $this->lote,
                     'fecha_vencimiento' => $this->fecha_vencimiento,
                     'stock' => $this->stock,
-                    'precio_compra' => $this->costo_unitario,  // Asumiendo que el costo unitario es el precio de compra
-                    'precio_venta' => $this->precio_unitario   // Asumiendo que el precio unitario es el precio de venta
                 ]);
             }
 
@@ -154,6 +153,7 @@ class Create extends Component
         $this->nombre = null;
         $this->descripcion = null;
         $this->forma_farmaceutica = null;
+        $this->concentracion = null;
         $this->presentacion = null;
         $this->numero_registro_sanitario = null;
         $this->laboratorio = null;
@@ -183,6 +183,7 @@ class Create extends Component
     {
 
         $this->nombre = $producto->Nom_Prod . " " . $producto->Concent;
+        $this->concentracion = $producto->Concent;
         $this->forma_farmaceutica = $producto->Nom_Form_Farm;
         $this->presentacion = $producto->Presentac;
         $this->numero_registro_sanitario = $producto->Num_RegSan;
@@ -191,8 +192,8 @@ class Create extends Component
         $this->dispatch(
             'notify-toast',
             icon: 'success',
-            title: 'PRODUCTO ENCONTRADO',
-            mensaje: 'Se encontro el producto en la base de datos de la DIGEMID'
+            title: 'PRODUCTO ENCONTRADO en DIGEMID',
+            mensaje: 'se completaron los datos'
         );
     }
 }

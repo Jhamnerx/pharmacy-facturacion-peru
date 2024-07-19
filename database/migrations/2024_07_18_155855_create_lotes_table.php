@@ -11,19 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+
+        // Migration for lotes table
         Schema::create('lotes', function (Blueprint $table) {
-            // Migration for lotes table
-            Schema::create('lotes', function (Blueprint $table) {
-                $table->id();
-                $table->foreignId('producto_id')->constrained('productos');
-                $table->string('codigo_lote')->nullable();
-                $table->date('fecha_vencimiento');
-                $table->integer('stock')->default(0);
-                $table->decimal('precio_compra', 11, 4);
-                $table->decimal('precio_venta', 11, 4);
-                $table->timestamps();
-                $table->softDeletes();
-            });
+            $table->id();
+            $table->foreignId('producto_id')->constrained('productos');
+            $table->foreignId('proveedor_id')->nullable()->constrained('compras');
+            $table->text('codigo_lote')->nullable();
+            $table->date('fecha_vencimiento')->nullable();
+            $table->integer('stock')->default(0);
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

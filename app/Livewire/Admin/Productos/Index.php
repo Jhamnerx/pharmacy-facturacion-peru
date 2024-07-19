@@ -31,7 +31,7 @@ class Index extends Component
             ->orWhere('forma_farmaceutica', 'like', '%' . $this->search . '%')
             ->orWhere('presentacion', 'like', '%' . $this->search . '%')
             ->orWhere('numero_registro_sanitario', 'like', '%' . $this->search . '%')
-            ->with('categoria', 'unit', 'image')
+            ->with('categoria', 'unit', 'image', 'lotes')
             ->orderBy('id', 'desc')
             ->paginate(15);
 

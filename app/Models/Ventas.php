@@ -166,16 +166,17 @@ class Ventas extends Model
     //CREAR ITEM DETALLE VENTA
     public static function createItems(Ventas $venta, $ventaItems, $decrease_stock = true)
     {
-
         foreach ($ventaItems as $ventaItem) {
-
             $ventaItem['ventas_id'] = $venta->id;
 
             $item = $venta->detalle()->create($ventaItem);
 
             if ($decrease_stock && $ventaItem['tipo'] == 'producto') {
+                $producto = $item->producto;
 
-                $item->producto->decrement('stock', $ventaItem['cantidad']);
+                if (!$producto->decrementStockByLote($ventaItem['cantidad'])) {
+                    throw new \Exception('No hay suficiente stock para el producto: ' . $producto->nombre);
+                }
             }
 
             $item->producto->increment('ventas', 1);

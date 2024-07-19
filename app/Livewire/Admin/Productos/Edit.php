@@ -8,6 +8,7 @@ use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 use Intervention\Image\ImageManager;
 use App\Http\Requests\ProductosRequest;
+use App\Models\Lote;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Encoders\PngEncoder;
@@ -23,6 +24,7 @@ class Edit extends Component
     public $divisa = 'PEN', $tipo = 'producto', $tipo_afectacion = 10, $categoria_id, $unit_code = 'NIU';
     public $precio_unitario = 0.00, $precio_minimo = 0.00, $precio_blister = 0.00, $cantidad_blister = 0, $precio_caja = 0.00, $cantidad_caja = 0, $costo_unitario = 0.00;
     public $fecha_vencimiento, $lote;
+    public $concentracion = null;
 
     public $file;
 
@@ -44,6 +46,7 @@ class Edit extends Component
         $this->nombre = $producto->nombre;
         $this->descripcion = $producto->descripcion;
         $this->forma_farmaceutica = $producto->forma_farmaceutica;
+        $this->concentracion = $producto->concentracion;
         $this->presentacion = $producto->presentacion;
         $this->numero_registro_sanitario = $producto->numero_registro_sanitario;
         $this->laboratorio = $producto->laboratorio;
@@ -79,6 +82,17 @@ class Edit extends Component
         try {
 
             $this->producto->update($datos);
+
+            if ($this->producto->cantidad_lotes == 1) {
+                $lote = Lote::where('producto_id', $this->producto->id)->first();
+
+                $lote->update([
+                    'codigo_lote' => $this->lote,
+                    'fecha_vencimiento' => $this->fecha_vencimiento,
+                    'stock' => $this->stock
+                ]);
+            }
+
 
             //save imagen
             if ($this->file) {
@@ -183,6 +197,7 @@ class Edit extends Component
         $this->nombre = null;
         $this->descripcion = null;
         $this->forma_farmaceutica = null;
+        $this->concentracion = null;
         $this->presentacion = null;
         $this->numero_registro_sanitario = null;
         $this->laboratorio = null;

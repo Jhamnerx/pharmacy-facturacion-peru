@@ -72,6 +72,15 @@ class Productos extends Model implements Buyable
     //     return $prefix . str_pad($number, 5, '0', STR_PAD_LEFT); // Llenar con ceros a la izquierda para que tenga 6 dígitos
     // }
 
+    // Incluir el accesor en la serialización del modelo
+    protected $appends = ['cantidad_lotes'];
+
+
+    // Accesor para cantidad_lotes
+    public function getCantidadLotesAttribute()
+    {
+        return $this->lotes()->count();
+    }
 
     public function getColorFechaVencimiento()
     {
@@ -171,6 +180,28 @@ class Productos extends Model implements Buyable
 
     public function lotes()
     {
-        return $this->hasMany(Lote::class);
+        return $this->hasMany(Lote::class, 'producto_id', 'id');
+    }
+
+    public function decrementStockByLote($cantidad)
+    {
+        $this->update(['stock' => $this->stock - $cantidad]);
+        $lotes = $this->lotes()->orderBy('fecha_vencimiento', 'asc')->get();
+
+        foreach ($lotes as $lote) {
+            if ($cantidad <= 0) {
+                break;
+            }
+
+            if ($lote->stock >= $cantidad) {
+                $lote->decrement('stock', $cantidad);
+                $cantidad = 0;
+            } else {
+                $cantidad -= $lote->stock;
+                $lote->update(['stock' => 0]);
+            }
+        }
+
+        return $cantidad === 0;
     }
 }
