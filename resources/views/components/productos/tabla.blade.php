@@ -17,13 +17,13 @@
                             <div class="font-semibold text-left">#</div>
                         </th>
 
-                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap hidden 2xl:block">
                             <div class="font-semibold text-left">IMAGEN</div>
                         </th>
                         <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                             <div class="font-semibold text-left">NOMBRE</div>
                         </th>
-                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap hidden 2xl:block">
                             <div class="font-semibold text-left">DESCRIPC.</div>
                         </th>
                         <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
@@ -47,7 +47,7 @@
                         <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                             <div class="font-semibold text-left">PRECIO MIN.</div>
                         </th>
-                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap hidden 2xl:block">
                             <div class="font-semibold text-left">PRECIO CAJA</div>
                         </th>
 
@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                            <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap hidden 2xl:block">
                                 <div class="flex items-center">
                                     <div
                                         class="w-14 h-10 shrink-0 flex items-center justify-center bg-slate-100 rounded-full mr-2 sm:mr-3">
@@ -89,7 +89,7 @@
                                 </div>
                             </td>
 
-                            <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                            <td class="px-2 first:pl-5 last:pr-5 py-3 ">
                                 <div class="flex items-center ">
 
                                     <div class="font-medium text-slate-800 dark:text-slate-50 text-left">
@@ -97,7 +97,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                            <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap hidden 2xl:block">
                                 <div class="text-left text-slate-800 dark:text-slate-50">
                                     {{ $producto->descripcion }}</div>
                             </td>
@@ -114,7 +114,7 @@
                                 </div>
                             </td>
 
-                            <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                            <td class="px-2 first:pl-5 last:pr-5 py-3 ">
                                 <div class="text-left text-slate-800 dark:text-slate-50">
                                     {{ $producto->presentacion }}</div>
                             </td>
@@ -124,14 +124,14 @@
                             </td>
 
                             <td class="px-2 first:pl-5 last:pr-5 py-3">
-                                <div class="text-left">
+                                <div class="text-left {{ $producto->stock < 2 ? 'text-red-600' : '' }}">
                                     {{ $producto->stock . ' - ' . $producto->unit->name }}</div>
                             </td>
 
                             <td class="px-2 first:pl-5 last:pr-5 py-3">
                                 <div class="text-left font-medium text-emerald-500">
 
-                                    {{ $producto->divisa = 'USD' ? '$ ' : 'S/ ' }}
+                                    {{ $producto->divisa == 'USD' ? '$ ' : 'S/ ' }}
                                     {{ $producto->precio_unitario }}
                                 </div>
                             </td>
@@ -139,7 +139,7 @@
                                 <div class="text-left font-medium text-orange-500">
 
                                     @if ($producto->precio_minimo != '0.00' || ($producto->precio_minimo > 0 && $producto->precio_minimo != null))
-                                        {{ $producto->divisa = 'USD' ? '$ ' : 'S/ ' }}
+                                        {{ $producto->divisa == 'USD' ? '$ ' : 'S/ ' }}
                                         {{ $producto->precio_minimo }}
                                     @else
                                         -
@@ -148,10 +148,11 @@
                                 </div>
                             </td>
 
-                            <td class="px-2 first:pl-5 last:pr-5 py-3">
+                            <td class="px-2 first:pl-5 last:pr-5 py-3 hidden 2xl:block">
                                 @if ($producto->precio_caja)
-                                    {{ $producto->divisa = 'USD' ? '$ ' : 'S/ ' }}
-                                    <div class="text-left">{{ $producto->precio_caja }}</div>
+                                    <div class="text-left">
+                                        {{ $producto->divisa == 'USD' ? '$ ' : 'S/ ' }}{{ $producto->precio_caja }}
+                                    </div>
                                 @else
                                     -
                                 @endif
