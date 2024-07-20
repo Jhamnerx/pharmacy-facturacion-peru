@@ -37,6 +37,7 @@ class Lote extends Model
         return $this->belongsTo(Productos::class);
     }
 
+
     public function proveedor()
     {
         return $this->belongsTo(Proveedores::class, 'proveedor_id', 'id');

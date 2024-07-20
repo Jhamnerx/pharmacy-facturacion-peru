@@ -13,6 +13,7 @@ class Index extends Component
 
     public $search;
 
+
     protected $listeners = [
         'update' => 'render',
         'render-table' => 'render'
@@ -40,14 +41,13 @@ class Index extends Component
         return $d && $d->format($format) == $date;
     }
 
-    public function anularVenta($id)
+    public function anularCompra(Compras $compra)
     {
-        $compra = Compras::find($id);
-        $compra->update([
-            'estado' => 'anulado'
-        ]);
+        $this->dispatch('open-modal-anular', compra: $compra);
+    }
 
-
-        $this->emit('success', 'Compra anulada correctamente');
+    public function updatingSearch()
+    {
+        $this->resetPage();
     }
 }

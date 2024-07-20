@@ -229,7 +229,7 @@ class Create extends Component
             $this->redirectRoute('admin.compras.index');
         } catch (\Throwable $th) {
             DB::rollBack();
-            dd($th);
+
             $this->dispatch(
                 'notify-toast',
                 icon: 'error',

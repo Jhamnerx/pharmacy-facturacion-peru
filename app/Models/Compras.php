@@ -69,18 +69,42 @@ class Compras extends Model
         return $this->belongsTo(Proveedores::class, 'proveedor_id', 'id')->withTrashed()->withoutGlobalScope(LocalScope::class);
     }
 
+    public function lotes()
+    {
+        return $this->hasMany(Lote::class, 'producto_id', 'id');
+    }
+
+
 
     //CREAR ITEM DETALLE VENTA
     public static function createItems($items, Compras $compra)
     {
-
         foreach ($items as $item) {
-
             $item['compras_id'] = $compra->id;
 
-            $item = $compra->detalle()->create($item);
+            // Crear o actualizar el detalle de la compra
+            $detalleItem = $compra->detalle()->create($item);
 
-            $item->producto->increment('stock', $item['cantidad']);
+            // Verificar si el lote ya existe
+            $loteExistente = Lote::where('producto_id', $item['producto_id'])
+                ->where('codigo_lote', $item['codigo_lote'])
+                ->first();
+
+            if ($loteExistente) {
+                // Si el lote ya existe, incrementar su stock
+                $loteExistente->increment('stock', $item['cantidad']);
+            } else {
+                // Si el lote no existe, crear uno nuevo
+                Lote::create([
+                    'producto_id' => $item['producto_id'],
+                    'codigo_lote' => $item['codigo_lote'],
+                    'fecha_vencimiento' => $item['fecha_vencimiento'],
+                    'stock' => $item['cantidad'],
+                ]);
+            }
+
+            // Incrementar el stock del producto
+            $detalleItem->producto->increment('stock', $item['cantidad']);
         }
 
         return $compra->detalle;

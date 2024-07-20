@@ -150,9 +150,9 @@
                                                     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                                 </path>
                                             </svg>
-
                                         </button>
-                                        <div class="origin-top-left z-10 absolute top-full left-0 min-w-44 bg-white border border-slate-300 py-1.5 rounded shadow-xl overflow-hidden mt-1"
+
+                                        <div class="origin-top-left z-20 absolute top-full -left-4 min-w-44 bg-white border border-slate-300 py-1.5 rounded shadow-xl overflow-hidden mt-1"
                                             @click.outside="open = false" @keydown.escape.window="open = false"
                                             x-show="open"
                                             x-transition:enter="transition ease-out duration-200 transform"
@@ -200,8 +200,8 @@
                                                                 {{ $detalle->producto->nombre }}
                                                             </td>
                                                             <td class="px-6 py-4">
-                                                                {{ $detalle->cantidad }} /
-                                                                {{ $compra->divisa == 'PEN' ? 'S/ ' : '$' }}{{ round($detalle->importe_total, 2) }}
+                                                                {{ $detalle->cantidad }} |
+                                                                {{ $compra->divisa == 'PEN' ? 'S/ ' : '$' }}{{ round($detalle->precio, 2) }}
                                                             </td>
                                                             <td class="px-6 py-4">
                                                                 {{ $detalle->codigo_lote }}
@@ -245,7 +245,8 @@
 
                                         <x-form.button 2xs secondary label="Editar"
                                             href="{{ route('admin.compras.edit', $compra) }}" />
-                                        <x-form.button 2xs negative label="Anular" wire:click.prevent="anularVenta" />
+                                        <x-form.button 2xs negative label="Anular"
+                                            wire:click.prevent="anularCompra({{ $compra->id }})" />
                                         <x-form.button 2xs warning label="Guía" disabled
                                             wire:click.prevent="uploadGuia" />
 
@@ -269,7 +270,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- Pagination -->
     <div class="mt-8">

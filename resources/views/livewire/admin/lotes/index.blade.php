@@ -107,7 +107,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-2 first:pl-5 last:pr-5 py-3">
+                                <td class="px-2 first:pl-5 last:pr-5 py-3  whitespace-nowrap">
                                     <div class="text-left {{ $lote->stock < 1 ? 'text-red-500' : '' }}">
                                         {{ $lote->stock . ' - ' . $lote->producto->unit->codigo }}</div>
                                 </td>
@@ -133,7 +133,7 @@
                                     <div class="text-left text-slate-800 dark:text-slate-50">
                                         {{ $lote->proveedor ? $lote->proveedor->razon_social : '' }}</div>
                                 </td>
-                                <td class="px-2 first:pl-5 last:pr-5 py-3">
+                                <td class="px-2 first:pl-5 last:pr-5 py-3  whitespace-nowrap">
                                     <div class="text-center">
                                         @if ($lote->estado == 'vencido')
                                             <x-form.badge negative label="{{ $lote->estado }}" />
@@ -147,7 +147,7 @@
 
                                 @canany(['roductos.lotes.editar', 'productos.lotes.eliminar'])
                                     <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
-                                        @can('roductos.lotes.editar')
+                                        @can('productos.lotes.editar')
                                             <button wire:click.prevent="openModalEdit({{ $lote->id }})"
                                                 class="text-slate-400 hover:text-slate-500 rounded-full">
                                                 <span class="sr-only">Editar</span>

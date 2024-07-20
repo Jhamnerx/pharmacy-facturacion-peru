@@ -7,6 +7,7 @@
 @stop
 
 @push('modals')
+    @livewire('admin.compras.anular')
 @endpush
 
 
