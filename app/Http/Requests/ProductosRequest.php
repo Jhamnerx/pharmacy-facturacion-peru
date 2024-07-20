@@ -45,7 +45,7 @@ class ProductosRequest extends FormRequest
             'cantidad_caja' => 'nullable|numeric|min:0',
             'costo_unitario' => 'nullable|numeric|min:0',
             'lote' => 'nullable|required_if:fecha_vencimiento,!=,""|max:255',
-            'fecha_vencimiento' => 'nullable|required_if:lote,!=,""|date_format:Y-m-d',
+            'fecha_vencimiento' => 'nullable|required_if:lote,!=,""',
         ];
     }
 

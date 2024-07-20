@@ -152,7 +152,7 @@
 
                         <x-form.datetime.picker label="Fecha de Vencimiento:" id="fecha_emision"
                             name="fecha_vencimiento" wire:model.live="fecha_vencimiento" :min="now()->subDays(90)"
-                            :max="now()->addYear(30)" without-time parse-format="YYYY-MM-DD" display-format="DD-MM-YYYY"
+                            :max="now()->addYear(60)" without-time parse-format="YYYY-MM-DD" display-format="DD-MM-YYYY"
                             :clearable="false" />
                     </div>
 

@@ -30,6 +30,7 @@ Route::controller(ComprasController::class)->middleware(['auth'])->group(functio
 
     Route::get('compras', 'index')->name('admin.compras.index');
     Route::get('compras/registrar', 'create')->name('admin.compras.create');
+    Route::get('compras/editar/{compra}', 'editar')->name('admin.compras.edit');
 });
 
 Route::controller(ClientesController::class)->middleware(['auth'])->group(function () {

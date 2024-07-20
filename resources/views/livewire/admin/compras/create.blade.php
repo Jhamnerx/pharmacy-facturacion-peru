@@ -27,8 +27,29 @@
 
                 <div
                     class="col-span-12 grid grid-cols-12 md:col-span-6 border-dashed lg:border-r-2 pr-4 gap-2 bg-white dark:bg-gray-800 items-start border rounded-md m-3 p-4">
-                    {{-- CLIENTE --}}
-                    <div class="col-span-12">
+
+                    <div class="col-span-12 xs:col-span-6">
+                        <x-form.select label="Tipo comprobante:" id="tipo_comprobante_id" name="tipo_comprobante_id"
+                            :options="[
+                                ['name' => 'FACTURA ELECTRONICA', 'id' => '01'],
+                                ['name' => 'BOLETA ELECTRONICA', 'id' => '03'],
+                                ['name' => 'N. VENTA ELECTRONICA', 'id' => '02'],
+                            ]" option-label="name" option-value="id"
+                            wire:model.live="tipo_comprobante_id" :clearable="false" />
+                    </div>
+
+
+                    <div class="col-span-12 md:col-span-3">
+                        <x-form.input label="Serie Doc.:" wire:model.blur="serie" placeholder="F001" />
+                    </div>
+
+                    <div class="col-span-12 md:col-span-3">
+                        <x-form.input label="Correlativo Doc.:" wire:model.live="correlativo" placeholder="001" />
+                    </div>
+
+
+                    {{-- PROVEEDOR --}}
+                    <div class="col-span-12 md:col-span-8">
                         <x-form.select autocomplete="off" id="proveedor_id" name="proveedor_id"
                             label="Selecciona un Proveedor:" wire:model.live="proveedor_id" :clearable="false"
                             placeholder="Escriba el nombre o número de documento del proveedor" :async-data="[
@@ -39,18 +60,11 @@
                         </x-form.select>
                     </div>
 
-                    <div class="col-span-12 md:col-span-3">
-                        <x-form.input label="Serie Doc.:" wire:model.blur="serie" placeholder="F001" />
-                    </div>
-
-                    <div class="col-span-12 md:col-span-3">
-                        <x-form.input label="Correlativo Doc.:" wire:model.live="correlativo" placeholder="001" />
-                    </div>
 
                     {{-- FECHA Factura --}}
-                    <div class="col-span-6">
+                    <div class="col-span-6 md:col-span-4">
                         <x-form.datetime.picker label="Fec. Emision:" id="fecha_emision" name="fecha_emision"
-                            wire:model.live="fecha_emision" :min="now()->subDays(1)" :max="now()" without-time
+                            wire:model.live="fecha_emision" :min="now()->subDays(180)" :max="now()->addDays(30)" without-time
                             parse-format="YYYY-MM-DD" display-format="DD-MM-YYYY" :clearable="false" />
                     </div>
 
@@ -59,13 +73,18 @@
                 <div
                     class="col-span-12 grid grid-cols-12 md:col-span-6  lg:pl-6 gap-2 bg-white dark:bg-gray-800 items-start border rounded-md m-3 p-4">
                     {{-- moneda --}}
-                    <div class="col-span-6 mb-2">
+                    <div class="col-span-12 md:col-span-6 mb-2">
 
                         <x-form.select label="Divisa:" id="divisa" name="divisa" :options="[['name' => 'SOLES', 'id' => 'PEN'], ['name' => 'DOLARES', 'id' => 'USD']]"
                             option-label="name" option-value="id" wire:model.live="divisa" :clearable="false"
                             icon='currency-dollar' />
 
                     </div>
+
+                    <div class="col-span-12 md:col-span-6">
+                        <x-form.input label="Tipo Cambio sunat.:" wire:model.live="tipo_cambio" placeholder="3.741" />
+                    </div>
+
 
                     <div class="col-span-12">
                         <x-form.textarea label="Comentario:" id="comentario" name="comentario"
@@ -110,6 +129,12 @@
                                         <div class="font-semibold text-center">CANTIDAD</div>
                                     </th>
                                     <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                        <div class="font-semibold text-center">N° LOTE</div>
+                                    </th>
+                                    <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                        <div class="font-semibold text-center">FECHA V.</div>
+                                    </th>
+                                    <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                         <div class="font-semibold text-center">DESCRIPCION</div>
                                     </th>
                                     <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
@@ -128,7 +153,7 @@
                             <!-- Table body -->
                             <tbody class="text-sm divide-y divide-slate-200 listaItems">
                                 <!-- Row -->
-                                <tr class="main bg-slate-50">
+                                <tr class="main bg-slate-100">
                                     <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
 
                                         <div class="font-normal text-center">
@@ -143,8 +168,8 @@
                                     </td>
                                     <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap min-w-36 lg:min-w-0">
 
-                                        <x-form.number wire:model.live="selected.cantidad" min="1" step="1"
-                                            placeholder="Cantidad" />
+                                        <x-form.number wire:model.live="selected.cantidad" min="1"
+                                            step="1" placeholder="Cantidad" />
 
                                         @if ($errors->has('selected.cantidad'))
                                             <p class="mt-2 text-pink-600 text-sm">
@@ -152,6 +177,20 @@
                                             </p>
                                         @endif
                                     </td>
+                                    <td class="px-2 first:pl-5 last:pr-5 py-3 ">
+
+                                        <x-form.input wire:model.live="selected.codigo_lote" placeholder="0021011" />
+                                    </td>
+                                    <td class="px-2 first:pl-5 last:pr-5 py-3 ">
+
+                                        <x-form.maskable id="s_fecha_vencimiento"
+                                            wire:model.live="selected.fecha_vencimiento" mask="##-##-####"
+                                            placeholder="31-12-2024" :emit-formatted="true" />
+                                        {{ $selected['fecha_vencimiento'] }}
+
+                                    </td>
+
+
                                     <td class="px-2 first:pl-5 last:pr-5 py-3 ">
 
                                         <div class="font-normal text-center">
@@ -217,6 +256,16 @@
                                                 min="1" step="1" placeholder="Cantidad" />
                                         </td>
                                         <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                            <div class="font-normal text-center">
+                                                {{ $items[$clave]['codigo_lote'] }}
+                                            </div>
+                                        </td>
+                                        <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                            <div class="font-normal text-center">
+                                                {{ $items[$clave]['fecha_vencimiento'] }}
+                                            </div>
+                                        </td>
+                                        <td class="px-2 first:pl-5 last:pr-5 py-3 ">
                                             <div class="font-normal text-center">
                                                 {{ $items[$clave]['descripcion'] }}
                                             </div>

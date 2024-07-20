@@ -39,4 +39,15 @@ class Index extends Component
         $d = DateTime::createFromFormat($format, $date);
         return $d && $d->format($format) == $date;
     }
+
+    public function anularVenta($id)
+    {
+        $compra = Compras::find($id);
+        $compra->update([
+            'estado' => 'anulado'
+        ]);
+
+
+        $this->emit('success', 'Compra anulada correctamente');
+    }
 }

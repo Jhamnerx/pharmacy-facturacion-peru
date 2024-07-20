@@ -26,6 +26,8 @@ class ComprasDetalle extends Model
         'id' => 'integer',
         'compras_id' => 'integer',
         'cantidad' => 'decimal:2',
+        'codigo_lote' => 'string',
+        'fecha_vencimiento' => 'date:d-m-Y',
         'valor_unitario' => 'decimal:2',
         'precio_unitario' => 'decimal:2',
         'icbper' => 'decimal:2',

@@ -124,7 +124,7 @@
                                     </div>
                                     <div class="font-sm text-slate-700">
                                         <p class="text-xs">
-                                            {{ $compra->tipoComprobante->descripcion }}
+                                            {{ $compra->tipoComprobante ? $compra->tipoComprobante->descripcion : '' }}
                                         </p>
 
                                     </div>
@@ -152,7 +152,7 @@
                                             </svg>
 
                                         </button>
-                                        <div class="origin-top-right z-10 absolute top-full left-0 min-w-44 bg-white border border-slate-300 py-1.5 rounded shadow-lg overflow-hidden mt-1"
+                                        <div class="origin-top-right z-10 absolute top-full left-0 min-w-44 bg-white border border-slate-300 py-1.5 rounded shadow-xl overflow-hidden mt-1"
                                             @click.outside="open = false" @keydown.escape.window="open = false"
                                             x-show="open"
                                             x-transition:enter="transition ease-out duration-200 transform"
@@ -174,6 +174,15 @@
                                                         <th scope="col" class="px-6 py-3">
                                                             Cantidad
                                                         </th>
+                                                        <th scope="col" class="px-6 py-3">
+                                                            Lote
+                                                        </th>
+                                                        <th scope="col" class="px-6 py-3">
+                                                            Fecha V.
+                                                        </th>
+                                                        <th scope="col" class="px-6 py-3">
+                                                            Precio compra
+                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -192,6 +201,15 @@
                                                             </td>
                                                             <td class="px-6 py-4">
                                                                 {{ $detalle->cantidad }}
+                                                            </td>
+                                                            <td class="px-6 py-4">
+                                                                {{ $detalle->codigo_lote }}
+                                                            </td>
+                                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                                {{ $detalle->fecha_vencimiento ? $detalle->fecha_vencimiento->format('d-m-Y') : 'sin fecha' }}
+                                                            </td>
+                                                            <td class="px-6 py-4">
+                                                                {{ round($detalle->precio, 2) }}
                                                             </td>
                                                         </tr>
                                                     @endforeach
@@ -221,9 +239,11 @@
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                     <div class="font-medium">
 
-                                        <x-form.button 2xs secondary label="Editar" />
-                                        <x-form.button 2xs negative label="Anular" />
-                                        <x-form.button 2xs warning label="Guía" />
+                                        <x-form.button 2xs secondary label="Editar"
+                                            href="{{ route('admin.compras.edit', $compra) }}" />
+                                        <x-form.button 2xs negative label="Anular" wire:click.prevent="anularVenta" />
+                                        <x-form.button 2xs warning label="Guía" disabled
+                                            wire:click.prevent="uploadGuia" />
 
                                     </div>
                                 </td>

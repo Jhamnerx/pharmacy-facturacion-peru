@@ -7,10 +7,14 @@ use App\Models\Empresa;
 use Livewire\Component;
 use App\Models\Productos;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\UtilesController;
 
 class Create extends Component
 {
+    public $tipo_comprobante_id = '01';
     public $proveedor_id, $serie, $correlativo,  $fecha_emision, $divisa = 'PEN', $comentario = '';
+    public $tipo_cambio = 1.00;
 
     public $product_selected_id;
     public Collection $selected;
@@ -30,6 +34,8 @@ class Create extends Component
             'codigo' => "MD-0000",
             'descripcion' => "",
             'cantidad' => 1,
+            'codigo_lote' => "",
+            'fecha_vencimiento' => "",
             'precio' => 0.00,
             'importe_total' => 0.00,
         ]);
@@ -37,6 +43,10 @@ class Create extends Component
         $this->fecha_emision = now()->format('Y-m-d');
         $this->empresa = Empresa::first();
         $this->local_id = session('local_id');
+
+        //  CONSULTAR TIPO CAMBIO
+        $util = new UtilesController;
+        $this->tipo_cambio = $util->tipoCambio();
     }
 
     public function render()
@@ -58,6 +68,8 @@ class Create extends Component
                 'codigo' => $producto->codigo,
                 'descripcion' => $producto->nombre,
                 'cantidad' => 1,
+                'codigo_lote' => "",
+                'fecha_vencimiento' => "",
                 'precio' => 0.00,
                 'importe_total' => 0.00,
             ]);
@@ -70,6 +82,9 @@ class Create extends Component
             'selected.producto_id' => 'required',
             'selected.cantidad' => 'required|numeric|min:1',
             'selected.precio' => 'required|numeric|min:0.01',
+            'selected.precio' => 'required|numeric|min:0.01',
+            'selected.codigo_lote' => 'nullable',
+            'selected.fecha_vencimiento' => 'nullable|date_format:d-m-Y'
         ], [
             'selected.producto_id.required' => 'Seleccione un producto',
             'selected.cantidad.required' => 'Ingrese la cantidad',
@@ -78,6 +93,9 @@ class Create extends Component
             'selected.precio.required' => 'Ingrese el precio',
             'selected.precio.numeric' => 'El precio debe ser un número',
             'selected.precio.min' => 'El precio debe ser mayor a 0',
+            'selected.codigo_lote.required' => 'Ingrese el código de lote',
+            'selected.fecha_vencimiento.required' => 'Ingrese la fecha de vencimiento',
+            //'selected.fecha_vencimiento.date_format' => 'Ingrese una fecha válida dia-mes-año',
         ]);
         try {
 
@@ -87,6 +105,8 @@ class Create extends Component
                 'codigo' => "MD-0000",
                 'descripcion' => "",
                 'cantidad' => 1,
+                'codigo_lote' => "",
+                'fecha_vencimiento' => "",
                 'precio' => 0.00,
                 'importe_total' => 0.00,
             ]);
@@ -193,18 +213,29 @@ class Create extends Component
             'sub_total' => 'required',
             'igv' => 'required',
             'total' => 'required',
+            'tipo_cambio' => 'required',
+            'tipo_comprobante_id' => 'required',
         ];
 
         $datos = $this->validate($rules);
 
         try {
+            DB::beginTransaction();
             $compra = Compras::create($datos);
 
             $items = Compras::createItems($datos['items'], $compra);
-            session()->flash('compra-registrada', 'Se registro la compra ' . $this->cotizacion->serie_correlativo);
+            DB::commit();
+            session()->flash('compra-registrada', 'Se registro la compra ' . $compra->serie_correlativo);
             $this->redirectRoute('admin.compras.index');
         } catch (\Throwable $th) {
-            //throw $th;
+            DB::rollBack();
+            dd($th);
+            $this->dispatch(
+                'notify-toast',
+                icon: 'error',
+                title: 'ERROR:',
+                mensaje: $th->getMessage(),
+            );
         }
     }
 }

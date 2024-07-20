@@ -149,6 +149,7 @@
 
             <div x-show="activeTab === 'additional-info'">
                 <div class="grid grid-cols-12 gap-6">
+
                     @if ($producto)
                         <!-- Additional fields for Lot and Expiry Date -->
                         @if ($producto->cantidad_lotes == 1 || $producto->cantidad_lotes == 0)

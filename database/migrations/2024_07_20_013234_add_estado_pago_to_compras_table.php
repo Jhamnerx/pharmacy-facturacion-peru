@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::table('compras', function (Blueprint $table) {
             $table->string('tipo_comprobante_id')->nullable()->index('compra_tipo_comprobante_id_foreign')->after('proveedor_id');
-
             $table->enum('estado_pago', ['pendiente', 'pagado'])->default('pendiente')->after('total');
+            $table->enum('estado', ['activo', 'anulado'])->default('activo')->after('estado_pago');
+            $table->decimal('tipo_cambio', 10, 4)->nullable()->after('divisa');
             $table->foreign(['tipo_comprobante_id'])->references(['codigo'])->on('tipo_comprobantes')->onUpdate('cascade')->onDelete('cascade');
         });
     }
