@@ -21,6 +21,15 @@ class ComprasObserver
         }
     }
 
+    public function updating(Compras $compras)
+    {
+
+        if (!App::runningInConsole()) {
+
+            $compras->serie_correlativo = $compras->serie . '-' . $compras->correlativo;
+        }
+    }
+
     /**
      * Handle the Compras "updated" event.
      */

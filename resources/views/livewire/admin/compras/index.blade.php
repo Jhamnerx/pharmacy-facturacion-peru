@@ -152,7 +152,7 @@
                                             </svg>
 
                                         </button>
-                                        <div class="origin-top-right z-10 absolute top-full left-0 min-w-44 bg-white border border-slate-300 py-1.5 rounded shadow-xl overflow-hidden mt-1"
+                                        <div class="origin-top-left z-10 absolute top-full left-0 min-w-44 bg-white border border-slate-300 py-1.5 rounded shadow-xl overflow-hidden mt-1"
                                             @click.outside="open = false" @keydown.escape.window="open = false"
                                             x-show="open"
                                             x-transition:enter="transition ease-out duration-200 transform"
@@ -172,7 +172,7 @@
                                                             Nombre
                                                         </th>
                                                         <th scope="col" class="px-6 py-3">
-                                                            Cantidad
+                                                            Cantidad/Precio
                                                         </th>
                                                         <th scope="col" class="px-6 py-3">
                                                             Lote
@@ -181,7 +181,7 @@
                                                             Fecha V.
                                                         </th>
                                                         <th scope="col" class="px-6 py-3">
-                                                            Precio compra
+                                                            Total
                                                         </th>
                                                     </tr>
                                                 </thead>
@@ -200,7 +200,8 @@
                                                                 {{ $detalle->producto->nombre }}
                                                             </td>
                                                             <td class="px-6 py-4">
-                                                                {{ $detalle->cantidad }}
+                                                                {{ $detalle->cantidad }} /
+                                                                {{ $compra->divisa == 'PEN' ? 'S/ ' : '$' }}{{ round($detalle->importe_total, 2) }}
                                                             </td>
                                                             <td class="px-6 py-4">
                                                                 {{ $detalle->codigo_lote }}
@@ -209,10 +210,13 @@
                                                                 {{ $detalle->fecha_vencimiento ? $detalle->fecha_vencimiento->format('d-m-Y') : 'sin fecha' }}
                                                             </td>
                                                             <td class="px-6 py-4">
-                                                                {{ round($detalle->precio, 2) }}
+                                                                {{ $compra->divisa == 'PEN' ? 'S/ ' : '$' }}
+                                                                {{ round($detalle->importe_total, 2) }}
                                                             </td>
                                                         </tr>
                                                     @endforeach
+
+
 
                                                 </tbody>
                                             </table>
