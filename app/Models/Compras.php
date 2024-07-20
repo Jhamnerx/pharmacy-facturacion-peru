@@ -46,7 +46,7 @@ class Compras extends Model
 
     public function detalle(): HasMany
     {
-        return $this->hasMany(ComprasDetalle::class);
+        return $this->hasMany(ComprasDetalle::class, 'compras_id', 'id');
     }
 
     public function tipoComprobante(): BelongsTo

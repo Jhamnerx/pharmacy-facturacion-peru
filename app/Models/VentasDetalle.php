@@ -43,6 +43,6 @@ class VentasDetalle extends Model
 
     public function producto(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Productos::class);
+        return $this->belongsTo(\App\Models\Productos::class)->withTrashed();
     }
 }

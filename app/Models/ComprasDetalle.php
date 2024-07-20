@@ -24,7 +24,7 @@ class ComprasDetalle extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'compra_id' => 'integer',
+        'compras_id' => 'integer',
         'cantidad' => 'decimal:2',
         'valor_unitario' => 'decimal:2',
         'precio_unitario' => 'decimal:2',
@@ -42,6 +42,6 @@ class ComprasDetalle extends Model
     }
     public function producto(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Productos::class);
+        return $this->belongsTo(\App\Models\Productos::class)->withTrashed();;
     }
 }
