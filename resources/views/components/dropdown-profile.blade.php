@@ -23,7 +23,7 @@
         x-transition:leave-end="opacity-0" x-cloak>
         <div class="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200 dark:border-slate-700">
             <div class="font-medium text-slate-800 dark:text-slate-100">{{ Auth::user()->name }}</div>
-            <div class="text-xs text-slate-500 dark:text-slate-400 italic">Administrator</div>
+            {{-- <div class="text-xs text-slate-500 dark:text-slate-400 italic">Administrator</div> --}}
         </div>
         <ul>
             <li>
@@ -31,17 +31,25 @@
                     href="{{ route('admin.ajustes.cuenta') }}" @click="open = false" @focus="open = true"
                     @focusout="open = false">Ajustes</a>
             </li>
-            <li>
-                <form method="POST" action="{{ route('logout') }}" x-data>
-                    @csrf
-
+            @if (session()->has('impersonate'))
+                <li>
                     <a class="font-medium text-sm text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center py-1 px-3"
-                        href="{{ route('logout') }}" @click.prevent="$root.submit();" @focus="open = true"
-                        @focusout="open = false">
-                        Cerrar Session
-                    </a>
-                </form>
-            </li>
+                        href="{{ route('stopImpersonating') }}" @click="open = false" @focus="open = true"
+                        @focusout="open = false">Volver a mi cuenta</a>
+                </li>
+            @else
+                <li>
+                    <form method="POST" action="{{ route('logout') }}" x-data>
+                        @csrf
+
+                        <a class="font-medium text-sm text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center py-1 px-3"
+                            href="{{ route('logout') }}" @click.prevent="$root.submit();" @focus="open = true"
+                            @focusout="open = false">
+                            Cerrar Sesión
+                        </a>
+                    </form>
+                </li>
+            @endif
         </ul>
     </div>
 </div>

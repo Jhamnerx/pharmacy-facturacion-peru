@@ -41,7 +41,7 @@ class Header extends Component
         $this->dispatch('render');
         $mensaje = "SE CAMBIO DE LOCAL, ahora veras los registros deL LOCAL: " . $local->nombre . "";
         return redirect($this->page)->with('flash.banner', $mensaje);
-        return redirect($this->page)->with('flash.abnnerStyle', 'success');
+        return redirect($this->page)->with('flash.bannerStyle', 'success');
         //  return redirect($this->page);
     }
 

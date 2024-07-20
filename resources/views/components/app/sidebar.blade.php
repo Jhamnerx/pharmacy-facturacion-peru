@@ -268,46 +268,64 @@
                     </li> --}}
 
                     <!-- Compras -->
-                    @can('compras.ver')
-                        <li
-                            class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(1), ['compras'])) {{ 'bg-slate-900' }} @endif">
+                    @canany(['compras.ver', 'compras.crear'])
+
+                        <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(1), ['compras'])) {{ 'bg-slate-900' }} @endif"
+                            x-data="{ open: {{ in_array(Request::segment(1), ['compras']) ? 1 : 0 }} }">
                             <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(1), ['compras'])) {{ 'hover:text-slate-200' }} @endif"
-                                href="{{ route('admin.compras.index') }}">
-                                <div class="flex items-center">
-                                    <x-iconos.cart class="shrink-0 h-6 w-6" />
-                                    <span
-                                        class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                        Compras
-                                    </span>
+                                href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <x-iconos.cart class="shrink-0 h-6 w-6" />
+                                        <span
+                                            class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                            Compras
+                                        </span>
+                                    </div>
+                                    <!-- Icon -->
+                                    <div
+                                        class="flex shrink-0 ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400 @if (in_array(Request::segment(1), ['comprobantes'])) {{ 'rotate-180' }} @endif"
+                                            :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
+                                            <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+                                        </svg>
+                                    </div>
                                 </div>
                             </a>
-                        </li>
-                    @endcan
-
-                    <!-- Usuarios -->
-                    {{-- <li
-                        class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(1), ['usuarios'])) {{ 'bg-slate-900' }} @endif">
-                        <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(1), ['usuarios'])) {{ 'hover:text-slate-200' }} @endif"
-                            href="{{ route('admin.usuarios.index') }}">
-                            <div class="flex items-center">
-                                <svg class="shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                                    <path
-                                        class="fill-current @if (in_array(Request::segment(1), ['usuarios'])) {{ 'text-teal-500' }}@else{{ 'text-slate-600' }} @endif"
-                                        d="M16 13v4H8v-4H0l3-9h18l3 9h-8Z" />
-                                    <path
-                                        class="fill-current @if (in_array(Request::segment(1), ['usuarios'])) {{ 'text-teal-300' }}@else{{ 'text-slate-400' }} @endif"
-                                        d="m23.72 12 .229.686A.984.984 0 0 1 24 13v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1v-8c0-.107.017-.213.051-.314L.28 12H8v4h8v-4H23.72ZM13 0v7h3l-4 5-4-5h3V0h2Z" />
-                                </svg>
-                                <span
-                                    class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                    Usuarios
-                                </span>
+                            <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
+                                <ul class="pl-9 mt-1 @if (!in_array(Request::segment(1), ['ventas'])) {{ 'hidden' }} @endif"
+                                    :class="open ? '!block' : 'hidden'">
+                                    @can('compras.crear')
+                                        <li class="mb-1 last:mb-0">
+                                            <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.compras.create')) {{ '!text-teal-500' }} @endif"
+                                                href="{{ route('admin.compras.create') }}">
+                                                <span
+                                                    class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                                    Registrar Compra
+                                                </span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                    @can('compras.ver')
+                                        <li class="mb-1 last:mb-0">
+                                            <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.compras.index')) {{ '!text-teal-500' }} @endif"
+                                                href="{{ route('admin.compras.index') }}">
+                                                <span
+                                                    class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                                    Ver Compras
+                                                </span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                </ul>
                             </div>
-                        </a>
-                    </li> --}}
+                        </li>
+                    @endcanany
+
+
 
                     <!-- Productos -->
-                    @can('productos.ver')
+                    @canany(['productos.ver', 'productos.lotes.ver'])
 
                         <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(1), ['productos', 'lotes'])) {{ 'bg-slate-900' }} @endif"
                             x-data="{ open: {{ in_array(Request::segment(1), ['productos', 'lotes']) ? 1 : 0 }} }">
@@ -332,9 +350,9 @@
                                 </div>
                             </a>
                             <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                                <ul class="pl-9 mt-1 @if (!in_array(Request::segment(1), ['ventas'])) {{ 'hidden' }} @endif"
+                                <ul class="pl-9 mt-1 @if (!in_array(Request::segment(1), ['productos', 'lotes'])) {{ 'hidden' }} @endif"
                                     :class="open ? '!block' : 'hidden'">
-                                    @can('comprobantes.ver')
+                                    @can('productos.ver')
                                         <li class="mb-1 last:mb-0">
                                             <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.productos.index')) {{ '!text-teal-500' }} @endif"
                                                 href="{{ route('admin.productos.index') }}">
@@ -344,7 +362,8 @@
                                                 </span>
                                             </a>
                                         </li>
-
+                                    @endcan
+                                    @can('productos.lotes.ver')
                                         <li class="mb-1 last:mb-0">
                                             <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.lotes.index')) {{ '!text-teal-500' }} @endif"
                                                 href="{{ route('admin.lotes.index') }}">
@@ -355,30 +374,11 @@
                                             </a>
                                         </li>
                                     @endcan
-                                    {{-- 
-                                <li class="mb-1 last:mb-0">
-                                    <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.nota.credito.create')) {{ '!text-teal-500' }} @endif"
-                                        href="{{ route('admin.nota.credito.create') }}">
-                                        <span
-                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                            Emitir nota de credito
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="mb-1 last:mb-0">
-                                    <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.nota.debito.create')) {{ '!text-teal-500' }} @endif"
-                                        href="{{ route('admin.nota.debito.create') }}">
-                                        <span
-                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                            Emitir nota de debito
-                                        </span>
-                                    </a>
-                                </li> --}}
 
                                 </ul>
                             </div>
                         </li>
-                    @endcan
+                    @endcanany
                     <!-- Categorias -->
                     @can('categoria_productos.ver')
                         <li

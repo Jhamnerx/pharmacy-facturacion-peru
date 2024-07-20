@@ -8,6 +8,7 @@ use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\CategoriasController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ProveedoresController;
 use App\Http\Controllers\CotizacionesController;
 use App\Http\Controllers\Utiles\PrintController;
@@ -99,3 +100,10 @@ Route::controller(ReportesController::class)->group(function () {
 route::controller(ClienteUtilController::class)->group(function () {
     route::get('consulta/invoice', 'consultaInvoice')->name('admin.consulta.invoice');
 });
+
+
+Route::group(['middleware' => ['auth', 'role:admin']], function () {
+    Route::get('/impersonate/{userId}', [AdminController::class, 'impersonate'])->name('impersonate');
+});
+
+Route::get('/stop-impersonating', [AdminController::class, 'stopImpersonating'])->name('stopImpersonating');

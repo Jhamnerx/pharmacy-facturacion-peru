@@ -305,6 +305,23 @@ class PermisosSeeder extends Seeder
         }
 
 
+        $categoria_compras = CategoriaPermisos::find(5);
+
+        $permisos = [
+            [
+                'name' => 'compras.editar',
+                'description' => 'Editar compras',
+            ],
+            [
+                'name' => 'compras.anular',
+                'description' => 'Anular compras',
+            ]
+        ];
+
+        foreach ($permisos as $permiso) {
+            $categoria_compras->permisos()->create($permiso);
+        }
+
         //DAR PERMISOS AL ROL ADMIN
         //$admin->givePermissionTo(Permission::all());
     }

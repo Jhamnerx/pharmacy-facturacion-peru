@@ -100,6 +100,9 @@
                                             </svg>
                                         </button>
 
+                                        {{-- <x-form.mini.button rounded black
+                                            href="{{ route('impersonate', $usuario->id) }}" target="_blank"
+                                            icon="user" /> --}}
                                     </div>
                                 </td>
                             </tr>
