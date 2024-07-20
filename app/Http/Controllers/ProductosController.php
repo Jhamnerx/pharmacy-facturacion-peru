@@ -11,7 +11,8 @@ class ProductosController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('role_or_permission:admin|productos.ver', only: ['index', 'lotes']),
+            new Middleware('role_or_permission:admin|productos.ver', only: ['index']),
+            new Middleware('role_or_permission:admin|productos.lotes.ver', only: ['lotes']),
         ];
     }
 

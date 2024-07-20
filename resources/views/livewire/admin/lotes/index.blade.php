@@ -86,7 +86,7 @@
                                     </div>
                                 </td>
 
-                                <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                <td class="px-2 first:pl-5 last:pr-5 py-3 ">
                                     <div class="flex items-center ">
 
                                         <div class="font-medium text-slate-800 dark:text-slate-50 text-center">
@@ -94,7 +94,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                <td class="px-2 first:pl-5 last:pr-5 py-3 ">
                                     <div class="text-left text-slate-800 dark:text-slate-50">
                                         {{ $lote->producto->concentracion }}</div>
                                 </td>
@@ -145,9 +145,9 @@
                                     </div>
                                 </td>
 
-                                @canany(['productos.editar', 'productos.eliminar'])
+                                @canany(['roductos.lotes.editar', 'productos.lotes.eliminar'])
                                     <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
-                                        @can('productos.editar')
+                                        @can('roductos.lotes.editar')
                                             <button wire:click.prevent="openModalEdit({{ $lote->id }})"
                                                 class="text-slate-400 hover:text-slate-500 rounded-full">
                                                 <span class="sr-only">Editar</span>
@@ -158,7 +158,7 @@
                                             </button>
                                         @endcan
                                         @if ($lote->estado == 'vencido')
-                                            @can('productos.eliminar')
+                                            @can('productos.lotes.eliminar')
                                                 <button wire:click.prevent="openModalDelete({{ $lote->id }})"
                                                     aria-controls="danger-modal"
                                                     class="text-rose-500 hover:text-rose-600 rounded-full">

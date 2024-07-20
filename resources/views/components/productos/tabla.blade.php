@@ -178,6 +178,43 @@
                                                 </a>
                                             </li>
                                         @endcan
+                                        @can('productos.aumentar_stock')
+                                            <li>
+                                                <a href="javascript: void(0)"
+                                                    wire:click.prevent="openModalCreateLote({{ $producto->id }})"
+                                                    class="text-slate-800 dark:text-slate-100 group flex items-center px-4 py-2 text-sm font-normal"
+                                                    disabled="false" id="headlessui-menu-item-27" role="menuitem"
+                                                    tabindex="-1">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
+                                                        class="w-5 h-5 mr-3">
+
+                                                        <g class="nc-icon-wrapper">
+                                                            <path
+                                                                d="M42,19H6a1,1,0,0,0-1,1V41a5,5,0,0,0,5,5H38a5,5,0,0,0,5-5V20A1,1,0,0,0,42,19Z"
+                                                                fill="#3d6c7b"></path>
+                                                            <path
+                                                                d="M45,14H3a2,2,0,0,0-2,2v4a2,2,0,0,0,2,2H45a2,2,0,0,0,2-2V16A2,2,0,0,0,45,14Z"
+                                                                fill="#4d8b9d"></path>
+                                                            <path d="M24,41a1,1,0,0,1-1-1V28a1,1,0,0,1,2,0V40A1,1,0,0,1,24,41Z"
+                                                                fill="#2a4b55"></path>
+                                                            <path d="M16,41a1,1,0,0,1-1-1V28a1,1,0,0,1,2,0V40A1,1,0,0,1,16,41Z"
+                                                                fill="#2a4b55"></path>
+                                                            <path d="M32,41a1,1,0,0,1-1-1V28a1,1,0,0,1,2,0V40A1,1,0,0,1,32,41Z"
+                                                                fill="#2a4b55"></path>
+                                                            <path
+                                                                d="M10,19a1,1,0,0,1-.893-1.447l8-16a1,1,0,1,1,1.789.895l-8,16A1,1,0,0,1,10,19Z"
+                                                                fill="#363636"></path>
+                                                            <path
+                                                                d="M38,19a1,1,0,0,1-.9-.553l-8-16a1,1,0,1,1,1.789-.895l8,16A1,1,0,0,1,38,19Z"
+                                                                fill="#363636"></path>
+                                                        </g>
+                                                    </svg>
+
+                                                    Crear Lote
+
+                                                </a>
+                                            </li>
+                                        @endcan
                                         @can('productos.eliminar')
                                             <li>
                                                 <a href="javascript: void(0)"
@@ -185,8 +222,8 @@
                                                     class="text-slate-800 dark:text-slate-100 group flex items-center px-4 py-2 text-sm font-normal"
                                                     disabled="false" id="headlessui-menu-item-28" role="menuitem"
                                                     tabindex="-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor"
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor"
                                                         class="h-5 w-5 mr-3 text-gray-400 group-hover:text-red-500">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">

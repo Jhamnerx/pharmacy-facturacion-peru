@@ -54,4 +54,9 @@ class Index extends Component
 
         $this->dispatch('open-modal-delete', producto: $producto);
     }
+    public function openModalCreateLote(Productos $producto)
+    {
+
+        $this->dispatch('open-modal-create-lote', producto: $producto);
+    }
 }
