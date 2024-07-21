@@ -1,4 +1,4 @@
-<div class="bg-white shadow-lg rounded-sm border border-slate-200 mb-8">
+<div class="bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700">
     <header class="px-5 py-4">
         <h2 class="font-semibold text-slate-800">Cotizaciones <span
                 class="text-slate-400 font-medium">{{ $presupuestos->total() }}</span></h2>
@@ -10,7 +10,7 @@
             <table class="table-auto  w-full">
                 <!-- Table header -->
                 <thead
-                    class="text-xs font-semibold uppercase text-slate-500 bg-slate-50 border-t border-b border-slate-200">
+                    class="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/20 border-t border-b border-slate-200 dark:border-slate-700">
                     <tr>
 
                         <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
@@ -54,7 +54,7 @@
                     </tr>
                 </thead>
                 <!-- Table body -->
-                <tbody class="text-sm divide-y divide-slate-200">
+                <tbody class="text-sm divide-y divide-slate-200 dark:divide-slate-700">
                     <!-- Row -->
                     @foreach ($presupuestos as $cotizacion)
                         <tr>
@@ -71,10 +71,12 @@
                             </td>
 
                             <td class="px-2 first:pl-5 last:pr-5 py-3">
-                                <div class="font-medium text-slate-900">
+                                <div class="font-medium text-slate-800 dark:text-slate-100">
                                     {{ $cotizacion->cliente->razon_social }}
                                 </div>
-                                <div class="font-sm text-slate-700">
+                                <div
+                                    class="font-sm
+                                    text-slate-700 dark:text-slate-100">
                                     <p class="text-xs">
                                         {{ $cotizacion->cliente->numero_documento }}
                                     </p>
@@ -91,7 +93,7 @@
                                                 :aria-expanded="open">
                                                 <div class="flex items-center truncate">
                                                     <span
-                                                        class="truncate ml-2 text-sm font-medium group-hover:text-slate-800">
+                                                        class="truncate ml-2 text-sm font-medium text-slate-700 dark:text-slate-100 group-hover:text-slate-800">
                                                         {{ $cotizacion->forma_pago }}
                                                     </span>
                                                     <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400"
@@ -162,7 +164,7 @@
                                         <!-- End -->
                                     </div>
                                 @else
-                                    <div class="font-medium text-slate-800">
+                                    <div class="font-medium text-slate-800 dark:text-slate-100">
                                         {{ $cotizacion->forma_pago }}
                                     </div>
                                 @endif
