@@ -26,7 +26,7 @@ class Edit extends Component
     {
         $this->lote = $lote;
         $this->codigo_lote = $lote->codigo_lote;
-        $this->fecha_vencimiento = $lote->fecha_vencimiento->format('Y-m-d');
+        $this->fecha_vencimiento = $lote->fecha_vencimiento ? $lote->fecha_vencimiento->format('Y-m-d') : null;
         $this->stock = $lote->stock;
         $this->showModal = true;
     }
