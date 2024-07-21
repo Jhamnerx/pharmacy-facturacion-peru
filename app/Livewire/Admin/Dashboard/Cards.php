@@ -121,6 +121,7 @@ class Cards extends Component
         $this->fecha = $fecha;
         $this->setMontos();
     }
+
     #[On('echo:ventas,VentaCreada')]
     public function setMontos()
     {

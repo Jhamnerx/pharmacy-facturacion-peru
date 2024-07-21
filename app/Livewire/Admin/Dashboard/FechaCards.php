@@ -7,22 +7,13 @@ use Livewire\Component;
 
 class FechaCards extends Component
 {
-
-    public $fecha;
-
-
-    public function mount()
-    {
-        $this->fecha = Carbon::now()->format('Y-m-d');
-    }
-
     public function render()
     {
         return view('livewire.admin.dashboard.fecha-cards');
     }
 
-    public function updatedFecha()
+    public function setDate($date)
     {
-        $this->dispatch('search-card-totales', fecha: $this->fecha);
+        $this->dispatch('search-card-totales', fechas: $date);
     }
 }
