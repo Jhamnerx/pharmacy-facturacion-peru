@@ -21,14 +21,19 @@ export const hexToRGB = (h) => {
     return `${+r},${+g},${+b}`;
 };
 
-export const formatValue = (value) =>
-    Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "PEN",
-        currencyDisplay: "symbol",
-        maximumSignificantDigits: 3,
-        notation: "compact",
-    }).format(value);
+export const formatValue = (value) => {
+    // Utiliza Intl.NumberFormat para formatear el valor como número
+    const numberFormatter = new Intl.NumberFormat("es-PE", {
+        style: "decimal",
+        maximumFractionDigits: 2, // Ajusta el número de decimales si es necesario
+    });
+
+    // Formatea el valor como número
+    const formattedNumber = numberFormatter.format(value);
+
+    // Devuelve el valor formateado con el prefijo "S/"
+    return `S/ ${formattedNumber}`;
+};
 
 export const formatThousands = (value) =>
     Intl.NumberFormat("en-US", {
