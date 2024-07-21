@@ -88,6 +88,7 @@
 
     @stack('modals')
     @livewire('admin.reportes.ventas')
+
     @livewireScripts
 
     @stack('scripts')

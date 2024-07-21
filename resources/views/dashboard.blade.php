@@ -82,5 +82,8 @@
 
     </div>
 
+    @push('modals')
+        @livewire('admin.plantilla.modal-stock-vencidos-productos')
+    @endpush
 
 @stop
