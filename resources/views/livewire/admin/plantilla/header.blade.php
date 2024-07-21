@@ -135,7 +135,7 @@
         const statusTextElement = document.getElementById('status-text');
 
         function updateStatus(connected) {
-            console.log('updateStatus', connected);
+            //console.log('updateStatus', connected);
             if (connected) {
                 statusElement.classList.remove('disconnected');
                 statusElement.classList.add('connected');
@@ -150,17 +150,17 @@
         const socket = new WebSocket("ws://127.0.0.1:40213/");
 
         socket.addEventListener('open', function(event) {
-            console.log('WebSocket is connected.');
+            // console.log('WebSocket is connected.');
             updateStatus(true);
         });
 
         socket.addEventListener('close', function(event) {
-            console.log('WebSocket is closed.');
+            // console.log('WebSocket is closed.');
             updateStatus(false);
         });
 
         socket.addEventListener('error', function(event) {
-            console.log('WebSocket error:', event);
+            // console.log('WebSocket error:', event);
             updateStatus(false);
         });
 

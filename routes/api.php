@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UtilesController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Api\SelectsController;
 use App\Http\Controllers\Utiles\PrintController;
 
@@ -46,3 +47,6 @@ Route::controller(UtilesController::class)->group(function () {
 
 Route::get('/print-receipt/{venta}', [PrintController::class, 'printReceipt'])->name('api.print.receipt');
 Route::get('/print-receipt-test', [PrintController::class, 'test'])->name('api.print.test');
+
+
+Route::get('/card-ventas-compras', [DashboardController::class, 'getDataVentas'])->name('json_data_feed');

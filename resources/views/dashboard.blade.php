@@ -74,7 +74,10 @@
         @livewire('admin.dashboard.cards')
 
 
-        <div class="grid grid-cols-12 gap-6 mt-4">
+        <div class="grid grid-cols-12 gap-6">
+            <!-- Bar chart (Direct vs Indirect) -->
+            <x-dashboard.ventas-compras-card />
+
             @livewire('admin.dashboard.cards.productos-vencimiento')
 
             @livewire('admin.dashboard.cards.productos-most-sale')
