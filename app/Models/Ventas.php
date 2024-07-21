@@ -179,7 +179,7 @@ class Ventas extends Model
                 }
             }
 
-            $item->producto->increment('ventas', 1);
+            $item->producto->increment('ventas', $ventaItem['cantidad']);
         }
 
         return $venta->detalle;
