@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Ajustes\Sunat;
 use App\Models\Empresa;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use App\Http\Controllers\Facturacion\Api\ApiFacturacion;
 
 class Certificado extends Component
 {
@@ -12,9 +13,10 @@ class Certificado extends Component
 
     public $file;
     public Empresa $empresa;
+    public $certificados = [];
 
     protected $rules = [
-        'file' => 'extensions:bin,p12'
+        'file' => 'extensions:bin,p12,pfx'
     ];
 
     protected $messages = [
@@ -24,6 +26,7 @@ class Certificado extends Component
     public function mount()
     {
         $this->empresa = Empresa::first();
+        $this->certificados = $this->listCertificados();
     }
 
 
@@ -31,42 +34,77 @@ class Certificado extends Component
     {
         return view('livewire.admin.ajustes.sunat.certificado');
     }
-    // public function uploadCertificado()
-    // {
-    //     $this->validate();
 
-    //     try {
+    public function uploadCertificado()
+    {
+        $this->validate();
 
-    //         $ruta = $this->plantilla->empresa->nombre . '/certificado';
+        try {
 
-    //         $this->file->storeAs($ruta,  $this->file->getClientOriginalName(), 'facturacion');
+            $ruta = '/certificado';
 
-    //         $util = new ApiFacturacion();
-    //         $mensaje = $util->convertCertificado($ruta . "/" .  $this->file->getClientOriginalName(), $this->plantilla->sunat_datos['clave_certificado_cdt']);
+            $this->file->storeAs($ruta,  $this->file->getClientOriginalName(), 'facturacion');
 
-    //         if ($mensaje != 'exito') {
-    //             $this->dispatch(
-    //                 'notify-toast',
-    //                 icon: 'error',
-    //                 title: 'ERROR',
-    //                 mensaje: 'mensaje: ' . $mensaje,
-    //             );
-    //             return;
-    //         }
-    //         $this->dispatch(
-    //             'notify-toast',
-    //             icon: 'success',
-    //             title: 'CERTIFICADO SUBIDO Y CONVERTIDO',
-    //             mensaje: 'Se guardo y se convertio el certificado',
-    //         );
-    //     } catch (\Throwable $th) {
+            $util = new ApiFacturacion();
+            $mensaje = $util->convertCertificado($ruta . "/" .  $this->file->getClientOriginalName(), $this->empresa->sunat_datos['clave_certificado_cdt']);
 
-    //         $this->dispatch(
-    //             'notify-toast',
-    //             icon: 'error',
-    //             title: 'ERROR',
-    //             mensaje: 'mensaje: ' . $th->getMessage(),
-    //         );
-    //     }
-    // }
+            if ($mensaje != 'exito') {
+                $this->dispatch(
+                    'notify-toast',
+                    icon: 'error',
+                    title: 'ERROR',
+                    mensaje: 'mensaje: ' . $mensaje,
+                );
+                return;
+            }
+
+            $this->afterUploadCertificado();
+        } catch (\Throwable $th) {
+
+            $this->dispatch(
+                'notify-toast',
+                icon: 'error',
+                title: 'ERROR',
+                mensaje: 'mensaje: ' . $th->getMessage(),
+            );
+        }
+    }
+
+    public function afterUploadCertificado()
+    {
+        $this->file = null;
+
+        $this->dispatch(
+            'notify-toast',
+            icon: 'success',
+            title: 'CERTIFICADO SUBIDO Y CONVERTIDO',
+            mensaje: 'Se guardo y se convertio el certificado',
+        );
+        $this->certificados = $this->listCertificados();
+    }
+    public function listCertificados()
+    {
+        $files = glob(storage_path('app/facturacion/certificado/*'));
+        $certificados = [];
+        foreach ($files as $file) {
+            $certificados[] = basename($file);
+        }
+
+        return $certificados;
+    }
+    public function deleteCertificado($certificado)
+    {
+
+        try {
+            $ruta = storage_path('app/facturacion/certificado/' . $certificado);
+
+            if (file_exists($ruta)) {
+                unlink($ruta);
+            }
+            $this->redirect(route('admin.ajustes.sunat'));
+        } catch (\Throwable $th) {
+
+            dd($th);
+        }
+    }
 }

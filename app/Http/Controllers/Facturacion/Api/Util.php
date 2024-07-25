@@ -522,7 +522,7 @@ class Util extends Controller
 
     public function downloadCdr($clase)
     {
-        $ruta = $this->empresa->empresa->nombre . "/" . $this->empresa->ruta_cdr . $clase->nombre_cdr . '.xml';
+        $ruta = "/" . $this->empresa->ruta_cdr . $clase->nombre_cdr . '.xml';
 
 
         return Storage::disk('facturacion')->download($ruta, $clase->nombre_cdr . '.xml');
@@ -530,16 +530,15 @@ class Util extends Controller
 
     public function convertToPem($ruta, $password)
     {
-
         try {
 
             $pfx = Storage::disk('facturacion')->get($ruta);
             $certificate = new X509Certificate($pfx, $password);
             $pem = $certificate->export(X509ContentType::PEM);
-            Storage::disk('facturacion')->put($this->empresa->empresa->nombre . '/certificado' . '/' . $this->empresa->empresa->nombre . '_certificado' . '.pem', $pem);
+            Storage::disk('facturacion')->put('/certificado/certificado' . '.pem', $pem);
 
             $this->empresa->update([
-                'ruta_cert' => 'certificado/' . $this->empresa->empresa->nombre . '_certificado'
+                'ruta_cert' => 'certificado/certificado'
             ]);
 
             return "exito";

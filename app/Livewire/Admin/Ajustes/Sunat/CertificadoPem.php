@@ -15,7 +15,7 @@ class CertificadoPem extends Component
     public function mount()
     {
         $this->empresa = Empresa::first();
-        $this->data = Storage::disk('facturacion')->get('certificado.pem');
+        $this->data = Storage::disk('facturacion')->get('certificado/certificado.pem');
     }
 
     public function render()
@@ -40,6 +40,7 @@ class CertificadoPem extends Component
                 title: 'CERTIFICADO SUBIDO',
                 mensaje: 'Se guardo el certificado',
             );
+            $this->redirect(route('admin.ajustes.sunat'));
         } catch (\Throwable $th) {
             $this->dispatch(
                 'notify-toast',

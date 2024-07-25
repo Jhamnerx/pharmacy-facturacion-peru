@@ -7,16 +7,19 @@
         </div>
 
         <div class="relative justify-center px-6 pt-2 pb-6 xl:pb-11 cursor-pointer rounded-md">
-            <x-form.textarea class="px-5 mx-2 w-full" wire:model.text="data" label="Inserta el certificado"
+            <x-form.textarea class="px-5 mx-2 w-full" wire:model.live="data" label="Inserta el certificado"
                 placeholder="Pega el certificado" />
         </div>
         <!-- Modal footer -->
-        <div class="px-5 py-4 border-t border-slate-200">
-            <div class="flex flex-wrap justify-end space-x-2">
 
-                <x-form.button @click="files = null" wire:click='uploadCertificado' spinner="uploadCertificado"
-                    label="Crear Archivo PEM" primary icon="arrow-up-tray" />
+        @if (is_null($data))
+            <div class="px-5 py-4 border-t border-slate-200">
+                <div class="flex flex-wrap justify-end space-x-2">
+
+                    <x-form.button @click="files = null" wire:click='uploadCertificado' spinner="uploadCertificado"
+                        label="Crear Archivo PEM" primary icon="arrow-up-tray" />
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 </div>

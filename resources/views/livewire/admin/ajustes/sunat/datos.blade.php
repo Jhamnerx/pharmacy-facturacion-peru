@@ -18,7 +18,7 @@
                 </div>
                 <div class="col-span-12 md:col-span-4">
 
-                    <x-form.select label="Entorno del sistema:" id="modo" name="modo" :options="[['name' => 'Demo', 'id' => 'local'], ['name' => 'Produccióon', 'id' => 'produccion']]"
+                    <x-form.select label="Entorno del sistema:" id="modo" name="modo" :options="[['name' => 'Demo', 'id' => 'local'], ['name' => 'Producción', 'id' => 'produccion']]"
                         option-label="name" option-value="id" wire:model.live="modo" :clearable="false" />
 
                 </div>

@@ -47,12 +47,11 @@
                             <hr class="my-6 border-t border-slate-200 dark:border-slate-700" />
 
                             <div>
-                                <div class="text-slate-800 dark:text-slate-100 font-semibold mb-4">Certificado (CDT):
+                                <div class="text-slate-800 dark:text-slate-100 font-semibold mb-4 mt-2">Certificado (CDT):
                                 </div>
                                 <form>
                                     <div class="space-y-4">
                                         <div class="grid grid-cols-12 gap-4 mt-4 pt-4 pb-4 px-3 mb-2">
-
 
                                             @livewire('admin.ajustes.sunat.certificado', ['empresa' => $empresa], key('cdt' . $empresa->id))
                                             @livewire('admin.ajustes.sunat.certificado-pem', ['empresa' => $empresa], key('cdt-pem' . $empresa->id))
