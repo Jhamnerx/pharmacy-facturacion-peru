@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('empresa', function (Blueprint $table) {
             $table->text('codigo_observacion_digemid')->nullable()->after('sunat_datos');
             $table->text('regimen_type')->nullable()->after('sunat_datos');
-            $table->enum('soap_type', ['sunat', 'ose'])->default('sunat')->after('modo');
+            $table->enum('soap_type', ['sunat', 'ose', 'qpse'])->default('sunat')->after('modo');
             $table->string('soap_url')->nullable()->after('soap_type');
             $table->text('guia_api_datos')->nullable()->after('soap_url');
             $table->text('sire_datos')->nullable()->after('guia_api_datos');

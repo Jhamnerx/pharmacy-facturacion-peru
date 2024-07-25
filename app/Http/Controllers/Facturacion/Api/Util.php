@@ -71,6 +71,7 @@ class Util extends Controller
     {
 
         $ruta_certificado = $this->empresa->ruta_cert . '.pem';
+
         $see = new See();
 
         $see->setBuilderOptions([
@@ -89,7 +90,7 @@ class Util extends Controller
         //$see->setCodeProvider(new XmlErrorCodeProvider());
 
         if (!Storage::disk('facturacion')->exists($ruta_certificado)) {
-            throw new Exception('No se pudo cargar el certificado');
+            throw new Exception('No se pudo cargar el certificado (Sunat)');
         }
         $see->setCertificate(Storage::disk('facturacion')->get($ruta_certificado));
         /**
@@ -154,7 +155,7 @@ class Util extends Controller
 
             $see->setCertificate($certificate);
             $see->setClaveSOL(trim($this->empresa->ruc), $this->empresa->sunat_datos['usuario_sol_sunat'], $this->empresa->sunat_datos['clave_sol_sunat']);
-            $see->setApiCredentials($this->empresa->sunat_datos['guia_cliente_id'], $this->empresa->sunat_datos['guia_secret']);
+            $see->setApiCredentials($this->empresa->guia_api_datos['cliente_id'], $this->empresa->guia_api_datos['cliente_secret']);
 
             return $see;
         }

@@ -12,6 +12,7 @@ use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -65,21 +66,30 @@ class EnviarComprobanteCliente extends Mailable implements ShouldQueue
      */
     public function attachments(): array
     {
+        $attachments = [];
+
+        // Siempre adjuntamos el PDF
+        $pdfAttachment = Attachment::fromData(fn () =>
+        base64_decode($this->pdfBase64), $this->invoice->tipo_comprobante_id !== '02' ? $this->invoice->nombre_xml . '.pdf' : $this->invoice->tipoComprobante->descripcion . ' ' . $this->invoice->serie_correlativo . '.pdf')
+            ->withMime('application/pdf');
+
+        // Verificamos y adjuntamos los otros archivos si existen
         if ($this->invoice->tipo_comprobante_id !== '02') {
-            # code...
+            $xmlPath = '/xml/' . $this->invoice->nombre_xml . '.xml';
+            $cdrPath = '/cdr/' . $this->invoice->nombre_cdr . '.zip';
 
-            return [
-                Attachment::fromStorageDisk('facturacion', '/xml' . '/' . $this->invoice->nombre_xml . '.xml'),
-                Attachment::fromStorageDisk('facturacion', '/cdr' . '/' . $this->invoice->nombre_cdr . '.zip'),
-                Attachment::fromData(fn () => base64_decode($this->pdfBase64), $this->invoice->nombre_xml . '.pdf')
-                    ->withMime('application/pdf'),
-            ];
-        } else {
+            if (Storage::disk('facturacion')->exists($xmlPath)) {
+                $attachments[] = Attachment::fromStorageDisk('facturacion', $xmlPath);
+            }
 
-            return [
-                Attachment::fromData(fn () => base64_decode($this->pdfBase64), $this->invoice->tipoComprobante->descripcion . ' ' . $this->invoice->serie_correlativo . '.pdf')
-                    ->withMime('application/pdf'),
-            ];
+            if (Storage::disk('facturacion')->exists($cdrPath)) {
+                $attachments[] = Attachment::fromStorageDisk('facturacion', $cdrPath);
+            }
         }
+
+        // Añadimos el PDF a la lista de adjuntos
+        $attachments[] = $pdfAttachment;
+
+        return $attachments;
     }
 }
