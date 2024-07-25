@@ -51,6 +51,29 @@ class Empresa extends Model
         );
     }
 
+    protected function guiaApiDatos(): Attribute
+    {
+        return new Attribute(
+            get: fn ($guia_api_datos) => json_decode($guia_api_datos, true),
+            set: fn ($guia_api_datos) => json_encode($guia_api_datos),
+        );
+    }
+
+    protected function sireDatos(): Attribute
+    {
+        return new Attribute(
+            get: fn ($sire_datos) => json_decode($sire_datos, true),
+            set: fn ($sire_datos) => json_encode($sire_datos),
+        );
+    }
+    protected function qpseDatos(): Attribute
+    {
+        return new Attribute(
+            get: fn ($sire_datos) => json_decode($sire_datos, true),
+            set: fn ($sire_datos) => json_encode($sire_datos),
+        );
+    }
+
     protected function terminos(): Attribute
     {
         return new Attribute(

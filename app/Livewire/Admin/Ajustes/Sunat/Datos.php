@@ -8,72 +8,102 @@ use Livewire\Component;
 class Datos extends Component
 {
     public Empresa $empresa;
-    public $sunat;
-    public function mount()
-    {
 
-        $this->sunat = $this->empresa->sunat_datos;
+    public $regimen_type, $modo, $soap_type;
+    public $sunat;
+
+    protected function rules()
+    {
+        return [
+            'regimen_type' => 'required',
+            'modo' => 'required',
+            'soap_type' => 'required',
+            'sunat.usuario_sol_sunat' => 'required',
+            'sunat.clave_sol_sunat' => 'required',
+        ];
+    }
+
+    protected function messages()
+    {
+        return [
+            'regimen_type.required' => 'El campo regimen es requerido',
+            'modo.required' => 'El campo modo es requerido',
+            'soap_type.required' => 'El campo soap es requerido',
+            'sunat.usuario_sol_sunat.required' => 'El campo usuario es requerido',
+            'sunat.clave_sol_sunat.required' => 'El campo clave es requerido',
+        ];
+    }
+
+    public function mount(Empresa $empresa)
+    {
+        $this->empresa = $empresa;
+        $this->sunat = $empresa->sunat_datos;
+        $this->regimen_type = $empresa->regimen_type;
+        $this->modo = $empresa->modo;
+        $this->soap_type = $empresa->soap_type;
     }
 
     public function render()
     {
         return view('livewire.admin.ajustes.sunat.datos');
     }
+
     public function saveSunat()
     {
 
-        $data = $this->validate([
-            'sunat.usuario_sol_sunat' => 'required',
-            'sunat.clave_sol_sunat' => 'required',
-            'sunat.clave_certificado_cdt' => 'nullable',
-            'sunat.guia_cliente_id' => 'required',
-            'sunat.guia_secret' => 'required',
-        ]);
+        $data = $this->validate();
 
-        $this->empresa->update([
-            'sunat_datos' => [
-                'usuario_sol_sunat' => $data['sunat']['usuario_sol_sunat'],
-                'clave_sol_sunat' => $data['sunat']['clave_sol_sunat'],
-                'clave_certificado_cdt' => $data['sunat']['clave_certificado_cdt'],
-                'guia_cliente_id' => $data['sunat']['guia_cliente_id'],
-                'guia_secret' => $data['sunat']['guia_secret'],
-            ]
-        ]);
+        try {
+            $this->empresa->update([
+                'regimen_type' => $data['regimen_type'],
+                'modo' => $data['modo'],
+                'soap_type' => $data['soap_type'],
+                'sunat_datos' => [
+                    'usuario_sol_sunat' => $data['sunat']['usuario_sol_sunat'],
+                    'clave_sol_sunat' => $data['sunat']['clave_sol_sunat'],
+                ]
+            ]);
 
-        $this->afterSave();
+            $this->afterSave();
+        } catch (\Throwable $th) {
+            $this->dispatch(
+                'notify-toast',
+                icon: 'error',
+                title: 'ERROR:',
+                mensaje: $th->getMessage(),
+            );
+        }
     }
 
-    public function saveApiSunat()
-    {
-        $data = $this->validate([
-            'sunat.usuario_sol_sunat' => 'required',
-            'sunat.clave_sol_sunat' => 'required',
-            'sunat.clave_certificado_cdt' => 'nullable',
-            'sunat.guia_cliente_id' => 'required',
-            'sunat.guia_secret' => 'required',
-        ]);
+    // public function saveApiSunat()
+    // {
+    //     $data = $this->validate([
+    //         'sunat.usuario_sol_sunat' => 'required',
+    //         'sunat.clave_sol_sunat' => 'required',
+    //         'sunat.clave_certificado_cdt' => 'nullable',
+    //         'sunat.guia_cliente_id' => 'required',
+    //         'sunat.guia_secret' => 'required',
+    //     ]);
 
-        $this->empresa->update([
-            'sunat_datos' => [
-                'usuario_sol_sunat' => $data['sunat']['usuario_sol_sunat'],
-                'clave_sol_sunat' => $data['sunat']['clave_sol_sunat'],
-                'clave_certificado_cdt' => $data['sunat']['clave_certificado_cdt'],
-                'guia_cliente_id' => $data['sunat']['guia_cliente_id'],
-                'guia_secret' => $data['sunat']['guia_secret'],
-            ]
-        ]);
+    //     $this->empresa->update([
+    //         'sunat_datos' => [
+    //             'usuario_sol_sunat' => $data['sunat']['usuario_sol_sunat'],
+    //             'clave_sol_sunat' => $data['sunat']['clave_sol_sunat'],
+    //             'clave_certificado_cdt' => $data['sunat']['clave_certificado_cdt'],
+    //             'guia_cliente_id' => $data['sunat']['guia_cliente_id'],
+    //             'guia_secret' => $data['sunat']['guia_secret'],
+    //         ]
+    //     ]);
 
-        $this->afterSave();
-    }
-
-
+    //     $this->afterSave();
+    // }
 
     public function afterSave()
     {
         $this->dispatch(
             'notify-toast',
             icon: 'success',
-            title: 'INFORMACION ACTUALIZADA',
+            title: 'INFORMACION SUNAT ACTUALIZADA',
             mensaje: 'se actualizo la informacion'
         );
     }

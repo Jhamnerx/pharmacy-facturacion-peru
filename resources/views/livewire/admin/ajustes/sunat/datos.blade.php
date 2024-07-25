@@ -1,64 +1,55 @@
-<div class="col-span-12 mx-3 rounded overflow-hidden">
-    <div class="grid grid-cols-12 gap-4 mt-4 pt-4 pb-4 px-3 mb-2">
-
-        <div class="max-w-3xl col-span-12">
-
-            <h3 class="text-base leading-snug text-slate-800 font-bold mb-6">DATOS SUNAT
-            </h3>
-
-        </div>
-
-        <div class="col-span-12 sm:col-span-3 md:col-span-6">
-
-            <x-form.input label="USUARIO SOL SUNAT:" placeholder="USUARIO SOL SUNAT"
-                wire:model.live='sunat.usuario_sol_sunat' />
-
-        </div>
-
-        <div class="col-span-12 sm:col-span-3 md:col-span-6">
-            <x-form.password label="CLAVE SOL SUNAT:" wire:model.live='sunat.clave_sol_sunat' />
-
-        </div>
-
-        <div class="col-span-12 sm:col-span-3 md:col-span-6">
-            <x-form.password label="CLAVE CERTIFICADO CDT:" wire:model.live='sunat.clave_certificado_cdt' />
-        </div>
-
-        <div class="px-4 py-3 col-span-12  text-right sm:px-6">
-
-            <x-form.button wire:click="saveSunat" spinner="saveSunat" loading-delay="short" positive label="GUARDAR" />
-
-
-        </div>
-
+<div>
+    <div class="text-slate-800 dark:text-slate-100 font-semibold mb-4">Datos de acceso a SUNAT:
     </div>
+    <form>
+        <div class="space-y-4">
+            <div class="grid grid-cols-12 gap-4 mt-4 pt-4 pb-4 px-3 mb-2">
 
-    <div class="grid grid-cols-12 gap-4 mt-4 pt-4 pb-4 px-3 mb-2">
+                <div class="col-span-12 md:col-span-4">
 
-        <div class="max-w-3xl col-span-12">
+                    <x-form.select label="Regimen:" id="regimen_type" name="regimen_type" :options="[
+                        ['name' => 'Nuevo Régimen Único Simplificado', 'id' => 'NRUS'],
+                        ['name' => 'Régimen Especial de Renta ', 'id' => 'RER'],
+                        ['name' => 'Régimen MYPE Tributario', 'id' => 'RMT'],
+                        ['name' => 'Régimen General de Renta', 'id' => 'RG'],
+                    ]"
+                        option-label="name" option-value="id" wire:model.live="regimen_type" :clearable="false" />
 
-            <h3 class="text-base leading-snug text-slate-800 font-bold mb-6">DATOS API SUNAT
-            </h3>
+                </div>
+                <div class="col-span-12 md:col-span-4">
 
+                    <x-form.select label="Entorno del sistema:" id="modo" name="modo" :options="[['name' => 'Demo', 'id' => 'local'], ['name' => 'Produccióon', 'id' => 'produccion']]"
+                        option-label="name" option-value="id" wire:model.live="modo" :clearable="false" />
+
+                </div>
+                <div class="col-span-12 md:col-span-4">
+
+                    <x-form.select label="SOAP Envio:" id="soap_type" name="soap_type" :options="[
+                        ['name' => 'Sunat', 'id' => 'sunat'],
+                        ['name' => 'Ose', 'id' => 'ose'],
+                        ['name' => 'Qpse', 'id' => 'qpse'],
+                    ]"
+                        option-label="name" option-value="id" wire:model.live="soap_type" :clearable="false" />
+
+                </div>
+
+                <div class="col-span-12 sm:col-span-3 md:col-span-6">
+
+                    <x-form.input label="SOAP Usuario:" wire:model.live='sunat.usuario_sol_sunat' />
+
+                </div>
+
+                <div class="col-span-12 sm:col-span-3 md:col-span-6">
+                    <x-form.password label="SOAP Contraseña:" wire:model.live='sunat.clave_sol_sunat' />
+
+                </div>
+
+            </div>
+
+            <div class="text-right">
+                <x-form.button wire:click.prevent="saveSunat" xs spinner="saveSunat" loading-delay="short" black
+                    label="GUARDAR" />
+            </div>
         </div>
-
-        <div class="col-span-12 sm:col-span-6">
-
-            <x-form.input label="SECRET ID:" placeholder="SECRET API SUNAT" wire:model.live='sunat.guia_cliente_id' />
-
-        </div>
-
-        <div class="col-span-12 sm:col-span-6">
-            <x-form.password label="CLAVE:" placeholder='CLAVE' wire:model.live='sunat.guia_secret' />
-
-        </div>
-
-
-        <div class="px-4 py-3 col-span-12 bg-white text-right sm:px-6">
-
-            <x-form.button wire:click="saveApiSunat" spinner="saveApiSunat" loading-delay="short" positive
-                label="GUARDAR" />
-        </div>
-
-    </div>
+    </form>
 </div>

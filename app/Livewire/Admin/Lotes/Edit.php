@@ -73,14 +73,13 @@ class Edit extends Component
             // Confirmar la transacción
             DB::commit();
         } catch (\Throwable $th) {
-            dd($th);
+            DB::rollBack();
             $this->dispatch(
                 'notify-toast',
                 icon: 'error',
                 title: 'ERROR:',
                 mensaje: $th->getMessage(),
             );
-            DB::rollBack();
         }
     }
 
