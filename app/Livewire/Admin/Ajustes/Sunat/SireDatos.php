@@ -8,14 +8,14 @@ use Livewire\Component;
 class SireDatos extends Component
 {
 
-    public $url, $cliente_id, $client_secret, $usuario, $clave;
+    public $url, $cliente_id, $cliente_secret, $usuario, $clave;
 
     protected function rules()
     {
         return [
             'url' => 'required',
             'cliente_id' => 'required',
-            'client_secret' => 'required',
+            'cliente_secret' => 'required',
             'usuario' => 'required',
             'clave' => 'required',
         ];
@@ -24,8 +24,8 @@ class SireDatos extends Component
     {
         return [
             'url.required' => 'El campo url es requerido',
-            'cliente_id.required' => 'El campo cliente_id es requerido',
-            'client_secret.required' => 'El campo client_secret es requerido',
+            'cliente_id.required' => 'El campo cliente id es requerido',
+            'cliente_secret.required' => 'El campo cliente secret es requerido',
             'usuario.required' => 'El campo usuario es requerido',
             'clave.required' => 'El campo clave es requerido',
         ];
@@ -36,7 +36,7 @@ class SireDatos extends Component
 
         $this->url = $empresa->sire_datos['url'];
         $this->cliente_id = $empresa->sire_datos['cliente_id'];
-        $this->client_secret = $empresa->sire_datos['cliente_secret'];
+        $this->cliente_secret = $empresa->sire_datos['cliente_secret'];
         $this->usuario = $empresa->sire_datos['usuario'];
         $this->clave = $empresa->sire_datos['clave'];
     }
@@ -55,7 +55,7 @@ class SireDatos extends Component
                 'sire_datos' => [
                     'url' => $data['url'],
                     'cliente_id' => $data['cliente_id'],
-                    'client_secret' => $data['client_secret'],
+                    'cliente_secret' => $data['cliente_secret'],
                     'usuario' => $data['usuario'],
                     'clave' => $data['clave'],
                 ]

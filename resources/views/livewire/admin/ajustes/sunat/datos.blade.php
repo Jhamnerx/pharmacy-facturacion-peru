@@ -44,6 +44,11 @@
 
                 </div>
 
+                <div class="col-span-12 sm:col-span-3 md:col-span-6">
+                    <x-form.password label="Contraseña CDT:" wire:model.live='sunat.clave_certificado_cdt'
+                        description="Para subir certificado en pfx o p12" />
+
+                </div>
             </div>
 
             <div class="text-right">

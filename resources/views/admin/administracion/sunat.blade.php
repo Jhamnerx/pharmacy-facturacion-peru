@@ -34,7 +34,7 @@
                             @livewire('admin.ajustes.sunat.datos', ['empresa' => $empresa], key('dat' . $empresa->id))
 
                             <!-- Divider -->
-                            <hr class="my-6 border-t border-slate-200 dark:border-slate-700" />
+                            <hr class="my-6 pt-2 border-t border-slate-200 dark:border-slate-700" />
 
                             @livewire('admin.ajustes.sunat.guia-api-datos', ['empresa' => $empresa], key('guia' . $empresa->id))
 

@@ -20,6 +20,7 @@ class Datos extends Component
             'soap_type' => 'required',
             'sunat.usuario_sol_sunat' => 'required',
             'sunat.clave_sol_sunat' => 'required',
+            'sunat.clave_certificado_cdt' => 'nullable',
         ];
     }
 
@@ -61,6 +62,7 @@ class Datos extends Component
                 'sunat_datos' => [
                     'usuario_sol_sunat' => $data['sunat']['usuario_sol_sunat'],
                     'clave_sol_sunat' => $data['sunat']['clave_sol_sunat'],
+                    'clave_certificado_cdt' => $data['sunat']['clave_certificado_cdt'],
                 ]
             ]);
 

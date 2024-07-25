@@ -3,7 +3,7 @@
         @keydown.escape.window="modalOpen = false, files = null">
         <div class="px-5 py-3 border-b border-slate-200">
             <div class="flex justify-between items-center">
-                <div class="font-semibold text-slate-800 dark:text-slate-100 uppercase">CERTIFICADO FORMATO P12</div>
+                <div class="font-semibold text-slate-800 dark:text-slate-100 uppercase">CERTIFICADO FORMATO P12|PFX</div>
             </div>
         </div>
         <!-- content -->

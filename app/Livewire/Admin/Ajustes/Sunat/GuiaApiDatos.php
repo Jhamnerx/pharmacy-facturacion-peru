@@ -30,8 +30,8 @@ class GuiaApiDatos extends Component
     protected function messages()
     {
         return [
-            'cliente_id.required' => 'El campo cliente_id es requerido',
-            'cliente_secret.required' => 'El campo cliente_secret es requerido',
+            'cliente_id.required' => 'El campo cliente id es requerido',
+            'cliente_secret.required' => 'El campo cliente secret es requerido',
         ];
     }
 

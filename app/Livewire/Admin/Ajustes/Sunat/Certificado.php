@@ -40,7 +40,15 @@ class Certificado extends Component
         $this->validate();
 
         try {
-
+            if ($this->empresa->sunat_datos['clave_certificado_cdt'] == null) {
+                $this->dispatch(
+                    'notify-toast',
+                    icon: 'error',
+                    title: 'ERROR',
+                    mensaje: 'Debe ingresar la clave del certificado',
+                );
+                return;
+            }
             $ruta = '/certificado';
 
             $this->file->storeAs($ruta,  $this->file->getClientOriginalName(), 'facturacion');
