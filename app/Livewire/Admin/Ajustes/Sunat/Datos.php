@@ -11,6 +11,7 @@ class Datos extends Component
 
     public $regimen_type, $modo, $soap_type;
     public $sunat;
+    public $qpse_datos;
 
     protected function rules()
     {
@@ -21,6 +22,10 @@ class Datos extends Component
             'sunat.usuario_sol_sunat' => 'required',
             'sunat.clave_sol_sunat' => 'required',
             'sunat.clave_certificado_cdt' => 'nullable',
+            'qpse_datos' => 'nullable',
+            'qpse_datos.usuario' => 'nullable|required_if:soap_type,qpse',
+            'qpse_datos.clave' => 'nullable|required_if:soap_type,qpse',
+
         ];
     }
 
@@ -32,6 +37,8 @@ class Datos extends Component
             'soap_type.required' => 'El campo soap es requerido',
             'sunat.usuario_sol_sunat.required' => 'El campo usuario es requerido',
             'sunat.clave_sol_sunat.required' => 'El campo clave es requerido',
+            'qpse_datos.usuario.required_if' => 'El campo url es requerido',
+            'qpse_datos.clave.required_if' => 'El campo demo url es requerido',
         ];
     }
 
@@ -39,6 +46,7 @@ class Datos extends Component
     {
         $this->empresa = $empresa;
         $this->sunat = $empresa->sunat_datos;
+        $this->qpse_datos = $empresa->qpse_datos;
         $this->regimen_type = $empresa->regimen_type;
         $this->modo = $empresa->modo;
         $this->soap_type = $empresa->soap_type;
@@ -63,7 +71,11 @@ class Datos extends Component
                     'usuario_sol_sunat' => $data['sunat']['usuario_sol_sunat'],
                     'clave_sol_sunat' => $data['sunat']['clave_sol_sunat'],
                     'clave_certificado_cdt' => $data['sunat']['clave_certificado_cdt'],
-                ]
+                ],
+                'qpse_datos' => [
+                    'usuario' => $data['qpse_datos']['usuario'],
+                    'clave' => $data['qpse_datos']['clave'],
+                ],
             ]);
 
             $this->afterSave();

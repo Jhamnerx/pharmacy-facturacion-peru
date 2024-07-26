@@ -30,9 +30,8 @@ class updateEmpresaSeeder extends Seeder
                     'clave' => 'MODDATOS'
                 ],
                 'qpse_datos' => [
-                    'url' => 'https://cpe.qpse.pe',
-                    'demo_url' => 'https://demo-cpe.qpse.pe',
-                    'token' => '',
+                    'usuario' => 'GVKXPJ3Y',
+                    'clave' => 'FE5PKUMZ',
                 ],
             ]);
         }

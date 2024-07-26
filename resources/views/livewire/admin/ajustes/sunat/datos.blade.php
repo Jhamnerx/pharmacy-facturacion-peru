@@ -49,6 +49,33 @@
                         description="Para subir certificado en pfx o p12" />
 
                 </div>
+
+                @if ($soap_type == 'qpse')
+                    <div class="col-span-full">
+                        <hr class="my-6 border-t border-slate-200 dark:border-slate-700" />
+                    </div>
+                    <div class="col-span-full">
+                        <header class="mb-6">
+                            <!-- Title -->
+                            <h1 class="text-2xl text-slate-800 dark:text-slate-100 font-bold mb-2">
+                                DATOS DE QPSE
+                            </h1>
+                            <p>Ingresa las credenciales</p>
+                        </header>
+
+                    </div>
+                    <div class="col-span-12 sm:col-span-3 md:col-span-4">
+                        <x-form.input label="Usuario" wire:model.live='qpse_datos.usuario'
+                            description="Requerido si el Soap Envio es Qpse" />
+
+                    </div>
+                    <div class="col-span-12 sm:col-span-3 md:col-span-4">
+                        <x-form.input label="Contraseña" wire:model.live='qpse_datos.clave'
+                            description="Requerido si el Soap Envio es Qpse" />
+
+                    </div>
+                @endif
+
             </div>
 
             <div class="text-right">
