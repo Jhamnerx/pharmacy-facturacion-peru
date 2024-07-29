@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Models\Productos;
+use App\Observers\LoteObserver;
+use App\Models\Scopes\LocalScope;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy([LoteObserver::class])]
 class Lote extends Model
 {
     use HasFactory;
@@ -25,6 +29,11 @@ class Lote extends Model
     // Incluir el accesor en la serialización del modelo
     protected $appends = ['estado'];
 
+    // GLOBAL SCOPE LOCAL
+    protected static function booted()
+    {
+        static::addGlobalScope(new LocalScope);
+    }
     // Accesor para el estado del lote
     public function getEstadoAttribute()
     {
@@ -34,12 +43,12 @@ class Lote extends Model
 
     public function producto()
     {
-        return $this->belongsTo(Productos::class);
+        return $this->belongsTo(Productos::class)->withTrashed();
     }
 
 
     public function proveedor()
     {
-        return $this->belongsTo(Proveedores::class, 'proveedor_id', 'id');
+        return $this->belongsTo(Proveedores::class, 'proveedor_id', 'id')->withTrashed();
     }
 }

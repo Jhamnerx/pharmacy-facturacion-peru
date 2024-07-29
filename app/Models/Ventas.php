@@ -108,6 +108,12 @@ class Ventas extends Model
     //     );
     // }
 
+    // Scope local de local
+    public function scopeLocal($query, $id)
+    {
+        return $query->where('local_id', $id);
+    }
+
     public function detalle(): HasMany
     {
         return $this->hasMany(VentasDetalle::class);
@@ -135,7 +141,7 @@ class Ventas extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTrashed();
     }
 
     public function nota(): BelongsTo

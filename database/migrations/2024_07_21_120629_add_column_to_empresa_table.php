@@ -20,6 +20,12 @@ return new class extends Migration
             $table->text('sire_datos')->nullable()->after('guia_api_datos');
             $table->longText('qpse_datos')->nullable()->after('sire_datos');
         });
+
+
+        Schema::table('lotes', function (Blueprint $table) {
+            $table->unsignedBigInteger('local_id')->nullable()->default(1)->index('ventas_local_id_foreign')->after('stock');
+            $table->foreign(['local_id'])->references(['id'])->on('locales')->onUpdate('restrict')->onDelete('set null');
+        });
     }
 
     /**

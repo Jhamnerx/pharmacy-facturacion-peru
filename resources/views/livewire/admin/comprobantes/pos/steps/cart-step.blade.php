@@ -351,6 +351,7 @@
                                 wire:model.live="cliente_id" :clearable="false"
                                 placeholder="Escriba el nombre o número de documento del cliente" :async-data="[
                                     'api' => route('api.clientes.index'),
+                                    'params' => ['local_id' => session('local_id')],
                                 ]"
                                 option-label="razon_social" option-value="id" option-description="numero_documento">
 
@@ -543,27 +544,54 @@
                                             </div>
                                             <div
                                                 class="flex justify-center md:flex-row md:space-x-2 border dark:border-gray-600 rounded-lg overflow-hidden w-full lg:w-1/3 items-center md:items-start">
-                                                @if ($cliente->tipo_documento_id == '6')
-                                                    <button wire:click="setTipoComprobante('01')" disabled
-                                                        class="px-4 py-2 text-gray-700 dark:text-gray-300 @if ($tipo_comprobante_id == '01') bg-blue-500 text-white @endif">
-                                                        FACTURA
+
+                                                @if ($empresa->regimen_type == 'NRUS')
+
+                                                    @if ($cliente->tipo_documento_id == '6')
+                                                        <button wire:click="setTipoComprobante('01')" disabled
+                                                            class="px-4 py-2 text-gray-700 dark:text-gray-300 @if ($tipo_comprobante_id == '01') bg-blue-500 text-white @endif">
+                                                            FACTURA
+                                                        </button>
+                                                    @else
+                                                        <button wire:click="setTipoComprobante('01')" disabled
+                                                            class="px-4 py-2 text-gray-700 dark:text-gray-300 @if ($tipo_comprobante_id == '01') bg-blue-500 text-white @endif">
+                                                            FACTURA
+                                                        </button>
+                                                    @endif
+
+                                                    <button wire:click="setTipoComprobante('03')"
+                                                        class="px-4 py-2 text-gray-700 dark:text-gray-300 @if ($tipo_comprobante_id == '03') bg-blue-500 text-white @endif">
+                                                        BOLETA
+                                                    </button>
+
+                                                    <button wire:click="setTipoComprobante('02')"
+                                                        class="px-4 py-2 text-gray-700 dark:text-gray-300 @if ($tipo_comprobante_id == '02') bg-blue-500 text-white @endif">
+                                                        N. VENTA
                                                     </button>
                                                 @else
-                                                    <button wire:click="setTipoComprobante('01')" disabled
-                                                        class="px-4 py-2 text-gray-700 dark:text-gray-300 @if ($tipo_comprobante_id == '01') bg-blue-500 text-white @endif">
-                                                        FACTURA
+                                                    @if ($cliente->tipo_documento_id == '6')
+                                                        <button wire:click="setTipoComprobante('01')"
+                                                            class="px-4 py-2 text-gray-700 dark:text-gray-300 @if ($tipo_comprobante_id == '01') bg-blue-500 text-white @endif">
+                                                            FACTURA
+                                                        </button>
+                                                    @else
+                                                        <button wire:click="setTipoComprobante('01')" disabled
+                                                            class="px-4 py-2 text-gray-700 dark:text-gray-300 @if ($tipo_comprobante_id == '01') bg-blue-500 text-white @endif">
+                                                            FACTURA
+                                                        </button>
+                                                    @endif
+
+                                                    <button wire:click="setTipoComprobante('03')"
+                                                        class="px-4 py-2 text-gray-700 dark:text-gray-300 @if ($tipo_comprobante_id == '03') bg-blue-500 text-white @endif">
+                                                        BOLETA
+                                                    </button>
+
+                                                    <button wire:click="setTipoComprobante('02')"
+                                                        class="px-4 py-2 text-gray-700 dark:text-gray-300 @if ($tipo_comprobante_id == '02') bg-blue-500 text-white @endif">
+                                                        N. VENTA
                                                     </button>
                                                 @endif
 
-                                                <button wire:click="setTipoComprobante('03')"
-                                                    class="px-4 py-2 text-gray-700 dark:text-gray-300 @if ($tipo_comprobante_id == '03') bg-blue-500 text-white @endif">
-                                                    BOLETA
-                                                </button>
-
-                                                <button wire:click="setTipoComprobante('02')"
-                                                    class="px-4 py-2 text-gray-700 dark:text-gray-300 @if ($tipo_comprobante_id == '02') bg-blue-500 text-white @endif">
-                                                    N. VENTA
-                                                </button>
 
                                             </div>
                                         </div>

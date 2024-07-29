@@ -56,7 +56,11 @@ class Clientes extends Model
     {
         return $query->where('estado', $status);
     }
-
+    // Scope local de local
+    public function scopeLocal($query, $id)
+    {
+        return $query->where('local_id', $id);
+    }
     // Scope local de activo
     public function scopeTipoDoc($query, $tipo)
     {

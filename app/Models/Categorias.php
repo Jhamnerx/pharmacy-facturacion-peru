@@ -43,7 +43,11 @@ class Categorias extends Model
         static::addGlobalScope(new LocalScope);
     }
 
-
+    // Scope local de local
+    public function scopeLocal($query, $id)
+    {
+        return $query->where('local_id', $id);
+    }
     public function productos(): HasMany
     {
         return $this->hasMany(Productos::class, 'categoria_id');

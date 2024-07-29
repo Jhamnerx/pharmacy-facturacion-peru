@@ -2,9 +2,10 @@
 
 namespace App\Models\Scopes;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Database\Eloquent\Builder;
 
 class LocalScope implements Scope
 {
@@ -13,6 +14,7 @@ class LocalScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
+        Log::info('Applying LocalScope' . session('local_id', 1));
         $builder->where('local_id', session('local_id', 1));
     }
 }

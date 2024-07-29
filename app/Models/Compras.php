@@ -74,8 +74,6 @@ class Compras extends Model
         return $this->hasMany(Lote::class, 'producto_id', 'id');
     }
 
-
-
     //CREAR ITEM DETALLE VENTA
     public static function createItems($items, Compras $compra)
     {

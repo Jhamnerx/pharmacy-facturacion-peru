@@ -33,12 +33,12 @@ class GuiaRemision extends Model
 
     public function cliente(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Clientes::class);
+        return $this->belongsTo(\App\Models\Clientes::class)->withTrashed();
     }
 
     public function venta(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Ventas::class);
+        return $this->belongsTo(\App\Models\Ventas::class)->withTrashed();
     }
 
     public function motivoTraslado(): BelongsTo

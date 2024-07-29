@@ -5,11 +5,8 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Faker\Generator;
 use GuzzleHttp\Client;
-use App\Models\Clientes;
-use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class UtilesController extends Controller
 {

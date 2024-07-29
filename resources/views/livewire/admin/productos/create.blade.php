@@ -82,7 +82,10 @@
 
                     <div class="col-span-12 md:col-span-3">
                         <x-form.select id="categoria_id" name="categoria_id" label="Categoria (*):"
-                            wire:model.live="categoria_id" placeholder="Selecciona una categoria" :async-data="['api' => route('api.categorias.index')]"
+                            wire:model.live="categoria_id" placeholder="Selecciona una categoria" :async-data="[
+                                'api' => route('api.categorias.index'),
+                                'params' => ['local_id' => session('local_id')],
+                            ]"
                             option-label="nombre" option-value="id" />
                     </div>
 

@@ -75,7 +75,6 @@ class Productos extends Model implements Buyable
     // Incluir el accesor en la serialización del modelo
     protected $appends = ['cantidad_lotes'];
 
-
     // Accesor para cantidad_lotes
     public function getCantidadLotesAttribute()
     {
@@ -136,6 +135,10 @@ class Productos extends Model implements Buyable
         return $query->where('categoria_id', $categoria_id);
     }
 
+    public function scopeLocal($query, $id)
+    {
+        return $query->where('local_id', $id);
+    }
 
     public function comprasDetalles(): HasMany
     {
@@ -154,7 +157,7 @@ class Productos extends Model implements Buyable
 
     public function categoria(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Categorias::class);
+        return $this->belongsTo(\App\Models\Categorias::class)->withTrashed();
     }
 
     public function tipoAfectacion(): BelongsTo
@@ -180,14 +183,23 @@ class Productos extends Model implements Buyable
 
     public function lotes()
     {
-        return $this->hasMany(Lote::class, 'producto_id', 'id');
+        return $this->hasMany(Lote::class, 'producto_id', 'id')->withTrashed();
     }
 
     public function decrementStockByLote($cantidad)
     {
+        // Actualizar el stock del producto
         $this->update(['stock' => $this->stock - $cantidad]);
+
+        // Obtener lotes del producto
         $lotes = $this->lotes()->orderBy('fecha_vencimiento', 'asc')->get();
 
+        // Si el producto no tiene lotes, termina el proceso
+        if ($lotes->isEmpty()) {
+            return true;
+        }
+
+        // Disminuir el stock de los lotes
         foreach ($lotes as $lote) {
             if ($cantidad <= 0) {
                 break;

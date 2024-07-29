@@ -34,7 +34,11 @@ class SelectsController extends Controller
      */
     public function categorias(Request $request): Collection
     {
+        $localId = $request->input('local_id', 1); // Valor predeterminado si no se proporciona
+
+
         return Categorias::query()
+            ->withoutGlobalScopes() // Elimina todos los scopes globales
             ->select('id', 'nombre')
             ->orderBy('nombre')
             ->when(
@@ -47,6 +51,7 @@ class SelectsController extends Controller
                 fn (Builder $query) => $query->whereIn('id', $request->input('selected', [])),
                 fn (Builder $query) => $query->limit(10)
             )
+            ->local($localId)
             ->get();
     }
 
@@ -87,10 +92,13 @@ class SelectsController extends Controller
             ->get();
     }
 
-    public function clientes(Request $request): Collection
+    public function clientes(Request $request)
     {
-        return Clientes::query()
-            ->select('id', 'razon_social', 'numero_documento', 'tipo_documento_id')
+        $localId = $request->input('local_id', 1);
+
+        $clients = Clientes::query()
+            ->withoutGlobalScopes() // Elimina todos los scopes globales
+            ->select('id', 'razon_social', 'numero_documento', 'tipo_documento_id', 'local_id')
             ->orderBy('id')
             ->when(
                 $request->search,
@@ -106,7 +114,6 @@ class SelectsController extends Controller
                 $request->tipo_comprobante == "03" ? true : false,
                 fn (Builder $query) => $query
 
-
             )
             ->when(
                 $request->exists('selected'),
@@ -114,12 +121,17 @@ class SelectsController extends Controller
 
             )
             ->active(1)
+            ->local($localId)
             ->get();
+
+        return $clients;
     }
 
     public function proveedores(Request $request): Collection
     {
+        $localId = $request->input('local_id', 1);
         return Proveedores::query()
+            ->withoutGlobalScopes() // Elimina todos los scopes globales
             ->select('id', 'razon_social', 'numero_documento', 'tipo_documento_id')
             ->orderBy('id')
             ->when(
@@ -134,13 +146,15 @@ class SelectsController extends Controller
 
             )
             ->active(1)
+            ->local($localId)
             ->get();
     }
 
     public function invoices(Request $request): Collection
     {
-
+        $localId = $request->input('local_id', 1);
         return Ventas::query()
+            ->withoutGlobalScopes() // Elimina todos los scopes globales
             ->select('id', 'serie_correlativo', 'fecha_emision', 'divisa', 'total', 'cliente_id')
             ->where('fe_estado', 1)
             ->orderBy('serie_correlativo')
@@ -163,6 +177,7 @@ class SelectsController extends Controller
                 $request->exists('code_sunat'),
                 fn (Builder $query) => $query->where('code_sunat', $request->input('code_sunat'))
             )
+            ->local($localId)
             ->get()
             ->map(function (Ventas $invoice) {
 
@@ -201,8 +216,9 @@ class SelectsController extends Controller
 
     public function productos(Request $request): Collection
     {
-
+        $localId = $request->input('local_id', 1);
         return Productos::query()
+            ->withoutGlobalScopes() // Elimina todos los scopes globales
             ->select('id', 'codigo', 'local_id', 'nombre', 'forma_farmaceutica', 'presentacion', 'numero_registro_sanitario', 'laboratorio', 'stock', 'unit_code', 'precio_unitario')
             ->orderBy('created_at', 'desc')
             ->when(
@@ -222,6 +238,7 @@ class SelectsController extends Controller
                 fn (Builder $query) => $query->whereIn('id', $request->input('selected', [])),
                 fn (Builder $query) => $query->limit(50)
             )
+            ->local($localId)
             ->get()->map(function (Productos $producto) {
 
                 $producto->imagen = $producto->image ? Storage::url($producto->image->url) : Storage::url('productos/default.png');
@@ -319,7 +336,6 @@ class SelectsController extends Controller
             ->get();
     }
 
-
     public function sustentos(Request $request): Collection
     {
 
@@ -411,12 +427,12 @@ class SelectsController extends Controller
 
     public function comprobantes(Request $request): Collection
     {
-
+        $localId = $request->input('local_id', 1);
         return Ventas::query()
-
             ->with(['cliente' => function ($query) {
                 $query->select('razon_social', 'id', 'numero_documento');
             }])
+            ->withoutGlobalScopes() // Elimina todos los scopes globales
             ->select('id', 'serie_correlativo', 'cliente_id')
             ->orderBy('serie_correlativo')
             ->when(
@@ -429,6 +445,7 @@ class SelectsController extends Controller
                 fn (Builder $query) => $query->whereIn('id', $request->input('selected', [])),
                 fn (Builder $query) => $query->limit(20)
             )
+            ->local($localId)
             ->get()->map(function (Ventas $venta) {
 
                 $venta->option_description = '<b>' . $venta->serie_correlativo . '</b> - ' . $venta->cliente->razon_social . ' - ';

@@ -9,20 +9,15 @@ use App\Models\Empresa;
 use App\Models\Comprobantes;
 use App\Models\GuiaRemision;
 use Greenter\Report\XmlUtils;
-use Greenter\Report\PdfReport;
 use Greenter\Report\HtmlReport;
 use Greenter\Model\Company\Address;
-use Greenter\Model\Sale\SaleDetail;
-use Psy\Readline\Hoa\FileDirectory;
 use App\Http\Controllers\Controller;
 use Greenter\Ws\Services\SoapClient;
 use Greenter\Model\DocumentInterface;
 use Illuminate\Support\Facades\Storage;
 use Greenter\Model\Response\CdrResponse;
 use Greenter\Ws\Services\SunatEndpoints;
-use Greenter\XMLSecLibs\Sunat\SignedXml;
 use Greenter\Ws\Services\ConsultCdrService;
-use Greenter\Validator\XmlErrorCodeProvider;
 use Greenter\XMLSecLibs\Certificate\X509Certificate;
 use Greenter\XMLSecLibs\Certificate\X509ContentType;
 use Greenter\Report\Resolver\DefaultTemplateResolver;
@@ -55,7 +50,7 @@ class Util extends Controller
 
     private function __construct()
     {
-        $this->empresa = empresa::first();
+        $this->empresa = Empresa::first();
     }
 
     public static function getInstance(): Util
@@ -196,7 +191,7 @@ class Util extends Controller
     public function showResponse(DocumentInterface $document, CdrResponse $cdr)
     {
 
-        $this->nombre_xml = $document->getName();
+        //$this->nombre_xml = $document->getName();
         $this->code_sunat = (int)$cdr->getCode();
         $code = (int)$cdr->getCode();
         if ($code === 0) {
@@ -226,8 +221,10 @@ class Util extends Controller
 
         $this->mensaje = $cdr->getDescription();
         $this->qr = $cdr->getReference();
-        // $this->hash = $cdr->getHash();
-        $this->hash = $this->getHash($document);
+
+        // $this->empresa->soap_type == 'sunat' ??  $this->hash = $this->getHash($document);
+
+        //$this->hash = $this->getHash($document);
 
         return $this->getResults();
     }
@@ -302,6 +299,16 @@ class Util extends Controller
         return $results;
     }
 
+    public function signXmlQpse(DocumentInterface $document, $xml)
+    {
+        $qpse = new QpseController();
+        $xml_datos = $qpse->firmarXmlBase64($document->getName(), base64_encode($xml));
+        $this->writeFile($document->getName() . '.xml', base64_decode($xml_datos->xml), 'xml');
+        $this->xml_base64 = $xml_datos->xml;
+        $this->nombre_xml = $document->getName();
+        $this->hash = $xml_datos->codigo_hash;
+    }
+
     public function writeXml(DocumentInterface $document, ?string $xml): void
     {
         $this->writeFile($document->getName() . '.xml', $xml, 'xml');
@@ -324,6 +331,7 @@ class Util extends Controller
         $this->hash_cdr = $this->getHashFromFile($xml);
         $this->nombre_cdr = 'R-' . $document->getName();
     }
+
     //FUNCION PARA GUARDAR ARCHIVOS EN STORAGE
     public function writeFile(?string $filename, ?string $content, $type): void
     {
@@ -502,9 +510,9 @@ class Util extends Controller
     //OBTENER HASH DE XML INVOICE
     public function getHash(DocumentInterface $document): ?string
     {
+
         $see = $this->getSee('');
         $xml = $see->getXmlSigned($document);
-
         return (new XmlUtils())->getHashSign($xml);
     }
 

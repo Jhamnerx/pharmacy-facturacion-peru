@@ -43,13 +43,18 @@ class Proveedores extends Model
     {
         static::addGlobalScope(new LocalScope);
     }
+    // Scope local de local
+    public function scopeLocal($query, $id)
+    {
+        return $query->where('local_id', $id);
+    }
 
     // Scope local de activo
     public function scopeActive($query, $status)
     {
         return $query->where('estado', $status);
     }
-    // Scope local de activo
+    // Scope local de documento
     public function scopeTipoDoc($query, $tipo)
     {
         return $query->where('tipo_documento_id', $tipo);

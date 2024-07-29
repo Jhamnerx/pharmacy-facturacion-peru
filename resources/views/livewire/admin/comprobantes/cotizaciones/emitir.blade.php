@@ -122,14 +122,16 @@
                                 label="Selecciona un cliente:" wire:model.live="cliente_id" :clearable="false"
                                 placeholder="Escriba el nombre o número de documento del cliente" :async-data="[
                                     'api' => route('api.clientes.index'),
-                                    'params' => ['tipo_comprobante' => $tipo_comprobante_id],
+                                    'params' => [
+                                        'tipo_comprobante' => $tipo_comprobante_id,
+                                        'local_id' => session('local_id'),
+                                    ],
                                 ]"
                                 option-label="razon_social" option-value="id" option-description="numero_documento"
                                 x-on:clear="$wire.direccion = ''">
                                 <x-slot name="afterOptions" class="p-2 flex justify-center"
                                     x-show="displayOptions.length === 0">
-                                    <x-form.button wire:click.prevent="OpenModalCliente(`${search}`)" 
-                                        primary flat full>
+                                    <x-form.button wire:click.prevent="OpenModalCliente(`${search}`)" primary flat full>
                                         <span x-html="`Crear cliente <b>${search}</b>`"></span>
                                     </x-form.button>
                                 </x-slot>

@@ -15,7 +15,7 @@
                 wire:model.live="cliente_id" placeholder="Escriba el nombre o número de documento del cliente"
                 :async-data="[
                     'api' => route('api.clientes.index'),
-                    'params' => ['tipo_comprobante' => $tipo_comprobante_id],
+                    'params' => ['local_id' => session('local_id')],
                 ]" option-label="razon_social" option-value="id" option-description="numero_documento">
 
             </x-form.select>

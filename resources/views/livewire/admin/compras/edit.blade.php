@@ -102,6 +102,7 @@
                                 id="product_selected_id" name="product_selected_id"
                                 placeholder="Seleccionar producto o servicio" :async-data="[
                                     'api' => route('api.productos.index'),
+                                    'params' => ['local_id' => session('local_id')],
                                 ]" option-label="nombre"
                                 option-value="id" option-description="option_description" :template="[
                                     'name' => 'user-option',

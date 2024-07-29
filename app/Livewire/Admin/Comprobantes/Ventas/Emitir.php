@@ -472,7 +472,7 @@ class Emitir extends Component
 
                 Ventas::createPrepayments($venta, $this->prepayments);
             }
-            DB::commit();
+            //DB::commit();
             //ACTUALIZAR CORRELATIVO DE SERIE UTILIZADA
             $venta->getSerie->increment('correlativo');
 
@@ -494,6 +494,7 @@ class Emitir extends Component
                 session()->flash('venta-registrada', 'Nota de venta registrada');
                 $this->redirectRoute('admin.ventas.index');
             }
+            DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
 

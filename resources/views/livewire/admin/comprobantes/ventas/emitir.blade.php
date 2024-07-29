@@ -76,13 +76,24 @@
                     <div
                         class="col-span-12 md:col-span-9 grid grid-cols-12 gap-2 bg-white dark:bg-gray-800 items-start border rounded-md m-3 p-4">
 
-                        <div class="col-span-12 xs:col-span-4">
-                            <x-form.select label="Tipo comprobante:" id="tipo_comprobante_id" name="tipo_comprobante_id"
-                                :options="[
-                                    // ['name' => 'FACTURA ELECTRONICA', 'id' => '01'],
+                        @php
+                            if ($empresa->regimen_type == 'NRUS') {
+                                $opciones = [
                                     ['name' => 'BOLETA ELECTRONICA', 'id' => '03'],
                                     ['name' => 'N. VENTA ELECTRONICA', 'id' => '02'],
-                                ]" option-label="name" option-value="id"
+                                ];
+                            } else {
+                                $opciones = [
+                                    ['name' => 'FACTURA ELECTRONICA', 'id' => '01'],
+                                    ['name' => 'BOLETA ELECTRONICA', 'id' => '03'],
+                                    ['name' => 'N. VENTA ELECTRONICA', 'id' => '02'],
+                                ];
+                            }
+
+                        @endphp
+                        <div class="col-span-12 xs:col-span-4">
+                            <x-form.select label="Tipo comprobante:" id="tipo_comprobante_id" name="tipo_comprobante_id"
+                                :options="$opciones" option-label="name" option-value="id"
                                 wire:model.live="tipo_comprobante_id" :clearable="false" />
                         </div>
 
@@ -126,7 +137,10 @@
                                 label="Selecciona un cliente:" wire:model.live="cliente_id" :clearable="false"
                                 placeholder="Escriba el nombre o número de documento del cliente" :async-data="[
                                     'api' => route('api.clientes.index'),
-                                    'params' => ['tipo_comprobante' => $tipo_comprobante_id],
+                                    'params' => [
+                                        'tipo_comprobante' => $tipo_comprobante_id,
+                                        'local_id' => session('local_id'),
+                                    ],
                                 ]"
                                 option-label="razon_social" option-value="id" option-description="numero_documento"
                                 x-on:clear="$wire.direccion = ''">
@@ -601,45 +615,16 @@
                     @if ($tipo_comprobante_id == '01' || $tipo_comprobante_id == '03')
                         <div class="flex gap-10 w-full">
                             <div class="inline-flex items-center">
-                                <label class="relative flex cursor-pointer items-center rounded-full p-3"
-                                    for="metodo_1" data-ripple-dark="true">
-                                    <input id="metodo_1" wire:model.live="metodo_type" value="01"
-                                        type="radio"
-                                        class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-full border border-blue-gray-200 dark:border-gray-700 text-blue-500 dark:text-gray-300 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-blue-500 checked:before:bg-blue-500 hover:before:opacity-10" />
-                                    <div
-                                        class="pointer-events-none absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 text-blue-500 dark:text-gray-300 opacity-0 transition-opacity peer-checked:opacity-100">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"
-                                            viewBox="0 0 16 16" fill="currentColor">
-                                            <circle data-name="ellipse" cx="8" cy="8" r="8"></circle>
-                                        </svg>
-                                    </div>
-                                </label>
-                                <label
-                                    class="mt-px cursor-pointer select-none font-light text-gray-700 dark:text-gray-300 text-sm"
-                                    for="metodo_1">
-                                    SOLO FIRMAR E IMPRIMIR
-                                </label>
+
+                                <x-form.radio id="id_type1" wire:model="metodo_type" value="01" lg
+                                    label="SOLO FIRMAR E IMPRIMIR" />
+
                             </div>
 
                             <div class="inline-flex items-center">
-                                <label class="relative flex cursor-pointer items-center rounded-full p-3"
-                                    for="metodo_2" data-ripple-dark="true">
-                                    <input id="metodo_2" wire:model.live="metodo_type" value="02"
-                                        type="radio"
-                                        class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-full border border-blue-gray-200 dark:border-gray-700 text-blue-500 dark:text-gray-300 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-blue-500 checked:before:bg-blue-500 hover:before:opacity-10" />
-                                    <div
-                                        class="pointer-events-none absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 text-blue-500 dark:text-gray-300 opacity-0 transition-opacity peer-checked:opacity-100">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"
-                                            viewBox="0 0 16 16" fill="currentColor">
-                                            <circle data-name="ellipse" cx="8" cy="8" r="8"></circle>
-                                        </svg>
-                                    </div>
-                                </label>
-                                <label
-                                    class="mt-px cursor-pointer select-none font-light text-gray-700 dark:text-gray-300 text-sm"
-                                    for="metodo_2">
-                                    ENVIAR A SUNAT AHORA
-                                </label>
+
+                                <x-form.radio id="id_type2" wire:model="metodo_type" value="02" lg
+                                    label="ENVIAR A SUNAT AHORA" />
                             </div>
                         </div>
                     @endif

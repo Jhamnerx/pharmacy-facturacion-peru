@@ -13,6 +13,7 @@ use App\Models\Detracciones;
 use App\Models\GuiaRemision;
 use Greenter\Model\Sale\Note;
 use Greenter\Model\Sale\Cuota;
+use Greenter\Factory\FeFactory;
 use Greenter\Model\Sale\Charge;
 use Greenter\Model\Sale\Legend;
 use Greenter\Model\Sale\Invoice;
@@ -27,10 +28,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Greenter\Model\Despatch\Despatch;
 use Greenter\Model\Despatch\Shipment;
+use Greenter\Model\DocumentInterface;
 use App\Events\Facturacion\EmitirNota;
+use Greenter\Builder\BuilderInterface;
 use Greenter\Model\Despatch\Direction;
 use Greenter\Model\Voided\VoidedDetail;
 use Illuminate\Support\Facades\Storage;
+use Greenter\Factory\XmlBuilderResolver;
+use Greenter\Xml\Builder\InvoiceBuilder;
 use Luecano\NumeroALetras\NumeroALetras;
 use Greenter\Model\Despatch\AdditionalDoc;
 use Greenter\Model\Despatch\DespatchDetail;
@@ -245,37 +250,77 @@ class ApiFacturacion extends Controller
         $util = Util::getInstance();
         $invoice = $this->createObjetInvoice($venta, $tipo_operacion);
 
-        // Envio a SUNAT.
-        $see = $util->getSee();
-        $result = $see->send($invoice);
+        if ($util->empresa->soap_type == 'qpse') {
 
-        // Guardar XML firmado digitalmente.
-        $util->writeXml($invoice, $see->getFactory()->getLastXml());
+            $builder = new InvoiceBuilder();
+            $xml = $builder->build($invoice);
+            $util->writeXmlOnly($invoice, $xml);
 
-        if (!$result->isSuccess()) {
+            $util->signXmlQpse($invoice, $xml);
+            // Envio a SUNAT.
+            $see = $util->getSee();
 
-            $msg = $util->getErrorResponse($result->getError());
-            $this->updateComprobante($venta, $msg, 'BORRADOR', 'update', $invoice);
-            return $msg;
+            $result = $see->sendXml(get_class($invoice), $invoice->getName(), Storage::disk('facturacion')->get('/xml' . '/' . $invoice->getName() . '.xml'));
+
+            if (!$result->isSuccess()) {
+
+                $msg = $util->getErrorResponse($result->getError());
+                $this->updateComprobante($venta, $msg, 'BORRADOR', 'no_update', $venta->clase);
+                return $msg;
+            }
+
+            /**@var $res BillResult*/
+            $cdr = $result->getCdrResponse();
+            //Guardar CDR recibido
+            $util->writeCdr($invoice, $result->getCdrZip());
+
+            $respuesta = $util->showResponse($invoice, $cdr);
+            //ACTUALIZAR COMPROBANTE CON LOS DATOS DEVUELTOS POR EL API
+            $this->updateComprobante($venta, $respuesta, 'COMPLETADO', 'no_update', $venta->clase);
+
+            return $respuesta;
         }
 
-        /**@var $res BillResult*/
-        $cdr = $result->getCdrResponse();
-        //Guardar CDR recibido
-        $util->writeCdr($invoice, $result->getCdrZip());
 
-        $respuesta = $util->showResponse($invoice, $cdr);
-        //ACTUALIZAR COMPROBANTE CON LOS DATOS DEVUELTOS POR EL API
-        $this->updateComprobante($venta, $respuesta, 'COMPLETADO', 'update', $invoice);
+        if ($util->empresa->soap_type == 'sunat') {
 
-        return $respuesta;
+            // Envio a SUNAT.
+            $see = $util->getSee();
+
+            $result = $see->send($invoice);
+
+            // Guardar XML firmado digitalmente.
+            $util->writeXml($invoice, $see->getFactory()->getLastXml());
+
+            if (!$result->isSuccess()) {
+
+                $msg = $util->getErrorResponse($result->getError());
+                $this->updateComprobante($venta, $msg, 'BORRADOR', 'update', $invoice);
+                return $msg;
+            }
+
+            /**@var $res BillResult*/
+            $cdr = $result->getCdrResponse();
+            //Guardar CDR recibido
+            $util->writeCdr($invoice, $result->getCdrZip());
+
+            $respuesta = $util->showResponse($invoice, $cdr);
+            //ACTUALIZAR COMPROBANTE CON LOS DATOS DEVUELTOS POR EL API
+            $this->updateComprobante($venta, $respuesta, 'COMPLETADO', 'update', $invoice);
+
+            return $respuesta;
+        }
+
+
+        if ($util->empresa->soap_type == 'ose') {
+
+            throw new \Exception('El metodo Ose no se encuentra disponible');
+        }
     }
-
 
     //CREAR XML Y FIRMADO - PENDIENTE DE ENVIO
     public function createXmlInvoice(Ventas $venta, $tipo_operacion)
     {
-
         $util = Util::getInstance();
         $invoice = $this->createObjetInvoice($venta, $tipo_operacion);
 
@@ -514,7 +559,6 @@ class ApiFacturacion extends Controller
         return $respuesta;
     }
 
-
     public function sendInvoiceOnlyGuia($guia)
     {
         $util = Util::getInstance();
@@ -607,6 +651,7 @@ class ApiFacturacion extends Controller
 
         return $cliente;
     }
+
     //CREAR OBJETO DE CUOTAS
     public function addCuotas(Ventas $venta)
     {
@@ -621,6 +666,7 @@ class ApiFacturacion extends Controller
 
         return $cuota;
     }
+
     public function getItemsInvoice($items)
     {
 
@@ -656,16 +702,6 @@ class ApiFacturacion extends Controller
             $detalle[] = $i;
         }
         return $detalle;
-    }
-
-    public function convertCertificado($ruta, $password)
-    {
-
-        $util = Util::getInstance();
-
-        $respuesta = $util->convertToPem($ruta, $password);
-
-        return $respuesta;
     }
 
     //EMITIR GUIA DE REMISION
@@ -785,7 +821,6 @@ class ApiFacturacion extends Controller
         $this->updateGuiaRemision($guia, $respuesta, $despatch);
         return $respuesta;
     }
-
 
     public function updateClaseGuia(GuiaRemision $guia)
     {
@@ -1257,5 +1292,15 @@ class ApiFacturacion extends Controller
         }
 
         return $service->getStatus(...$arguments);
+    }
+
+    public function convertCertificado($ruta, $password)
+    {
+
+        $util = Util::getInstance();
+
+        $respuesta = $util->convertToPem($ruta, $password);
+
+        return $respuesta;
     }
 }
