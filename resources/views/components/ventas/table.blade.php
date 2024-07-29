@@ -880,10 +880,11 @@
 
                                         {{-- <x-dropdown.item icon='plus' label="Volver a crear" /> --}}
 
-
-                                        @if (!$venta->clase && $venta->fe_estado == '0')
-                                            <x-dropdown.item wire:click.prevent='createXml({{ $venta->id }})'
-                                                icon='arrow-path' label="Crear XML" />
+                                        @if ($venta->tipo_comprobante_id !== '02')
+                                            @if (!$venta->clase && $venta->fe_estado == '0')
+                                                <x-dropdown.item wire:click.prevent='createXml({{ $venta->id }})'
+                                                    icon='arrow-path' label="Crear XML" />
+                                            @endif
                                         @endif
 
 
