@@ -63,7 +63,7 @@
                                 <div class="text-center text-emerald-500">{{ $lote->codigo_lote }}</div>
                             </td>
                             <td class="p-2">
-                                <div class="text-center">{{ $lote->productos->stock }}</div>
+                                <div class="text-center">{{ $lote->producto->stock }}</div>
                             </td>
                             <td class="p-2">
                                 <div class="text-center {{ $lote->producto->getColorFechaVencimiento() }}">
