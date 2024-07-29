@@ -14,8 +14,8 @@ class ProductosObserver
 
             $productos->local_id = session('local_id');
             $productos->user_id = auth()->id();
+            $productos->codigo = self::generateProductCode();
         }
-        $productos->codigo = self::generateProductCode();
     }
 
     private static function generateProductCode()

@@ -30,7 +30,7 @@ class Clientes extends Model
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
     protected $table = 'clientes';
     /**
      * The attributes that should be cast to native types.

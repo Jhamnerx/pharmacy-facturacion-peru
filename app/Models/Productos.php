@@ -24,7 +24,7 @@ class Productos extends Model implements Buyable
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
     protected $table = 'productos';
 
     /**
