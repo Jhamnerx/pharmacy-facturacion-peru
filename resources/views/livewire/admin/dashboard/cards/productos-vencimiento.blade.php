@@ -67,7 +67,7 @@
                             </td>
                             <td class="p-2">
                                 <div class="text-center {{ $lote->producto->getColorFechaVencimiento() }}">
-                                    {{ $lote->producto->fecha_vencimiento ? $producto->fecha_vencimiento->format('d-m-Y') : '' }}
+                                    {{ $lote->producto->fecha_vencimiento ? $lote->producto->fecha_vencimiento->format('d-m-Y') : '' }}
                                 </div>
                             </td>
                         </tr>
