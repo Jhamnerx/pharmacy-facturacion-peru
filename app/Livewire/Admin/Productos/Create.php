@@ -80,7 +80,7 @@ class Create extends Component
                     'codigo_lote' => $this->lote,
                     'fecha_vencimiento' => $this->fecha_vencimiento,
                     'stock' => $this->stock,
-                    'local_id' => session()->get('local_id'),
+                    //  'local_id' => session()->get('local_id'),
                 ]);
             }
 
