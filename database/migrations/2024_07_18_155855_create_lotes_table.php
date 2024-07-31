@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('lotes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('producto_id')->constrained('productos');
-            $table->foreignId('proveedor_id')->nullable()->constrained('compras');
+            $table->foreignId('proveedor_id')->nullable()->constrained('proveedores');
             $table->text('codigo_lote')->nullable();
             $table->date('fecha_vencimiento')->nullable();
             $table->integer('stock')->default(0);
