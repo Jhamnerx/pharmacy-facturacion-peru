@@ -490,7 +490,7 @@ class Emitir extends Component
                     $this->redirectRoute('admin.ventas.index');
                 }
             } else {
-
+                $venta->update(['estado' => 'COMPLETADO']);
                 session()->flash('venta-registrada', 'Nota de venta registrada');
                 $this->redirectRoute('admin.ventas.index');
             }
