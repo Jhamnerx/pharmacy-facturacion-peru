@@ -543,6 +543,7 @@ class CartStep extends Component
                     $this->dispatch('finishVenta', venta: $venta->id);
                 }
             } else {
+                $venta->update(['estado' => 'COMPLETADO']);
                 $this->closeModal();
                 $this->dispatch('notify-toast', icon: 'success', title: 'NOTA DE VENTA REGISTRADA', mensaje: 'La nota de venta ha sido registrada correctamente');
                 $this->dispatch('finishVenta', venta: $venta->id);
