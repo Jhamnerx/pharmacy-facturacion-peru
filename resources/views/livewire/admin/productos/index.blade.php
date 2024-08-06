@@ -25,14 +25,36 @@
             @endcan
         </div>
 
+
+    </div>
+
+    <!-- More actions -->
+    <div class="sm:flex sm:justify-between sm:items-center mb-5">
+
+        <!-- Right side -->
+        <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
+
+
+
+            <!-- Export button -->
+            @can('productos.index')
+                <div class="relative inline-flex">
+                    <x-form.button wire:click.prevent="reporteProductos" primary label="Reporte" icon="clipboard"
+                        spinner="reporteProductos" />
+
+                </div>
+            @endcan
+        </div>
+
     </div>
 
     <!-- Table -->
-    <x-productos.tabla :productos="$productos" />
+    <x-productos.tabla :productos="$productos" :totales="$totales" />
 
     <!-- Pagination -->
     <div class="mt-8 w-full">
         {{ $productos->links() }}
 
     </div>
+
 </div>

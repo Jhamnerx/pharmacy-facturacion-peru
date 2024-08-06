@@ -3,6 +3,12 @@
         <h2 class="font-semibold text-slate-800 dark:text-slate-100">Total Productos <span
                 class="text-slate-400 dark:text-slate-500 font-medium">{{ $productos->total() }}</span>
         </h2>
+        <h2 class="font-semibold text-slate-800 dark:text-slate-100">Total Costo<span
+                class="text-slate-400 dark:text-slate-500 font-medium">S/ {{ $totales->totalCosto }}</span>
+        </h2>
+        <h2 class="font-semibold text-slate-800 dark:text-slate-100">Total Precio<span
+                class="text-slate-400 dark:text-slate-500 font-medium">S/ {{ $totales->totalVenta }}</span>
+        </h2>
 
     </header>
     <div>

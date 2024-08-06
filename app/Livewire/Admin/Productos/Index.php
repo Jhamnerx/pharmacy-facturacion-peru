@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Models\Productos;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
+use App\Exports\reporteProductosCapital;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Index extends Component
 {
@@ -35,7 +37,12 @@ class Index extends Component
             ->orderBy('id', 'desc')
             ->paginate(15);
 
-        return view('livewire.admin.productos.index', compact('productos'));
+        $totales = Productos::query()
+            ->whereNull('deleted_at')
+            ->selectRaw('SUM(stock * costo_unitario) as totalCosto, SUM(stock * precio_unitario) as totalVenta')
+            ->first();
+
+        return view('livewire.admin.productos.index', compact('productos', 'totales'));
     }
 
 
@@ -58,5 +65,10 @@ class Index extends Component
     {
 
         $this->dispatch('open-modal-create-lote', producto: $producto);
+    }
+
+    public function reporteProductos()
+    {
+        return Excel::download(new reporteProductosCapital, 'reporteProductosCapital.xlsx');
     }
 }
