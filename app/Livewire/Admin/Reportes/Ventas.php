@@ -16,10 +16,15 @@ class Ventas extends Component
 
     public function mount()
     {
-        $this->fecha_inicio = Carbon::now()->startOfMonth()->format('Y-m-d');
-        $this->fecha_fin = Carbon::now()->format('Y-m-d');
+        // Obtén una instancia de Carbon solo una vez
+        $carbon = Carbon::today(); // Esto asegura que estamos trabajando con la fecha actual sin considerar la hora
+
+        // Define las fechas
+        $this->fecha_inicio = $carbon->copy()->startOfMonth()->format('Y-m-d');
+        $this->fecha_fin = $carbon->format('Y-m-d');
         $this->estado = 'Todos';
     }
+
     public function render()
     {
         return view('livewire.admin.reportes.ventas');
@@ -31,6 +36,11 @@ class Ventas extends Component
         $this->showModal = true;
     }
 
+    public function updatedFechaInicio($value)
+    {
+        dd('Fecha Inicio Updated:', $value);
+    }
+
     public function exportar()
     {
         $this->validate([
@@ -39,6 +49,8 @@ class Ventas extends Component
 
         ]);
 
-        return Excel::download(new VentasExportSimple($this->fecha_fin, $this->fecha_fin, $this->estado, $this->tipo_comprobante_id, $this->cliente_id, $this->vendedor_id), 'proveedores.xls');
+        $nombre = 'reporte_ventas-' . $this->fecha_inicio . '_' . $this->fecha_fin . '.xls';
+
+        return Excel::download(new VentasExportSimple($this->fecha_inicio, $this->fecha_fin, $this->estado, $this->tipo_comprobante_id, $this->cliente_id, $this->vendedor_id), $nombre);
     }
 }
