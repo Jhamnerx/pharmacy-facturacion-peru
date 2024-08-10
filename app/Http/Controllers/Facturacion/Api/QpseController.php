@@ -34,7 +34,7 @@ class QpseController extends Controller
     public function getToken()
     {
 
-        $url = 'https://cpe.qpse.pe/api/auth/cpe/token';
+        $url = $this->getUrl() . '/api/auth/cpe/token';
 
         $client = new Client(['verify' => false]);
 

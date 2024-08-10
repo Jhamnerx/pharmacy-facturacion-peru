@@ -231,9 +231,7 @@ class CartStep extends Component
         }
     }
 
-    public function calcularMontosLinea()
-    {
-    }
+    public function calcularMontosLinea() {}
 
 
     // public function updateCantidad()
@@ -525,11 +523,13 @@ class CartStep extends Component
 
             //ACTUALIZAR CORRELATIVO DE SERIE UTILIZADA
             $venta->getSerie->increment('correlativo');
+            DB::commit();
 
             if ($this->tipo_comprobante_id !== '02') {
                 $api = new ApiFacturacion();
 
                 $mensaje = $api->emitirInvoice($venta, "02", $this->tipo_operacion);
+
                 $this->closeModal();
 
                 if ($mensaje['fe_codigo_error']) {
@@ -548,7 +548,7 @@ class CartStep extends Component
                 $this->dispatch('notify-toast', icon: 'success', title: 'NOTA DE VENTA REGISTRADA', mensaje: 'La nota de venta ha sido registrada correctamente');
                 $this->dispatch('finishVenta', venta: $venta->id);
             }
-            DB::commit();
+
             $this->afterVenta();
         } catch (\Throwable $th) {
             DB::rollBack();

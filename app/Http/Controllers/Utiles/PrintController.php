@@ -25,7 +25,9 @@ class PrintController extends Controller
 
     public function printReceipt($ventaId)
     {
-        $venta = Ventas::findOrFail($ventaId);
+
+        $venta = Ventas::withoutGlobalScopes()->findOrFail($ventaId);
+
         $empresa = Empresa::first();
 
         $profile = CapabilityProfile::load("POS-5890");
