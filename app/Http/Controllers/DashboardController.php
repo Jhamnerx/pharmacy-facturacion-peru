@@ -77,7 +77,7 @@ class DashboardController extends Controller
             $mes = Carbon::now()->subMonth($i)->format('m');
 
             // Consulta para calcular el total
-            $total = Compras::whereMonth(
+            $total = Compras::withoutGlobalScopes()->whereMonth(
                 'fecha_emision',
                 $mes
             )
