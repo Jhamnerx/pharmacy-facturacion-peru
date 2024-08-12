@@ -11,6 +11,7 @@ use App\Models\GuiaRemision;
 use Greenter\Report\XmlUtils;
 use Greenter\Report\HtmlReport;
 use Greenter\Model\Company\Address;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Greenter\Ws\Services\SoapClient;
 use Greenter\Model\DocumentInterface;
@@ -34,6 +35,7 @@ class Util extends Controller
     //  PROPIEDAS PUBLICAS PARA ERRORES Y MENSAJES
     public $estado;
     public $mensaje_error;
+    public $estado_texto;
     public $mensaje;
     public $nota;
     public $fe_codigo_error;
@@ -301,12 +303,30 @@ class Util extends Controller
 
     public function signXmlQpse(DocumentInterface $document, $xml)
     {
-        $qpse = new QpseController();
-        $xml_datos = $qpse->firmarXmlBase64($document->getName(), base64_encode($xml));
-        $this->writeFile($document->getName() . '.xml', base64_decode($xml_datos->xml), 'xml');
-        $this->xml_base64 = $xml_datos->xml;
         $this->nombre_xml = $document->getName();
-        $this->hash = $xml_datos->codigo_hash;
+
+        try {
+            $qpse = new QpseController();
+            $response = $qpse->firmarXmlBase64($document->getName(), base64_encode($xml));
+
+            if (isset($response['error'])) {
+                // Handle error if the response contains an error
+                throw new \Exception($response['error']);
+            }
+
+            // If no errors, assign the values to the properties
+            $this->writeFile($document->getName() . '.xml', base64_decode($response['xml']), 'xml');
+            $this->xml_base64 = $response['xml'];
+            $this->hash = $response['codigo_hash'];
+        } catch (\Exception $e) {
+            // Handle errors: you can log the error, return a specific response, etc.
+            // For example, log the error or rethrow a custom exception
+            $this->fe_estado = '4';
+            $this->estado = "ESTADO: XML NO FIRMADO";
+            $this->mensaje = 'Error al firmar el XML';
+            Log::error('Error al firmar el XML: ' . $e->getMessage());
+            throw new \Exception('Error al firmar el XML: ' . $e->getMessage());
+        }
     }
 
     public function writeXml(DocumentInterface $document, ?string $xml): void

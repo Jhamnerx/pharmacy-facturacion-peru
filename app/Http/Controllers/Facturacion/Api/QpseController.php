@@ -7,10 +7,10 @@ use App\Models\Empresa;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Http\Response;
 
 class QpseController extends Controller
 {
-
     public $empresa;
 
     public function __construct()
@@ -23,7 +23,6 @@ class QpseController extends Controller
         $url = '';
         if ($this->empresa->modo == 'local' || env('APP_ENV') == 'local') {
             $url = env('QPSE_URL_DEMO');
-            //$url = env('QPSE_URL_PRODUCTION');
         } else {
             $url = env('QPSE_URL_PRODUCTION');
         }
@@ -33,72 +32,88 @@ class QpseController extends Controller
 
     public function getToken()
     {
+        try {
+            $url = $this->getUrl() . '/api/auth/cpe/token';
 
-        $url = $this->getUrl() . '/api/auth/cpe/token';
+            $client = new Client(['verify' => false]);
 
-        $client = new Client(['verify' => false]);
+            $parameters = [
+                'connect_timeout' => 5,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                ],
+                'json' => [
+                    'usuario' => $this->empresa->qpse_datos['usuario'],
+                    'contraseña' => $this->empresa->qpse_datos['clave'],
+                ],
+            ];
 
-        $parameters = [
-            //'http_errors' => false,
-            'connect_timeout' => 5,
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ],
-            'json' => [
-                'usuario' => $this->empresa->qpse_datos['usuario'],
-                'contraseña' => $this->empresa->qpse_datos['clave'],
-            ],
-        ];
+            $res = $client->request('POST', $url, $parameters);
+            $response = json_decode($res->getBody()->getContents(), true);
 
-        $res = $client->request('POST', $url, $parameters);
-        $response = json_decode($res->getBody()->getContents());
-
-        return $response->token_acceso;
+            return ['token_acceso' => $response['token_acceso']];
+        } catch (RequestException $e) {
+            return [
+                'error' => 'Error al obtener el token: ' . $e->getMessage(),
+                'code' => Response::HTTP_BAD_REQUEST
+            ];
+        } catch (\Exception $e) {
+            return [
+                'error' => 'Error: ' . $e->getMessage(),
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR
+            ];
+        }
     }
 
     public function firmarXmlBase64($nombre_xml, ?string $xml)
     {
-        $url = $this->getUrl() . '/api/cpe/generar';
-
-        $client = new Client(['verify' => false]);
-
-        $parameters = [
-            'connect_timeout' => 5,
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . $this->getToken(),
-            ],
-            'json' => [
-                'tipo_integracion' => 0,
-                'nombre_archivo' => $nombre_xml,
-                'contenido_archivo' => $xml,
-            ],
-        ];
-
         try {
+            $url = $this->getUrl() . '/api/cpe/generar';
+
+            $client = new Client(['verify' => false]);
+
+            $tokenResponse = $this->getToken();
+            if (isset($tokenResponse['error'])) {
+                return $tokenResponse;
+            }
+
+            $parameters = [
+                'connect_timeout' => 5,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer ' . $tokenResponse['token_acceso'],
+                ],
+                'json' => [
+                    'tipo_integracion' => 0,
+                    'nombre_archivo' => $nombre_xml,
+                    'contenido_archivo' => $xml,
+                ],
+            ];
+
             $res = $client->request('POST', $url, $parameters);
 
             if ($res->getStatusCode() === 200) {
-                $response = json_decode($res->getBody()->getContents());
-                return $response;
+                return json_decode($res->getBody()->getContents(), true);
             } else {
-                // Manejar el caso donde el código de estado no es 200
-                throw new \Exception('Error: La respuesta no tiene un código de estado 200.');
+                return [
+                    'error' => 'Error: La respuesta no tiene un código de estado 200.',
+                    'code' => Response::HTTP_BAD_REQUEST
+                ];
             }
         } catch (RequestException $e) {
-            // Manejar la excepción de Guzzle
-            if ($e->hasResponse()) {
-                $statusCode = $e->getResponse()->getStatusCode();
-                $rs = json_decode($e->getResponse()->getBody()->getContents());
-                throw new \Exception("Error " . $statusCode . " :" . $rs->message);
-            } else {
-                throw new \Exception('Error: La solicitud falló sin respuesta.');
-            }
+            $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : Response::HTTP_INTERNAL_SERVER_ERROR;
+            $message = $e->getResponse() ? json_decode($e->getResponse()->getBody()->getContents())->message : 'Error: La solicitud falló sin respuesta.';
+            return [
+                'error' => "Error " . $statusCode . " :" . $message,
+                'code' => $statusCode
+            ];
         } catch (\Exception $e) {
-            // Manejar otras excepciones
-            throw new \Exception('Error: ' . $e->getMessage());
+            return [
+                'error' => 'Error: ' . $e->getMessage(),
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR
+            ];
         }
     }
 }

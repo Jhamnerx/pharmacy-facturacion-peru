@@ -15,7 +15,7 @@
                     </div>
                     <div class="mb-4 md:mb-0">
                         <p class="text-xs font-semibold text-gray-700 dark:text-gray-300">Estado de comprobante:
-                            {{ $venta->fe_estado !== '0' ? 'Enviado' : 'No Enviado' }}</p>
+                            {{ $venta->fe_estado == '0' ? 'Enviado' : 'No Enviado' }}</p>
                         <p class="text-xs font-semibold text-gray-700 dark:text-gray-300">Envío automático: Activado</p>
                     </div>
                 </div>

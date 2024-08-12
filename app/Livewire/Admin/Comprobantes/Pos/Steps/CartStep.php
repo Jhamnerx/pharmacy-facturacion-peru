@@ -539,7 +539,7 @@ class CartStep extends Component
                     $this->dispatch('finishVenta', venta: $venta->id);
                 } else {
                     $this->dispatch('notify-toast', icon: 'success', title: 'VENTA REGISTRADA', mensaje: $mensaje['fe_mensaje_sunat']);
-                    $venta->update(['estado' => 'COMPLETADO']);
+                    //$venta->update(['estado' => 'COMPLETADO']);
                     $this->dispatch('finishVenta', venta: $venta->id);
                 }
             } else {
@@ -551,8 +551,9 @@ class CartStep extends Component
 
             $this->afterVenta();
         } catch (\Throwable $th) {
-            DB::rollBack();
 
+            DB::rollBack();
+            dd($th);
             $this->dispatch(
                 'error',
                 title: 'ERROR: ',

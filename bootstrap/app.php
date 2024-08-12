@@ -1,13 +1,15 @@
 <?php
 
+use App\Jobs\SendInvoiceTask;
+use App\Jobs\SendSignXmlTask;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use Illuminate\Console\Scheduling\Schedule;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
-use Illuminate\Console\Scheduling\Schedule;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -28,7 +30,8 @@ return Application::configure(basePath: dirname(__DIR__))
     })->withSchedule(function (Schedule $schedule) {
         $schedule->command('backup:clean')->daily()->at('01:00');
         $schedule->command('backup:run')->daily()->at('22:00');
-        $schedule->job(new App\Jobs\SendInvoiceTask)->hourly();
+        $schedule->job(new SendInvoiceTask)->hourly();
+        $schedule->job(new SendSignXmlTask)->everySecond();
         // $schedule->command('backup:run')->everyTenSeconds();
         //$schedule->call(new DeleteRecentUsers)->daily();
     })

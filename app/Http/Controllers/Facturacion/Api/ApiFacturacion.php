@@ -45,7 +45,11 @@ use Greenter\Model\Sale\FormaPagos\FormaPagoCredito;
 use Greenter\Services\InvalidServiceResponseException;
 use App\Events\Facturacion\EmitirGuia as FacturacionEmitirGuia;
 use App\Events\Facturacion\EmitirComprobante as FacturacionEmitirComprobante;
-
+// 0 SIN CDR
+// 1 CDR OBTENIDO SIN ERRORES
+// 2 RECHAZADA
+// 3 ACEPTADA CON OBSERVACIONES
+// 4 ERROR AL FIRMAR XML
 class ApiFacturacion extends Controller
 {
     public $filename = null;
@@ -256,7 +260,17 @@ class ApiFacturacion extends Controller
             $xml = $builder->build($invoice);
             $util->writeXmlOnly($invoice, $xml);
 
-            $util->signXmlQpse($invoice, $xml);
+            try {
+                $util->signXmlQpse($invoice, $xml);
+            } catch (\Exception $e) {
+
+                // Manejo del error al firmar el XML
+                $msg = $util->getResults();
+                // Actualizar el nombre del XML en la base de datos
+                $this->updateComprobante($venta, $msg, 'BORRADOR', 'update', $invoice);
+                return $msg;
+            }
+
             // Envio a SUNAT.
             $see = $util->getSee();
 
@@ -269,7 +283,7 @@ class ApiFacturacion extends Controller
                 return $msg;
             }
 
-            /**@var $res BillResult*/
+            /**@var $result BillResult*/
             $cdr = $result->getCdrResponse();
             //Guardar CDR recibido
             $util->writeCdr($invoice, $result->getCdrZip());
