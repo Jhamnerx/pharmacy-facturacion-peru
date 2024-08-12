@@ -105,7 +105,7 @@ class DashboardController extends Controller
             $mes = Carbon::now()->subMonth($i)->format('m');
 
             // Consulta para calcular el total
-            $total = Ventas::whereMonth('created_at', $mes)
+            $total = Ventas::withoutGlobalScopes()->whereMonth('created_at', $mes)
                 ->selectRaw('SUM(CASE 
                             WHEN divisa = "usd" THEN total * tipo_cambio 
                             ELSE total 
