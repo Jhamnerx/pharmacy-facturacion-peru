@@ -342,10 +342,10 @@ class ApiFacturacion extends Controller
         $invoice = $this->createObjetInvoice($venta, $tipo_operacion);
 
         //FIRMADO Y GUARDADO DEL XML
-        $see = $util->getSee();
-        $xml = $see->getXmlSigned($invoice);
-        $xml_base64 = $util->writeXmlOnly($invoice, $xml);
-        $hash = $util->getHash($invoice);
+        // $see = $util->getSee();
+        // $xml = $see->getXmlSigned($invoice);
+        // $xml_base64 = $util->writeXmlOnly($invoice, $xml);
+        // $hash = $util->getHash($invoice);
 
         $respuesta
             =  [
@@ -356,10 +356,10 @@ class ApiFacturacion extends Controller
                 'fe_codigo_error' => null,
                 'nombre_xml' => $invoice->getName(),
                 'nombre_cdr' => 'R-' . $invoice->getName(),
-                'xml_base64' => $xml_base64,
+                'xml_base64' => '',
                 'cdr_base64' => null,
                 'fe_estado' => 0,
-                'hash' => $hash,
+                'hash' => '',
                 'hash_cdr' => null,
                 'code_sunat' => null,
 
