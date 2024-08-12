@@ -1316,7 +1316,7 @@ class ApiFacturacion extends Controller
 
         $util = Util::getInstance();
 
-        $respuesta = $util->convertToPem($ruta, $password);
+        $respuesta = $util->convertToCer($ruta, $password);
 
         return $respuesta;
     }

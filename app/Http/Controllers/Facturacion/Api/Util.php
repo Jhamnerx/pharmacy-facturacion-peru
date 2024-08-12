@@ -583,6 +583,25 @@ class Util extends Controller
             return $th->getMessage();
         }
     }
+    public function convertToCer($ruta, $password)
+    {
+        try {
+
+            $pfx = Storage::disk('facturacion')->get($ruta);
+            $certificate = new X509Certificate($pfx, $password);
+            $cer = $certificate->export(X509ContentType::CER);
+            Storage::disk('facturacion')->put('/certificado/certificado' . '.cer', $cer);
+
+            $this->empresa->update([
+                'ruta_cert' => 'certificado/certificado'
+            ]);
+
+            return "exito";
+        } catch (\Throwable $th) {
+
+            return $th->getMessage();
+        }
+    }
 
     //OBTENER Y VISUALIZAR PDF INVOICE
     public function getPdfInvoice($invoice)

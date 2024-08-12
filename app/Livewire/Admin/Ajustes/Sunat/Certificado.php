@@ -37,7 +37,7 @@ class Certificado extends Component
 
     public function uploadCertificado()
     {
-        $this->validate();
+        //$this->validate();
 
         try {
             if ($this->empresa->sunat_datos['clave_certificado_cdt'] == null) {
