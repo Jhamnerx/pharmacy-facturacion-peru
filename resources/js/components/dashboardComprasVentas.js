@@ -55,8 +55,10 @@ const dashboardCard04 = () => {
         light: "#e2e8f0",
         dark: "#475569",
     };
+    // Get the value of the hidden input field
+    const localId = document.getElementById("localId").value;
 
-    fetch("/api/card-ventas-compras")
+    fetch(`/api/card-ventas-compras/${localId}`)
         .then((a) => {
             return a.json();
         })

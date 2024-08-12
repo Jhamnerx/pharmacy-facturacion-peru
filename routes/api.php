@@ -49,4 +49,4 @@ Route::get('/print-receipt/{venta}', [PrintController::class, 'printReceipt'])->
 Route::get('/print-receipt-test', [PrintController::class, 'test'])->name('api.print.test');
 
 
-Route::get('/card-ventas-compras', [DashboardController::class, 'getDataVentas'])->name('json_data_feed');
+Route::get('/card-ventas-compras/{local_id}', [DashboardController::class, 'getDataVentas'])->name('json_data_feed');

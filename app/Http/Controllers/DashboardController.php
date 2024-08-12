@@ -36,9 +36,8 @@ class DashboardController extends Controller
     public function getDataVentas(Request $request)
     {
         $labels = $this->getLabels(6);
-        $total_compras = $this->getTotalesCompras(6);
-        $total_ventas = $this->getTotalesVentas(6, $request->divisa);
-
+        $total_compras = $this->getTotalesCompras(6, $request->local_id);
+        $total_ventas = $this->getTotalesVentas(6, $request->divisa, $request->local_id);
         return (object)[
             'labels' => $labels,
             'data' => [
@@ -68,7 +67,7 @@ class DashboardController extends Controller
         return $labels;
     }
 
-    private function getTotalesCompras($nMeses = 1)
+    private function getTotalesCompras($nMeses = 1, $local_id = null)
     {
         $totales = [];
 
@@ -80,7 +79,7 @@ class DashboardController extends Controller
             $total = Compras::withoutGlobalScopes()->whereMonth(
                 'fecha_emision',
                 $mes
-            )
+            )->where('local_id', $local_id)
                 ->selectRaw('SUM(CASE 
                             WHEN divisa = "usd" THEN total * tipo_cambio 
                             ELSE total 
@@ -96,7 +95,7 @@ class DashboardController extends Controller
         return $totales;
     }
 
-    private function getTotalesVentas($nMeses = 1, $divisa = null)
+    private function getTotalesVentas($nMeses = 1, $divisa = null, $local_id = null)
     {
         $totales = [];
 
@@ -105,7 +104,7 @@ class DashboardController extends Controller
             $mes = Carbon::now()->subMonth($i)->format('m');
 
             // Consulta para calcular el total
-            $total = Ventas::withoutGlobalScopes()->whereMonth('created_at', $mes)
+            $total = Ventas::withoutGlobalScopes()->where('local_id', $local_id)->whereMonth('created_at', $mes)
                 ->selectRaw('SUM(CASE 
                             WHEN divisa = "usd" THEN total * tipo_cambio 
                             ELSE total 

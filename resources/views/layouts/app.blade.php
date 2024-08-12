@@ -92,6 +92,8 @@
     @livewireScripts
 
     @stack('scripts')
+
+    <input id="localId" type="hidden" name="local_id" value="{{ session('local_id') }}">
 </body>
 <script>
     document.addEventListener('livewire:initialized', () => {
