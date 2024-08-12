@@ -553,7 +553,6 @@ class CartStep extends Component
         } catch (\Throwable $th) {
 
             DB::rollBack();
-            dd($th);
             $this->dispatch(
                 'error',
                 title: 'ERROR: ',
