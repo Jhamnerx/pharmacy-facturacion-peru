@@ -83,7 +83,7 @@ class ModalFinish extends Component
 
             $this->afterSendEmail();
         } catch (\Throwable $th) {
-            dd($th);
+
             $this->dispatch(
                 'notify-toast',
                 icon: 'error',

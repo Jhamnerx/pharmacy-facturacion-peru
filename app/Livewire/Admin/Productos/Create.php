@@ -86,7 +86,7 @@ class Create extends Component
 
             $this->afterSave();
         } catch (\Exception $e) {
-            dd($e);
+
             $this->dispatch(
                 'notify-toast',
                 icon: 'error',

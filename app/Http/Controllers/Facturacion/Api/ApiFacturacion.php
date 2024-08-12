@@ -296,6 +296,7 @@ class ApiFacturacion extends Controller
             if (!$result->isSuccess()) {
 
                 $msg = $util->getErrorResponse($result->getError());
+
                 $this->updateComprobante($venta, $msg, 'BORRADOR', 'update', $invoice);
                 return $msg;
             }
@@ -306,6 +307,7 @@ class ApiFacturacion extends Controller
             $util->writeCdr($invoice, $result->getCdrZip());
 
             $respuesta = $util->showResponse($invoice, $cdr);
+
             //ACTUALIZAR COMPROBANTE CON LOS DATOS DEVUELTOS POR EL API
             $this->updateComprobante($venta, $respuesta, 'COMPLETADO', 'update', $invoice);
 

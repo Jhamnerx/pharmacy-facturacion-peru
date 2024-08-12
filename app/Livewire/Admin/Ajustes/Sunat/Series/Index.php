@@ -30,7 +30,8 @@ class Index extends Component
             'tipo_comprobante_id' => 'required|exists:tipo_comprobantes,codigo',
             'serie' => [
 
-                'required', Rule::unique('series', 'serie')->where(fn ($query) => $query->where('local_id', session('local_id'))),
+                'required',
+                Rule::unique('series', 'serie')->where(fn($query) => $query->where('local_id', session('local_id'))),
             ],
             'correlativo' => 'numeric|min:0|required',
         ];
@@ -38,13 +39,15 @@ class Index extends Component
 
         if ($this->tipo_comprobante_id == '01') {
             $rules['serie'] = [
-                'required', Rule::unique('series', 'serie')->where(fn ($query) => $query->where('local_id', session('local_id'))),
+                'required',
+                Rule::unique('series', 'serie')->where(fn($query) => $query->where('local_id', session('local_id'))),
                 'regex:/^F[A-Z0-9]{3}$/',
             ];
         }
         if ($this->tipo_comprobante_id == '03') {
             $rules['serie'] = [
-                'required', Rule::unique('series', 'serie')->where(fn ($query) => $query->where('local_id', session('local_id'))),
+                'required',
+                Rule::unique('series', 'serie')->where(fn($query) => $query->where('local_id', session('local_id'))),
                 'regex:/^B[A-Z0-9]{3}$/',
             ];
         }
@@ -108,8 +111,7 @@ class Index extends Component
     }
 
     public function deleteSerie(Series $serie)
-    {
-        dd($serie);
+    {;
         $this->dispatch('delete-serie', serie: $serie);
     }
 }

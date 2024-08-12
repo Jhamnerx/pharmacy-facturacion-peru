@@ -28,6 +28,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })->withSchedule(function (Schedule $schedule) {
         $schedule->command('backup:clean')->daily()->at('01:00');
         $schedule->command('backup:run')->daily()->at('22:00');
+        $schedule->job(new App\Jobs\SendInvoiceTask)->hourly();
         // $schedule->command('backup:run')->everyTenSeconds();
         //$schedule->call(new DeleteRecentUsers)->daily();
     })

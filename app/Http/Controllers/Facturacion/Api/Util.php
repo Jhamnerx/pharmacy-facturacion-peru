@@ -314,6 +314,7 @@ class Util extends Controller
         $this->writeFile($document->getName() . '.xml', $xml, 'xml');
         $this->xml_base64 = base64_encode($xml);
         $this->nombre_xml = $document->getName();
+        $this->nombre_cdr = 'R-' . $document->getName();
         $this->hash = $this->getHash($document);
     }
 
@@ -434,9 +435,7 @@ class Util extends Controller
         return $html;
     }
 
-    public function getPdfNotaVenta(Ventas $venta)
-    {
-    }
+    public function getPdfNotaVenta(Ventas $venta) {}
 
     //OBTENER Y VISUALIZAR PDF INVOICE
     public function getPdfNota(Comprobantes $invoice)

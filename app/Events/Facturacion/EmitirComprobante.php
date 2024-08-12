@@ -18,9 +18,7 @@ class EmitirComprobante
     /**
      * Create a new event instance.
      */
-    public function __construct(public Ventas $venta, public $respuesta, public $estado, public $action, public $invoice)
-    {
-    }
+    public function __construct(public Ventas $venta, public $respuesta, public $estado, public $action, public $invoice) {}
 
     /**
      * Get the channels the event should broadcast on.
