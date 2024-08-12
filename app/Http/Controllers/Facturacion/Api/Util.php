@@ -85,11 +85,14 @@ class Util extends Controller
         }
 
         //$see->setCodeProvider(new XmlErrorCodeProvider());
+        if ($this->empresa->soap_type == 'sunat') {
+            if (!Storage::disk('facturacion')->exists($ruta_certificado)) {
+                throw new Exception('No se pudo cargar el certificado (Sunat)');
+            }
 
-        if (!Storage::disk('facturacion')->exists($ruta_certificado)) {
-            throw new Exception('No se pudo cargar el certificado (Sunat)');
+
+            $see->setCertificate(Storage::disk('facturacion')->get($ruta_certificado));
         }
-        $see->setCertificate(Storage::disk('facturacion')->get($ruta_certificado));
         /**
          * Clave SOL
          * Ruc     = 20496172168
@@ -114,9 +117,13 @@ class Util extends Controller
                 'cpe' => 'https://gre-test.nubefact.com/v1',
             ]);
 
-            $certificate = Storage::disk('facturacion')->get($ruta_certificado);
-            if ($certificate === false) {
-                throw new Exception('No se pudo cargar el certificado');
+
+            if ($this->empresa->soap_type == 'sunat') {
+                $certificate = Storage::disk('facturacion')->get($ruta_certificado);
+                if ($certificate === false) {
+                    throw new Exception('No se pudo cargar el certificado');
+                }
+                $api->setCertificate($certificate);
             }
 
             $api->setBuilderOptions([
@@ -126,8 +133,8 @@ class Util extends Controller
                 'cache' => false,
             ])
                 ->setApiCredentials('test-85e5b0ae-255c-4891-a595-0b98c65c9854', 'test-Hty/M6QshYvPgItX2P0+Kw==')
-                ->setClaveSOL(trim($this->empresa->ruc), 'MODDATOS', 'MODDATOS')
-                ->setCertificate($certificate);
+                ->setClaveSOL(trim($this->empresa->ruc), 'MODDATOS', 'MODDATOS');
+
 
             return $api;
         } else {
@@ -319,6 +326,7 @@ class Util extends Controller
             $this->xml_base64 = $response['xml'];
             $this->hash = $response['codigo_hash'];
         } catch (\Exception $e) {
+            dd($e);
             // Handle errors: you can log the error, return a specific response, etc.
             // For example, log the error or rethrow a custom exception
             $this->fe_estado = '4';

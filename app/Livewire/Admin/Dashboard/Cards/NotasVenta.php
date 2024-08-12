@@ -34,8 +34,8 @@ class NotasVenta extends Component
         }
 
         // Convertir las fechas del array a instancias de Carbon
-        $fechaInicio = Carbon::parse($this->fechas[0])->startOfDay();
-        $fechaFin = Carbon::parse($this->fechas[1])->endOfDay();
+        $fechaInicio = Carbon::parse($this->fechas[0])->startOfDay()->toDateTimeString();
+        $fechaFin = Carbon::parse($this->fechas[1])->endOfDay()->toDateTimeString();
 
         // Calcular el total en soles
         $totalSoles  = Ventas::where('tipo_comprobante_id', '02')
