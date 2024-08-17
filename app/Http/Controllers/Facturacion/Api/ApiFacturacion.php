@@ -261,34 +261,29 @@ class ApiFacturacion extends Controller
             $util->writeXmlOnly($invoice, $xml);
 
             try {
-                $util->signXmlQpse($invoice, $xml);
+                $respuesta =  $util->signXmlQpse($invoice, $xml);
+                $xmlSigned = $respuesta['xml'];
             } catch (\Exception $e) {
 
                 // Manejo del error al firmar el XML
                 $msg = $util->getResults();
                 // Actualizar el nombre del XML en la base de datos
-                $this->updateComprobante($venta, $msg, 'BORRADOR', 'update', $invoice);
+                $this->updateComprobante($venta, $msg, 'BORRADOR', 'no_update', $invoice);
                 return $msg;
             }
 
             // Envio a SUNAT.
-            $see = $util->getSee();
 
-            $result = $see->sendXml(get_class($invoice), $invoice->getName(), Storage::disk('facturacion')->get('/xml' . '/' . $invoice->getName() . '.xml'));
+            try {
 
-            if (!$result->isSuccess()) {
-
-                $msg = $util->getErrorResponse($result->getError());
-                $this->updateComprobante($venta, $msg, 'BORRADOR', 'update', $invoice);
+                $util->sendXmlQpse($invoice->getName(), $xmlSigned);
+            } catch (\Exception $e) {
+                $msg = $util->getResults();
+                $this->updateComprobante($venta, $msg, 'BORRADOR', 'no_update', $invoice);
                 return $msg;
             }
 
-            /**@var $result BillResult*/
-            $cdr = $result->getCdrResponse();
-            //Guardar CDR recibido
-            $util->writeCdr($invoice, $result->getCdrZip());
-
-            $respuesta = $util->showResponse($invoice, $cdr);
+            $respuesta = $util->getResults();
 
             //ACTUALIZAR COMPROBANTE CON LOS DATOS DEVUELTOS POR EL API
             $this->updateComprobante($venta, $respuesta, 'COMPLETADO', 'update', $invoice);
@@ -342,10 +337,32 @@ class ApiFacturacion extends Controller
         $invoice = $this->createObjetInvoice($venta, $tipo_operacion);
 
         //FIRMADO Y GUARDADO DEL XML
-        // $see = $util->getSee();
-        // $xml = $see->getXmlSigned($invoice);
-        // $xml_base64 = $util->writeXmlOnly($invoice, $xml);
-        // $hash = $util->getHash($invoice);
+
+        if ($util->empresa->soap_type == 'qpse') {
+
+            $builder = new InvoiceBuilder();
+            $xml = $builder->build($invoice);
+            $util->writeXmlOnly($invoice, $xml);
+        }
+
+        try {
+            $respuesta =  $util->signXmlQpse($invoice, $xml);
+            $xml_base64 = $respuesta['xml'];
+            $hash = $respuesta['codigo_hash'];
+        } catch (\Exception $e) {
+
+            // Manejo del error al firmar el XML
+            $msg = $util->getResults();
+            // Actualizar el nombre del XML en la base de datos
+            $this->updateComprobante($venta, $msg, 'BORRADOR', 'update', $invoice);
+            return $msg;
+        }
+        if ($util->empresa->soap_type == 'sunat') {
+            $see = $util->getSee();
+            $xml = $see->getXmlSigned($invoice);
+            $xml_base64 = $util->writeXmlOnly($invoice, $xml);
+            $hash = $util->getHash($invoice);
+        }
 
         $respuesta
             =  [
@@ -356,10 +373,10 @@ class ApiFacturacion extends Controller
                 'fe_codigo_error' => null,
                 'nombre_xml' => $invoice->getName(),
                 'nombre_cdr' => 'R-' . $invoice->getName(),
-                'xml_base64' => '',
+                'xml_base64' => $xml_base64,
                 'cdr_base64' => null,
                 'fe_estado' => 0,
-                'hash' => '',
+                'hash' => $hash,
                 'hash_cdr' => null,
                 'code_sunat' => null,
 
@@ -508,29 +525,49 @@ class ApiFacturacion extends Controller
     {
         $util = Util::getInstance();
 
-        // Envio a SUNAT.
-        $see = $util->getSee();
+        if ($util->empresa->soap_type == 'qpse') {
 
-        $result = $see->sendXml(get_class($venta->clase), $venta->clase->getName(), Storage::disk('facturacion')->get('/xml' . '/' . $venta->nombre_xml . '.xml'));
+            try {
+                $util->sendXmlQpse($venta->clase->getName(), base64_encode(Storage::disk('facturacion')->get('/xml' . '/' . $venta->nombre_xml . '.xml')));
+            } catch (\Throwable $th) {
+                $msg = $util->getResults();
+                $this->updateComprobante($venta, $msg, 'BORRADOR', 'no_update', $venta->clase);
+                return $msg;
+            }
 
-        if (!$result->isSuccess()) {
+            $respuesta = $util->getResults();
 
-            $msg = $util->getErrorResponse($result->getError());
-            $this->updateComprobante($venta, $msg, 'BORRADOR', 'no_update', $venta->clase);
-            return $msg;
+            //ACTUALIZAR COMPROBANTE CON LOS DATOS DEVUELTOS POR EL API
+            $this->updateComprobante($venta, $respuesta, 'COMPLETADO', 'no_update', $venta->clase);
+
+            return $respuesta;
         }
 
-        /**@var $res BillResult*/
-        $cdr = $result->getCdrResponse();
-        //Guardar CDR recibido
-        $util->writeCdr($venta->clase, $result->getCdrZip());
+        if ($util->empresa->soap_type == 'sunat') {
+            // Envio a SUNAT.
+            $see = $util->getSee();
 
-        $respuesta = $util->showResponse($venta->clase, $cdr);
+            $result = $see->sendXml(get_class($venta->clase), $venta->clase->getName(), Storage::disk('facturacion')->get('/xml' . '/' . $venta->nombre_xml . '.xml'));
 
-        //ACTUALIZAR COMPROBANTE CON LOS DATOS DEVUELTOS POR EL API
-        $this->updateComprobante($venta, $respuesta, 'COMPLETADO', 'no_update', $venta->clase);
+            if (!$result->isSuccess()) {
 
-        return $respuesta;
+                $msg = $util->getErrorResponse($result->getError());
+                $this->updateComprobante($venta, $msg, 'BORRADOR', 'no_update', $venta->clase);
+                return $msg;
+            }
+
+            /**@var $res BillResult*/
+            $cdr = $result->getCdrResponse();
+            //Guardar CDR recibido
+            $util->writeCdr($venta->clase, $result->getCdrZip());
+
+            $respuesta = $util->showResponse($venta->clase, $cdr);
+
+            //ACTUALIZAR COMPROBANTE CON LOS DATOS DEVUELTOS POR EL API
+            $this->updateComprobante($venta, $respuesta, 'COMPLETADO', 'no_update', $venta->clase);
+
+            return $respuesta;
+        }
     }
 
     public function getDetraccion(Detracciones $detraccion)

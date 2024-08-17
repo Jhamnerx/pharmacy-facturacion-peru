@@ -116,4 +116,55 @@ class QpseController extends Controller
             ];
         }
     }
+
+    public function enviarXmlBase64($nombre_xml_firmado, $contenido_xml_firmado)
+    {
+
+        try {
+            $url = $this->getUrl() . '/api/cpe/enviar';
+
+            $client = new Client(['verify' => false]);
+
+            $tokenResponse = $this->getToken();
+            if (isset($tokenResponse['error'])) {
+                return $tokenResponse;
+            }
+
+            $parameters = [
+                'connect_timeout' => 5,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer ' . $tokenResponse['token_acceso'],
+                ],
+                'json' => [
+                    'nombre_xml_firmado' => $nombre_xml_firmado,
+                    'contenido_xml_firmado' => $contenido_xml_firmado,
+                ],
+            ];
+
+            $res = $client->request('POST', $url, $parameters);
+
+            if ($res->getStatusCode() === 200) {
+                return json_decode($res->getBody()->getContents(), true);
+            } else {
+                return [
+                    'error' => 'Error: La respuesta no tiene un código de estado 200.',
+                    'code' => Response::HTTP_BAD_REQUEST
+                ];
+            }
+        } catch (RequestException $e) {
+            $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : Response::HTTP_INTERNAL_SERVER_ERROR;
+            $message = $e->getResponse() ? json_decode($e->getResponse()->getBody()->getContents())->message : 'Error: La solicitud falló sin respuesta.';
+            return [
+                'error' => "Error " . $statusCode . " :" . $message,
+                'code' => $statusCode
+            ];
+        } catch (\Exception $e) {
+            return [
+                'error' => 'Error: ' . $e->getMessage(),
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR
+            ];
+        }
+    }
 }

@@ -325,6 +325,7 @@ class Util extends Controller
             $this->writeFile($document->getName() . '.xml', base64_decode($response['xml']), 'xml');
             $this->xml_base64 = $response['xml'];
             $this->hash = $response['codigo_hash'];
+            return $response;
         } catch (\Exception $e) {
             dd($e);
             // Handle errors: you can log the error, return a specific response, etc.
@@ -334,6 +335,39 @@ class Util extends Controller
             $this->mensaje = 'Error al firmar el XML';
             Log::error('Error al firmar el XML: ' . $e->getMessage());
             throw new \Exception('Error al firmar el XML: ' . $e->getMessage());
+        }
+    }
+
+    public function sendXmlQpse($nombre_xml, $xml_base64)
+    {
+
+        try {
+            $qpse = new QpseController();
+            $response = $qpse->enviarXmlBase64($nombre_xml, $xml_base64);
+
+            if (isset($response['error'])) {
+                // Handle error if the response contains an error
+                throw new \Exception($response['error']);
+            }
+
+            $this->cdr_base64 = $response['cdr'];
+            $this->mensaje = $response['mensaje'];
+            $this->estado = 'ACEPTADA';
+            $this->fe_estado = 1;
+
+            $this->writeFile('R-' . $nombre_xml . '.xml', base64_decode($response['cdr']), 'cdr');
+            $xml = Storage::disk('facturacion')->get($this->empresa->ruta_cdr . 'R-' . $nombre_xml . '.xml');
+            $this->hash_cdr = $this->getHashFromFile($xml);
+            $this->nombre_cdr = 'R-' . $nombre_xml;
+        } catch (\Exception $e) {
+            // Handle errors: you can log the error, return a specific response, etc.
+            // For example, log the error or rethrow a custom exception
+            $this->fe_estado = 0;
+            $this->estado = "ESTADO: CDR NO RECIBIDO";
+            $this->mensaje = 'Error al enviar el XML';
+            $this->nombre_cdr = 'R-' . $nombre_xml;
+            Log::error('Error al enviar el XML: ' . $e->getMessage());
+            throw new \Exception('Error al enviar el XML: ' . $e->getMessage());
         }
     }
 
