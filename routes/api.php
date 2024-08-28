@@ -50,3 +50,4 @@ Route::get('/print-receipt-test', [PrintController::class, 'test'])->name('api.p
 
 
 Route::get('/card-ventas-compras/{local_id}', [DashboardController::class, 'getDataVentas'])->name('json_data_feed');
+Route::get('/card-ventas-diarias/{local_id}', [DashboardController::class, 'getDataVentasDiarias'])->name('json_data_feed_daily');

@@ -50,7 +50,34 @@ class DashboardController extends Controller
             ]
         ];
     }
-
+    public function getDataVentasDiarias(Request $request)
+    {
+        $labels = $this->getLabelsDaily(7);
+        $total_ventas = $this->getTotalesVentasDiarias(6, $request->divisa, $request->local_id);
+        return (object)[
+            'labels' => $labels,
+            'data' => [
+                'Ventas' => [
+                    'totales' => $total_ventas,
+                ],
+            ]
+        ];
+    }
+    public static function getLabelsDaily($day = 1)
+    {
+        $labels = [];
+        for (
+            $i = 0;
+            $i < $day;
+            $i++
+        ) {
+            array_push(
+                $labels,
+                Carbon::now()->startOfDay()->subDay($i)->format('d-m-Y')
+            );
+        }
+        return $labels;
+    }
     public static function getLabels($months = 1)
     {
         $labels = [];
@@ -105,6 +132,33 @@ class DashboardController extends Controller
 
             // Consulta para calcular el total
             $total = Ventas::withoutGlobalScopes()->where('local_id', $local_id)->whereMonth('created_at', $mes)
+                ->whereNull('deleted_at')
+                ->selectRaw('SUM(CASE 
+                            WHEN divisa = "usd" THEN total * tipo_cambio 
+                            ELSE total 
+                          END) as total_convertido')
+                ->value('total_convertido');
+
+            array_push(
+                $totales,
+                floatval($total)
+            );
+        }
+
+        return $totales;
+    }
+
+    private function getTotalesVentasDiarias($dias = 1, $divisa = null, $local_id = null)
+    {
+        $totales = [];
+
+        for ($i = 0; $i < $dias; $i++) {
+            // Obtener el mes actual menos $i meses
+            $mes = Carbon::now()->subDay($i)->format('d');
+
+            // Consulta para calcular el total
+            $total = Ventas::withoutGlobalScopes()->where('local_id', $local_id)->whereDay('created_at', $mes)
+                ->whereNull('deleted_at')
                 ->selectRaw('SUM(CASE 
                             WHEN divisa = "usd" THEN total * tipo_cambio 
                             ELSE total 

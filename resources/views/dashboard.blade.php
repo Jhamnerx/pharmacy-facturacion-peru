@@ -102,6 +102,10 @@
             <!-- Bar chart (Direct vs Indirect) -->
             <x-dashboard.ventas-compras-card />
 
+            <!-- Bar chart (Direct vs Indirect) -->
+            <x-dashboard.ventas-diarias-card />
+
+
             @livewire('admin.dashboard.cards.productos-vencimiento')
 
             @livewire('admin.dashboard.cards.productos-most-sale')

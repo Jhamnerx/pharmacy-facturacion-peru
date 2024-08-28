@@ -21,6 +21,7 @@ FilePond.registerPlugin(FilePondPluginImagePreview);
 window.FilePond = FilePond;
 
 import dashboardComprasVentas from "./components/dashboardComprasVentas";
+import dashboardVentasDiarias from "./components/dashboardVentasDiarias";
 
 // Define Chart.js default settings
 /* eslint-disable prefer-destructuring */
@@ -103,4 +104,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     dashboardComprasVentas();
+    dashboardVentasDiarias();
 });
