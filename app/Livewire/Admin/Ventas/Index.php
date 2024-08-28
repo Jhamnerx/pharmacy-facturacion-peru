@@ -195,4 +195,8 @@ class Index extends Component
 
         $this->render();
     }
+    public function deleteComprobante(Ventas $venta)
+    {
+        $this->dispatch('open-modal-delete', $venta);
+    }
 }

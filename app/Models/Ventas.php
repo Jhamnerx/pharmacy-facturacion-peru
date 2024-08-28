@@ -24,12 +24,14 @@ use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[ObservedBy(VentasObserver::class)]
 class Ventas extends Model
 {
     use HasFactory;
     use HasUuids;
+    use SoftDeletes;
 
     /**
      * The attributes that aren't mass assignable.
@@ -96,8 +98,8 @@ class Ventas extends Model
     protected function clase(): Attribute
     {
         return new Attribute(
-            get: fn ($clase) => unserialize($clase),
-            set: fn ($clase) => serialize($clase),
+            get: fn($clase) => unserialize($clase),
+            set: fn($clase) => serialize($clase),
         );
     }
     // protected function nota(): Attribute
@@ -276,7 +278,8 @@ class Ventas extends Model
         view()->share(
             [
                 'venta' => $this,
-                'empresa', $empresa,
+                'empresa',
+                $empresa,
             ]
         );
 
@@ -304,7 +307,8 @@ class Ventas extends Model
         view()->share(
             [
                 'venta' => $this,
-                'empresa', $empresa,
+                'empresa',
+                $empresa,
             ]
         );
 

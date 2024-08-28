@@ -1032,6 +1032,11 @@
                                                     label="Marcar como No Pagada" />
                                             @endif
                                         </x-dropdown.header>
+                                        @if ($venta->tipo_comprobante_id == '02')
+                                            <x-dropdown.item
+                                                wire:click.prevent="deleteComprobante({{ $venta->id }})"
+                                                icon="trash" label="Eliminar" />
+                                        @endif
                                     </x-form.dropdown>
                                 </div>
                             </td>

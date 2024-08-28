@@ -216,4 +216,30 @@ class Productos extends Model implements Buyable
 
         return $cantidad === 0;
     }
+
+    public function incrementStockByLote($cantidad)
+    {
+        // Actualizar el stock del producto
+        $this->update(['stock' => $this->stock + $cantidad]);
+
+        // Obtener lotes del producto
+        $lotes = $this->lotes()->orderBy('fecha_vencimiento', 'asc')->get();
+
+        // Si el producto no tiene lotes, termina el proceso
+        if ($lotes->isEmpty()) {
+            return true;
+        }
+
+        // Incrementar el stock de los lotes
+        foreach ($lotes as $lote) {
+            if ($cantidad <= 0) {
+                break;
+            }
+
+            $lote->increment('stock', $cantidad);
+            $cantidad = 0;
+        }
+
+        return $cantidad === 0;
+    }
 }
