@@ -18,19 +18,19 @@ class EmpresaSeeder extends Seeder
         Empresa::create(
             [
                 'tipo_documento' => '6',
-                'razon_social' => 'BLAS PHARMA',
-                'nombre_comercial' => 'BLAS PHARMA',
-                'ruc' => '10749754660',
+                'razon_social' => 'PHARMA',
+                'nombre_comercial' => 'PHARMA',
+                'ruc' => '10987654321',
                 'logo' => 'imagenes/logo.png',
                 'banner' => 'imagenes/banner.png',
                 'direccion' => [
                     "ubigeo" => "130101",
-                    "direccion" => "A.H. NUEVO JERUSALEN SECTOR 2",
+                    "direccion" => "A.H. NUEVO JERUSALEN",
                     "departamento" => "LA LIBERTAD",
                     "provincia" => "TRUJILLO",
                     "distrito" => "LA ESPERANZA"
                 ],
-                'telefono' => '921519539',
+                'telefono' => '987654321',
                 'pais' => 'PE',
                 'modo' => 'local', #producccion
                 'sunat_datos' => [
