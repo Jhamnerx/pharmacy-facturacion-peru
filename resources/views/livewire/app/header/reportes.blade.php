@@ -33,7 +33,7 @@
                 </button>
                 <a href="{{ route('admin.invoice.create') }}">
 
-                    <button wire:click.prevent="emitBoleta" type="button"
+                    <button type="button"
                         class="btn bg-teal-500 hover:bg-teal-600 dark:bg-teal-700 dark:hover:bg-teal-800 text-white">
                         <svg class="w-5 h-5 fill-current shrink-0" xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 64 64">
