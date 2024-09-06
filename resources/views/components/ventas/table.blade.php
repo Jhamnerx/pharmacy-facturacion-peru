@@ -961,7 +961,8 @@
                                 <div class=" text-center space-x-1">
                                     <x-form.dropdown class="w-60">
 
-                                        {{-- <x-dropdown.item icon='plus' label="Volver a crear" /> --}}
+                                        <x-dropdown.item wire:click.prevent="imprimirTicket({{ $venta->id }})"
+                                            label="Imprimir" />
 
                                         @if ($venta->tipo_comprobante_id !== '02')
                                             @if (!$venta->clase && $venta->fe_estado == '0')

@@ -9,6 +9,9 @@ use Livewire\Component;
 use App\Models\EnvioResumen;
 use Livewire\WithPagination;
 use App\Http\Controllers\Facturacion\Api\ApiFacturacion;
+use Livewire\Attributes\On;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Client;
 
 class Index extends Component
 {
@@ -198,5 +201,30 @@ class Index extends Component
     public function deleteComprobante(Ventas $venta)
     {
         $this->dispatch('open-modal-delete', $venta);
+    }
+
+
+    public function imprimirTicket(Ventas $venta)
+    {
+
+        $client = new Client([
+            'verify' => false,
+        ]);
+
+        $request = new Request('GET', route('api.print.receipt', ['venta' => $venta->id]));
+        $res = $client->sendAsync($request)->wait();
+        $datos = $res->getBody()->getContents();
+
+        $this->dispatch('imprimir-ticket', datos: $datos);
+    }
+
+    public function notifyError()
+    {
+        $this->dispatch(
+            'notify-toast',
+            icon: 'error',
+            title: 'ERROR',
+            mensaje: 'Ocurrió un error Al imprimir'
+        );
     }
 }
