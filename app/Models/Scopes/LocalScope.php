@@ -14,7 +14,6 @@ class LocalScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        Log::info('Applying LocalScope' . session('local_id', 1));
         $builder->where('local_id', session('local_id', 1));
     }
 }
