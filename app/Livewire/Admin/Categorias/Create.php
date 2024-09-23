@@ -25,6 +25,7 @@ class Create extends Component
     {
         $this->showModal = true;
     }
+
     public function close()
     {
         $this->showModal = false;

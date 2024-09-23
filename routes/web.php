@@ -5,6 +5,7 @@ use App\Http\Controllers\ComprasController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\CajaChicaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\CategoriasController;
@@ -65,6 +66,12 @@ Route::controller(ComprobantesController::class)->middleware(['auth'])->group(fu
     Route::get('emitir/nota-credito', 'emitirNotaCredito')->name('admin.nota.credito.create');
     Route::get('emitir/nota-debito', 'emitirNotaDebito')->name('admin.nota.debito.create');
 });
+
+Route::controller(CajaChicaController::class)->middleware(['auth'])->group(function () {
+
+    Route::get('caja', 'index')->name('admin.caja.index');
+});
+
 
 
 Route::controller(CotizacionesController::class)->middleware(['auth'])->group(function () {

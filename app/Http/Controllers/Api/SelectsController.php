@@ -43,13 +43,13 @@ class SelectsController extends Controller
             ->orderBy('nombre')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('nombre', 'like', "%{$request->search}%")
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('id', $request->input('selected', [])),
-                fn (Builder $query) => $query->limit(10)
+                fn(Builder $query) => $query->whereIn('id', $request->input('selected', [])),
+                fn(Builder $query) => $query->limit(10)
             )
             ->local($localId)
             ->get();
@@ -62,13 +62,13 @@ class SelectsController extends Controller
             ->orderBy('descripcion')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('descripcion', 'like', "%{$request->search}%")
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('codigo', $request->input('selected', [])),
-                fn (Builder $query) => $query->limit(10)
+                fn(Builder $query) => $query->whereIn('codigo', $request->input('selected', [])),
+                fn(Builder $query) => $query->limit(10)
             )
             ->get();
     }
@@ -81,13 +81,13 @@ class SelectsController extends Controller
             ->orderBy('name')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('name', 'like', "%{$request->search}%")
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('codigo', $request->input('selected', [])),
-                fn (Builder $query) => $query->limit(30)
+                fn(Builder $query) => $query->whereIn('codigo', $request->input('selected', [])),
+                fn(Builder $query) => $query->limit(30)
             )
             ->get();
     }
@@ -102,22 +102,22 @@ class SelectsController extends Controller
             ->orderBy('id')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('razon_social', 'like', "%{$request->search}%")
                     ->orWhere('numero_documento', 'like', "%{$request->search}%")
             )->when(
                 $request->tipo_comprobante == "01" ? true : false,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->tipoDoc(6)
 
             )->when(
                 $request->tipo_comprobante == "03" ? true : false,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
 
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('id', $request->input('selected', [])),
+                fn(Builder $query) => $query->whereIn('id', $request->input('selected', [])),
 
             )
             ->active(1)
@@ -136,13 +136,13 @@ class SelectsController extends Controller
             ->orderBy('id')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('razon_social', 'like', "%{$request->search}%")
                     ->orWhere('numero_documento', 'like', "%{$request->search}%")
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('id', $request->input('selected', [])),
+                fn(Builder $query) => $query->whereIn('id', $request->input('selected', [])),
 
             )
             ->active(1)
@@ -160,22 +160,22 @@ class SelectsController extends Controller
             ->orderBy('serie_correlativo')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('serie_correlativo', 'like', "%{$request->search}%")
             )->when(
                 $request->tipo_comprobante_ref,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('tipo_comprobante_id', $request->tipo_comprobante_ref)
 
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('id', $request->input('selected', [])),
-                fn (Builder $query) => $query->limit(50)
+                fn(Builder $query) => $query->whereIn('id', $request->input('selected', [])),
+                fn(Builder $query) => $query->limit(50)
             )
             ->when(
                 $request->exists('code_sunat'),
-                fn (Builder $query) => $query->where('code_sunat', $request->input('code_sunat'))
+                fn(Builder $query) => $query->where('code_sunat', $request->input('code_sunat'))
             )
             ->local($localId)
             ->get()
@@ -201,15 +201,15 @@ class SelectsController extends Controller
             ->orderBy('id')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('serie', 'like', "%{$request->search}%")
 
             )
             ->where('tipo_comprobante_id', $request->tipo_comprobante)
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('serie', $request->input('selected', [])),
-                fn (Builder $query) => $query->limit(20)
+                fn(Builder $query) => $query->whereIn('serie', $request->input('selected', [])),
+                fn(Builder $query) => $query->limit(20)
             )
             ->get();
     }
@@ -223,7 +223,7 @@ class SelectsController extends Controller
             ->orderBy('created_at', 'desc')
             ->when(
                 $request->search,
-                fn (Builder $query) =>
+                fn(Builder $query) =>
                 $query->Where('codigo', 'like', "%{$request->search}%")
                     ->orwhere('nombre', 'like', "%{$request->search}%")
                     ->orwhere('forma_farmaceutica', 'like', "%{$request->search}%")
@@ -235,8 +235,8 @@ class SelectsController extends Controller
             ->where('stock', '>', 0)
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('id', $request->input('selected', [])),
-                fn (Builder $query) => $query->limit(50)
+                fn(Builder $query) => $query->whereIn('id', $request->input('selected', [])),
+                fn(Builder $query) => $query->limit(50)
             )
             ->local($localId)
             ->get()->map(function (Productos $producto) {
@@ -257,7 +257,7 @@ class SelectsController extends Controller
             ->orderBy('id')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('Cod_Prod', 'like', "%{$request->search}%")
                     ->orwhere('Nom_Prod', 'like', "%{$request->search}%")
                     ->orwhere('Concent', 'like', "%{$request->search}%")
@@ -268,8 +268,8 @@ class SelectsController extends Controller
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('id', $request->input('selected', [])),
-                fn (Builder $query) => $query->limit(20)
+                fn(Builder $query) => $query->whereIn('id', $request->input('selected', [])),
+                fn(Builder $query) => $query->limit(20)
             )
             ->get()->map(function (CatalogoDigemid $producto) {
 
@@ -287,13 +287,13 @@ class SelectsController extends Controller
             ->orderBy('codigo')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('descripcion', 'like', "%{$request->search}%")
 
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('codigo', $request->input('selected', []))
+                fn(Builder $query) => $query->whereIn('codigo', $request->input('selected', []))
 
             )
             ->get();
@@ -306,13 +306,13 @@ class SelectsController extends Controller
             ->orderBy('nombre')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('nombre', 'like', "%{$request->search}%")
 
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('id', $request->input('selected', []))
+                fn(Builder $query) => $query->whereIn('id', $request->input('selected', []))
 
             )
             ->get();
@@ -325,12 +325,12 @@ class SelectsController extends Controller
             ->orderBy('descripcion')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('descripcion', 'like', "%{$request->search}%")
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('codigo', $request->input('selected', []))
+                fn(Builder $query) => $query->whereIn('codigo', $request->input('selected', []))
             )
             ->whereNotIn('codigo', ['08', '07', '09', 'RA', 'RC']) // Excluye los códigos 08 y 07
             ->get();
@@ -344,15 +344,15 @@ class SelectsController extends Controller
             ->orderBy('id')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('serie', 'like', "%{$request->search}%")
 
             )
             ->where('tipo', $request->tipo_comprobante == "07" ? "C" : "D")
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('serie', $request->input('selected', [])),
-                fn (Builder $query) => $query->limit(20)
+                fn(Builder $query) => $query->whereIn('serie', $request->input('selected', [])),
+                fn(Builder $query) => $query->limit(20)
             )
             ->get();
     }
@@ -365,14 +365,14 @@ class SelectsController extends Controller
             ->orderBy('codigo')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('descripcion', 'like', "%{$request->search}%")
 
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('codigo', $request->input('selected', [])),
-                fn (Builder $query) => $query->limit(20)
+                fn(Builder $query) => $query->whereIn('codigo', $request->input('selected', [])),
+                fn(Builder $query) => $query->limit(20)
             )
             ->get();
     }
@@ -384,14 +384,14 @@ class SelectsController extends Controller
             ->orderBy('codigo')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('descripcion', 'like', "%{$request->search}%")
 
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('codigo', $request->input('selected', [])),
-                fn (Builder $query) => $query->limit(20)
+                fn(Builder $query) => $query->whereIn('codigo', $request->input('selected', [])),
+                fn(Builder $query) => $query->limit(20)
             )
             ->get();
     }
@@ -404,7 +404,7 @@ class SelectsController extends Controller
             ->orderBy('departamento')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('ubigeo_inei', 'like', "%{$request->search}%")
                     ->orWhere('departamento', 'like', "%{$request->search}%")
                     ->orWhere('provincia', 'like', "%{$request->search}%")
@@ -414,8 +414,8 @@ class SelectsController extends Controller
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('ubigeo_inei', $request->input('selected', [])),
-                fn (Builder $query) => $query->limit(20)
+                fn(Builder $query) => $query->whereIn('ubigeo_inei', $request->input('selected', [])),
+                fn(Builder $query) => $query->limit(20)
             )
             ->get()->map(function (Ubigeos $ubigeo) {
 
@@ -437,13 +437,13 @@ class SelectsController extends Controller
             ->orderBy('serie_correlativo')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('serie_correlativo', 'like', "%{$request->search}%")
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('id', $request->input('selected', [])),
-                fn (Builder $query) => $query->limit(20)
+                fn(Builder $query) => $query->whereIn('id', $request->input('selected', [])),
+                fn(Builder $query) => $query->limit(20)
             )
             ->local($localId)
             ->get()->map(function (Ventas $venta) {
@@ -461,13 +461,13 @@ class SelectsController extends Controller
             ->select('codigo', 'descripcion', 'porcentaje')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('codigo', 'like', "%{$request->search}%")
                     ->Orwhere('descripcion', 'like', "%{$request->search}%")
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('codigo', $request->input('selected', [])),
+                fn(Builder $query) => $query->whereIn('codigo', $request->input('selected', [])),
             )
             ->get()->map(function (CodigosDetracciones $detraccion) {
 
@@ -484,13 +484,13 @@ class SelectsController extends Controller
             ->select('codigo', 'descripcion')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('codigo', 'like', "%{$request->search}%")
                     ->Orwhere('descripcion', 'like', "%{$request->search}%")
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('codigo', $request->input('selected', [])),
+                fn(Builder $query) => $query->whereIn('codigo', $request->input('selected', [])),
             )
             ->get();
     }
@@ -504,15 +504,15 @@ class SelectsController extends Controller
             ->orderBy('id')
             ->when(
                 $request->search,
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->where('name', 'like', "%{$request->search}%")
             )
             ->when(
                 $request->exists('selected'),
-                fn (Builder $query) => $query->whereIn('id', $request->input('selected', [])),
-                fn (Builder $query) => $query->limit(20)
+                fn(Builder $query) => $query->whereIn('id', $request->input('selected', [])),
+                fn(Builder $query) => $query->limit(20)
             )
-            ->role('tecnico')
+
             ->get();
     }
 
@@ -650,7 +650,7 @@ class SelectsController extends Controller
         return collect($values)
             ->when(
                 $request->search,
-                fn ($collection) => $collection->filter(function ($value) use ($request) {
+                fn($collection) => $collection->filter(function ($value) use ($request) {
                     $searchTerm = strtolower($request->search);
                     return str_contains(strtolower($value['codigo']), $searchTerm)
                         || str_contains(strtolower($value['Ubigeo']), $searchTerm)
@@ -659,8 +659,8 @@ class SelectsController extends Controller
             )
             ->when(
                 $request->exists('selected'),
-                fn ($collection) => $collection->whereIn('codigo', $request->input('selected', [])),
-                fn ($collection) => $collection->take(20)
+                fn($collection) => $collection->whereIn('codigo', $request->input('selected', [])),
+                fn($collection) => $collection->take(20)
             )
             ->values();
     }
@@ -1062,7 +1062,7 @@ class SelectsController extends Controller
         return collect($values)
             ->when(
                 $request->search,
-                fn ($collection) => $collection->filter(function ($value) use ($request) {
+                fn($collection) => $collection->filter(function ($value) use ($request) {
                     $searchTerm = strtolower($request->search);
                     $codigo = strtolower($value['codigo']);
                     $descripcion = strtolower($value['descripcion']);
@@ -1071,8 +1071,8 @@ class SelectsController extends Controller
             )
             ->when(
                 $request->exists('selected'),
-                fn ($collection) => $collection->whereIn('codigo', $request->input('selected', [])),
-                fn ($collection) => $collection->take(3)
+                fn($collection) => $collection->whereIn('codigo', $request->input('selected', [])),
+                fn($collection) => $collection->take(3)
             )
             ->values();
     }

@@ -107,4 +107,10 @@ class Compras extends Model
 
         return $compra->detalle;
     }
+
+    // Relación polimórfica inversa con MovimientoCaja
+    public function movimientos()
+    {
+        return $this->morphMany(MovimientoCaja::class, 'movimientoable');
+    }
 }

@@ -1,4 +1,4 @@
-<div class="bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700 mb-8">
+<div class="bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700 mb-8 ">
     <header class="px-5 py-4">
         <h2 class="font-semibold text-slate-800 dark:text-slate-100">Total Categorias <span
                 class="text-slate-400 dark:text-slate-500 font-medium">{{ $categorias->total() }}</span>

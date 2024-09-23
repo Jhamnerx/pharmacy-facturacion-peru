@@ -7,6 +7,7 @@ use App\Models\MetodoPago;
 use App\Enums\VentasStatus;
 use App\Models\GuiaRemision;
 use App\Models\VentasDetalle;
+use App\Models\MovimientoCaja;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\TipoComprobantes;
 use App\Models\Scopes\LocalScope;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\EnviarComprobanteCliente;
 use Illuminate\Database\Eloquent\Model;
 use Luecano\NumeroALetras\NumeroALetras;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Controllers\Facturacion\Api\Util;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -24,7 +26,6 @@ use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[ObservedBy(VentasObserver::class)]
 class Ventas extends Model
@@ -334,5 +335,11 @@ class Ventas extends Model
         $pdf = $this->getPDFToMail($empresa);
 
         Mail::to($email)->send(new EnviarComprobanteCliente($this, $email, $pdf, $empresa));
+    }
+
+    // Relación polimórfica inversa con MovimientoCaja
+    public function movimientos()
+    {
+        return $this->morphMany(MovimientoCaja::class, 'movimientoable');
     }
 }

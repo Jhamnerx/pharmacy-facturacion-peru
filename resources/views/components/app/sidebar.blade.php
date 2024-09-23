@@ -62,6 +62,7 @@
                             </a>
                         </li>
                     @endcan
+                    {{-- 
                     @can('punto.venta.ver')
                         <!-- POS -->
                         <li
@@ -78,10 +79,67 @@
                                 </div>
                             </a>
                         </li>
-                    @endcan
+                    @endcan --}}
+
+                    {{-- POS --}}
+                    @canany(['punto.venta.ver', 'caja.crear'])
+
+                        <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(1), ['pos', 'caja'])) {{ 'bg-slate-900' }} @endif"
+                            x-data="{ open: {{ in_array(Request::segment(1), ['pos', 'caja']) ? 1 : 0 }} }">
+                            <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(1), ['pos', 'caja'])) {{ 'hover:text-slate-200' }} @endif"
+                                href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <x-iconos.basket class="shrink-0 h-6 w-6" />
+                                        <span
+                                            class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                            POS
+                                        </span>
+                                    </div>
+                                    <!-- Icon -->
+                                    <div
+                                        class="flex shrink-0 ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400 @if (in_array(Request::segment(1), ['pos', 'caja'])) {{ 'rotate-180' }} @endif"
+                                            :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
+                                            <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
+                                <ul class="pl-9 mt-1 @if (!in_array(Request::segment(1), ['ventas'])) {{ 'hidden' }} @endif"
+                                    :class="open ? '!block' : 'hidden'">
+
+                                    @can('punto.venta.ver')
+                                        <li class="mb-1 last:mb-0">
+                                            <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.pos.create')) {{ '!text-teal-500' }} @endif"
+                                                href="{{ route('admin.pos.create') }}">
+                                                <span
+                                                    class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                                    Punto de Venta
+                                                </span>
+                                            </a>
+                                        </li>
+                                    @endcan
+
+                                    @can('caja.crear')
+                                        <li class="mb-1 last:mb-0">
+                                            <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.caja.index')) {{ '!text-teal-500' }} @endif"
+                                                href="{{ route('admin.caja.index') }}">
+                                                <span
+                                                    class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                                    Caja Chica POS
+                                                </span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                </ul>
+                            </div>
+                        </li>
+                    @endcanany
+
 
                     <!-- Comprobantes -->
-
                     @canany(['comprobantes.ver', 'comprobantes.crear', 'comprobantes.anular'])
 
                         <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(1), ['emitir', 'ventas'])) {{ 'bg-slate-900' }} @endif"

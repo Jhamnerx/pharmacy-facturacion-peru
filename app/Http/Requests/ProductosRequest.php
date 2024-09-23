@@ -30,7 +30,7 @@ class ProductosRequest extends FormRequest
             'numero_registro_sanitario' => 'nullable',
             'laboratorio' => 'nullable',
             'stock_minimo' => 'required|numeric|min:0',
-            'stock' => 'required|numeric|min:1',
+            'stock' => 'required|numeric|min:0',
             'afecto_icbper' => 'required|boolean',
             'divisa' => 'required|in:USD,PEN',
             'tipo' => 'required|in:producto,servicio',
