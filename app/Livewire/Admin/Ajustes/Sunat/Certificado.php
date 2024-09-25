@@ -37,7 +37,7 @@ class Certificado extends Component
 
     public function uploadCertificado()
     {
-        //$this->validate();
+        $this->validate();
 
         try {
             if ($this->empresa->sunat_datos['clave_certificado_cdt'] == null) {
@@ -67,6 +67,7 @@ class Certificado extends Component
             }
 
             $this->afterUploadCertificado();
+            $this->dispatch('update-pem');
         } catch (\Throwable $th) {
 
             $this->dispatch(

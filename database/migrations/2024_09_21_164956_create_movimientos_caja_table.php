@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('caja_chica_id')->constrained('cajas_chicas');
             $table->enum('tipo', ['ingreso', 'egreso']);
-            $table->decimal('monto', 10, 2);
+            $table->decimal('monto', 11, 4);
             $table->string('descripcion');
             $table->dateTime('fecha');
             $table->foreignId('user_id')->constrained('users');

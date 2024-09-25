@@ -9,6 +9,7 @@ use App\Models\EnvioResumen;
 use App\Models\GuiaRemision;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\CajaChica;
 
 class VisualizarArchivosController extends Controller
 {
@@ -26,9 +27,7 @@ class VisualizarArchivosController extends Controller
         return $venta->getPdfNotaVenta($formato);
     }
 
-    public function ticket($uuid)
-    {
-    }
+    public function ticket($uuid) {}
 
     public function xml($uuid)
     {
@@ -36,9 +35,7 @@ class VisualizarArchivosController extends Controller
         return $venta->downloadXml();
     }
 
-    public function cdr($uuid)
-    {
-    }
+    public function cdr($uuid) {}
 
 
     public function pdf_guia($id, $uuid)
@@ -53,8 +50,6 @@ class VisualizarArchivosController extends Controller
 
         return $guia->downloadXml();
     }
-
-
 
 
     public function pdf_nota($id, $uuid)
@@ -95,5 +90,11 @@ class VisualizarArchivosController extends Controller
         $cotizacion = Cotizaciones::where('uuid', $uuid)->firstOrFail();
 
         return $cotizacion->getPDFData();
+    }
+
+
+    public function cajaChicaReporte(CajaChica $cajaChica)
+    {
+        return $cajaChica->getPdf();
     }
 }

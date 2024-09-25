@@ -31,7 +31,7 @@
                     <div class="mt-1 relative flex justify-center px-6 pt-5 pb-6 border-2 cursor-pointer border-gray-300 border-dashed rounded-md"
                         x-on:dragover="$el.classList.add('border-emerald-400')"
                         x-on:dragleave="$el.classList.remove('border-emerald-400')">
-                        <input wire:model.live="file" type="file"
+                        <input wire:model="file" type="file"
                             class="absolute inset-0 z-50 m-0 p-0 w-full h-full outline-none opacity-0 cursor-pointer"
                             id="file" x-on:change="files = $event.target.files; console.log($event.target.files);"
                             accept=".p12,.pfx">
@@ -59,6 +59,7 @@
                     {{ $message }}
                 </p>
             @enderror
+
             <!-- Modal footer -->
             <div class="px-5 py-4 border-t border-slate-200">
                 <div class="flex flex-wrap justify-end space-x-2">

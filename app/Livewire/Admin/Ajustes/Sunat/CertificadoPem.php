@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Ajustes\Sunat;
 use App\Models\Empresa;
 use Livewire\Component;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\On;
 
 class CertificadoPem extends Component
 {
@@ -49,5 +50,11 @@ class CertificadoPem extends Component
                 mensaje: 'mensaje: ' . $th->getMessage(),
             );
         }
+    }
+
+    #[On('update-pem')]
+    public function reRender()
+    {
+        $this->render();
     }
 }

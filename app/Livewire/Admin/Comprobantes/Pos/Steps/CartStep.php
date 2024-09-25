@@ -19,6 +19,7 @@ use App\Http\Requests\VentasPosRequest;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\UtilesController;
 use App\Http\Controllers\Facturacion\Api\ApiFacturacion;
+use App\Models\CajaChica;
 
 class CartStep extends Component
 {
@@ -549,6 +550,7 @@ class CartStep extends Component
                 $this->dispatch('finishVenta', venta: $venta->id);
             }
 
+            $this->registrarMovimiento($venta);
             $this->afterVenta();
         } catch (\Throwable $th) {
 

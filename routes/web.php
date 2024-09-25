@@ -17,6 +17,7 @@ use App\Http\Controllers\Utiles\PrintController;
 use App\Http\Controllers\AdministracionController;
 use App\Http\Controllers\Clientes\ClienteUtilController;
 use App\Http\Controllers\Comprobantes\ComprobantesController;
+use App\Http\Controllers\Facturacion\VisualizarArchivosController;
 
 
 
@@ -115,3 +116,10 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
 });
 
 Route::get('/stop-impersonating', [AdminController::class, 'stopImpersonating'])->name('stopImpersonating');
+
+
+
+Route::controller(VisualizarArchivosController::class)->group(function () {
+
+    Route::get('caja-chica/reporte/{cajaChica}', 'cajaChicaReporte')->name('caja.chica.reporte');
+});

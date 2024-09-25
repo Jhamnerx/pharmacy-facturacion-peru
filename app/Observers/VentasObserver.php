@@ -2,9 +2,10 @@
 
 namespace App\Observers;
 
-use App\Events\VentaCreada;
 use Carbon\Carbon;
 use App\Models\Ventas;
+use App\Models\CajaChica;
+use App\Events\VentaCreada;
 use Illuminate\Support\Facades\App;
 
 class VentasObserver
@@ -13,8 +14,39 @@ class VentasObserver
     public function created(Ventas $ventas): void
     {
         VentaCreada::dispatch();
+        $this->registrarMovimiento($ventas);
         $ventas->fecha_hora_emision = Carbon::now();
         $ventas->save();
+    }
+    public function registrarMovimiento($venta)
+    {
+        // Buscar la caja chica abierta del usuario autenticado
+        $caja = CajaChica::where('user_id', auth()->user()->id)
+            ->where('estado', 'abierta')
+            ->first();
+
+        // Verificar que la caja chica está abierta
+        if (!$caja) {
+            throw new \Exception('No hay ninguna caja chica abierta para este usuario.');
+        }
+
+        // Calcular el monto en PEN (si la venta es en dólares, convertir)
+        $monto = $venta->divisa === 'PEN'
+            ? $venta->total
+            : $venta->total / $venta->tipo_cambio; // Convertir a PEN usando el tipo de cambio
+
+        // Registrar el movimiento en la caja chica
+        $venta->movimientos()->create([
+            'caja_chica_id'    => $caja->id,
+            'tipo'             => 'ingreso',
+            'monto'            => round($monto, 4), // Redondear a 4 decimales
+            'descripcion'      => 'Venta registrada, Serie: ' . $venta->serie . '-' . $venta->correlativo,
+            'fecha'            => now(),
+            'user_id'          => auth()->id(),
+            'created_by'       => auth()->id(),
+            'local_id'         => $venta->local_id,
+
+        ]);
     }
 
     public function creating(Ventas $ventas): void

@@ -5,7 +5,7 @@
         </h2>
 
     </header>
-    <div class="overflow-x-auto min-h-full">
+    <div class="overflow-x-auto min-h-screen">
         <table class="table-auto w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead class="bg-gray-50 dark:bg-gray-700">
                 <tr>
@@ -84,7 +84,8 @@
                                         <x-form.button xs label="Reporte" primary />
                                     </x-slot>
 
-                                    <x-dropdown.item label="PDF A4" />
+                                    <x-dropdown.item label="PDF A4" target="_blank"
+                                        href="{{ route('caja.chica.reporte', $caja) }}" />
                                     <x-dropdown.item separator label="Excel" />
                                     <x-dropdown.item separator label="Resumen de Operaciones Diarias" />
                                     <x-dropdown.item separator label="Reporte general caja" />
