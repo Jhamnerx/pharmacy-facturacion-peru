@@ -53,7 +53,7 @@ class DashboardController extends Controller
     public function getDataVentasDiarias(Request $request)
     {
         $labels = $this->getLabelsDaily(7);
-        $total_ventas = $this->getTotalesVentasDiarias(6, $request->divisa, $request->local_id);
+        $total_ventas = $this->getTotalesVentasDiarias(7, $request->divisa, $request->local_id);
         return (object)[
             'labels' => $labels,
             'data' => [
@@ -63,6 +63,7 @@ class DashboardController extends Controller
             ]
         ];
     }
+
     public static function getLabelsDaily($day = 1)
     {
         $labels = [];
@@ -78,6 +79,7 @@ class DashboardController extends Controller
         }
         return $labels;
     }
+
     public static function getLabels($months = 1)
     {
         $labels = [];
@@ -153,11 +155,13 @@ class DashboardController extends Controller
         $totales = [];
 
         for ($i = 0; $i < $dias; $i++) {
-            // Obtener el mes actual menos $i meses
-            $mes = Carbon::now()->subDay($i)->format('d');
+            // Obtener la fecha actual menos $i días
+            $fecha = Carbon::now()->subDay($i)->toDateString();
 
             // Consulta para calcular el total
-            $total = Ventas::withoutGlobalScopes()->where('local_id', $local_id)->whereDay('created_at', $mes)
+            $total = Ventas::withoutGlobalScopes()
+                ->where('local_id', $local_id)
+                ->whereDate('created_at', $fecha) // Filtrar por fecha completa
                 ->whereNull('deleted_at')
                 ->selectRaw('SUM(CASE 
                             WHEN divisa = "usd" THEN total * tipo_cambio 

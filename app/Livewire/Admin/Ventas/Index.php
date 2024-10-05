@@ -227,4 +227,10 @@ class Index extends Component
             mensaje: 'Ocurrió un error Al imprimir'
         );
     }
+
+    public function openModalPayments(Ventas $venta)
+    {
+
+        $this->dispatch('open-modal-create-payments', venta: $venta);
+    }
 }

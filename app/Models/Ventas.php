@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Clientes;
+use App\Models\Payments;
 use App\Models\MetodoPago;
 use App\Enums\VentasStatus;
 use App\Models\GuiaRemision;
@@ -341,5 +342,10 @@ class Ventas extends Model
     public function movimientos()
     {
         return $this->morphMany(MovimientoCaja::class, 'movimientoable');
+    }
+    // Relación polimórfica con Payments
+    public function payments()
+    {
+        return $this->morphMany(Payments::class, 'paymentable');
     }
 }

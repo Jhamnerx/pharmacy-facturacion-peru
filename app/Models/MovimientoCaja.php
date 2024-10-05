@@ -11,6 +11,7 @@ class MovimientoCaja extends Model
     protected $fillable = ['caja_chica_id', 'tipo', 'monto', 'descripcion', 'movimientoable_id', 'movimientoable_type', 'fecha', 'user_id', 'local_id', 'created_by'];
 
     protected $table = 'movimientos_caja';
+
     // Relación con CajaChica
     public function cajaChica()
     {

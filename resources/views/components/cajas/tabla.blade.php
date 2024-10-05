@@ -86,8 +86,10 @@
 
                                     <x-dropdown.item label="PDF A4" target="_blank"
                                         href="{{ route('caja.chica.reporte', $caja) }}" />
-                                    <x-dropdown.item separator label="Excel" />
-                                    <x-dropdown.item separator label="Resumen de Operaciones Diarias" />
+                                    <x-dropdown.item separator label="Excel"
+                                        wire:click.prevent="reporteCaja({{ $caja }})" />
+                                    <x-dropdown.item separator label="Resumen de Operaciones Diarias" target="_blank"
+                                        href="{{ route('caja.chica.reporte.operaciones.diarias', $caja) }}" />
                                     <x-dropdown.item separator label="Reporte general caja" />
                                 </x-form.dropdown>
 

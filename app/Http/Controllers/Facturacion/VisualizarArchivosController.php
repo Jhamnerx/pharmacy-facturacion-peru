@@ -97,4 +97,9 @@ class VisualizarArchivosController extends Controller
     {
         return $cajaChica->getPdf();
     }
+
+    public function cajaChicaReporteOperacionDiarias(CajaChica $cajaChica)
+    {
+        return $cajaChica->getPdfOperacionesDiarias();
+    }
 }

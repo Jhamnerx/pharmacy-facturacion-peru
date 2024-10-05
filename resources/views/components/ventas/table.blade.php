@@ -1019,9 +1019,13 @@
                                         @endif
 
                                         <x-dropdown.header label="Estado de pago">
+                                            <x-dropdown.item disabled="true" icon="banknotes"
+                                                wire:click.prevent="openModalPayments({{ $venta->id }})"
+                                                label="Pagos" />
                                             @if ($venta->pago_estado == 'PAID')
                                                 <x-dropdown.item disabled="true" icon="check-circle"
                                                     label="Marcar como Pagada" />
+
 
                                                 <x-dropdown.item wire:click.prevent='markUnPaid({{ $venta->id }})'
                                                     icon="x-mark" label="Marcar como No Pagada" />

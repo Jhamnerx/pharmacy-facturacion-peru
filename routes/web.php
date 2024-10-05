@@ -122,4 +122,5 @@ Route::get('/stop-impersonating', [AdminController::class, 'stopImpersonating'])
 Route::controller(VisualizarArchivosController::class)->group(function () {
 
     Route::get('caja-chica/reporte/{cajaChica}', 'cajaChicaReporte')->name('caja.chica.reporte');
+    Route::get('caja-chica/reporte-resumen-operacion-diarias/{cajaChica}', 'cajaChicaReporteOperacionDiarias')->name('caja.chica.reporte.operaciones.diarias');
 });

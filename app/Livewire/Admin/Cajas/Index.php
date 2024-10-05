@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Admin\Cajas;
 
+use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\CajaChica;
-use Carbon\Carbon;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
+use App\Exports\CajaChicaExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Index extends Component
 {
@@ -69,5 +71,22 @@ class Index extends Component
             mensaje: 'La Caja se cerro correctamente'
         );
         $this->render();
+    }
+
+    public function reporteCaja(CajaChica $cajaChica)
+    {
+
+        $resumenPagos = $cajaChica->obtenerResumenPagos($cajaChica->id);
+
+        $totalIngresos = $resumenPagos['totalIngresos'];
+        $totalEgresos = $resumenPagos['totalEgresos'];
+        $totalCPE = $resumenPagos['totalCPE'];
+        $totalNotaVenta =   $resumenPagos['totalNotaVenta'];
+        $resumenPagos = $resumenPagos['resumenPagos'];
+
+        return Excel::download(
+            new CajaChicaExport($cajaChica, $totalIngresos, $totalEgresos, $totalCPE, $totalNotaVenta, $resumenPagos),
+            'reporte_punto_de_venta.xlsx'
+        );
     }
 }

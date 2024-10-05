@@ -57,10 +57,34 @@ class CajaChica extends Model
             'totalNotaVenta' => $resumenPagos['totalNotaVenta'],
         ]);
 
-        $html = view('pdf.caja.pdf');
+        $html = view('pdf.caja.reporte');
 
         $pdf = PDF::loadHTML($html);
         return $pdf->stream('Reporte POS' . auth()->user()->id . "-" . Carbon::now()->format('d-m-Y'));
+    }
+
+    public function getPdfOperacionesDiarias()
+    {
+        $empresa = Empresa::first();
+        $local = Locales::where('id', session('local_id'))->first();
+
+        $resumenPagos = $this->obtenerResumenPagos($this->id);
+
+        view()->share([
+            'datos' => $this,
+            'empresa' => $empresa,
+            'local' => $local,
+            'resumenPagos' => $resumenPagos['resumenPagos'],
+            'totalIngresos' => $resumenPagos['totalIngresos'],
+            'totalEgresos' => $resumenPagos['totalEgresos'],
+            'totalCPE' => $resumenPagos['totalCPE'],
+            'totalNotaVenta' => $resumenPagos['totalNotaVenta'],
+        ]);
+
+        $html = view('pdf.caja.reporte-operaciones-diarias');
+
+        $pdf = PDF::loadHTML($html);
+        return $pdf->stream('Reporte Resumen de Operaciones Diarias');
     }
 
 

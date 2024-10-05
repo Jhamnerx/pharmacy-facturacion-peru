@@ -15,9 +15,25 @@ class VentasObserver
     {
         VentaCreada::dispatch();
         $this->registrarMovimiento($ventas);
+
         $ventas->fecha_hora_emision = Carbon::now();
         $ventas->save();
     }
+
+    public function savePayment($venta, $caja = null)
+    {
+
+        $venta->payments()->create([
+            'monto' => $venta->total,
+            'descripcion' => 'Pago de la venta',
+            'fecha' => now(),
+            'metodo_pago_id' => $venta->metodo_pago_id,
+            'payed' => true,
+            'numero_referencia' => 'N/A',
+            'user_id' => auth()->id(),
+        ]);
+    }
+
     public function registrarMovimiento($venta)
     {
         // Buscar la caja chica abierta del usuario autenticado
@@ -28,6 +44,10 @@ class VentasObserver
         // Verificar que la caja chica está abierta
         if (!$caja) {
             throw new \Exception('No hay ninguna caja chica abierta para este usuario.');
+        }
+
+        if ($venta->forma_pago == 'CONTADO') {
+            $this->savePayment($venta, $caja);
         }
 
         // Calcular el monto en PEN (si la venta es en dólares, convertir)

@@ -262,38 +262,53 @@
                 <th>Cliente/Proveedor</th>
                 <th>N° Documento</th>
                 <th>Moneda</th>
-                <th>T. Pagado</th>
                 <th>Total</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($datos->movimientos as $movimiento)
+                @php
+                    $tipo_doc = 'NOTA DE VENTA';
+
+                    switch ($movimiento->movimientoable->tipo_comprobante_id) {
+                        case '01':
+                            $tipo_doc = 'FACTURA ELECTRÓNICA';
+                            break;
+                        case '03':
+                            $tipo_doc = 'BOLETA ELECTRÓNICA';
+                            break;
+                    }
+
+                    // Determinar si es una Venta o una Compra y acceder a la relación correcta
+                    if ($movimiento->movimientoable instanceof \App\Models\Ventas) {
+                        // Si es una venta, usamos el cliente
+                        $entidadNombre = $movimiento->movimientoable->cliente->razon_social ?? 'Cliente no disponible';
+                        $entidadDocumento = $movimiento->movimientoable->cliente->numero_documento ?? 'N/A';
+                    } elseif ($movimiento->movimientoable instanceof \App\Models\Compras) {
+                        // Si es una compra, usamos el proveedor
+                        $entidadNombre =
+                            $movimiento->movimientoable->proveedor->razon_social ?? 'Proveedor no disponible';
+                        $entidadDocumento = $movimiento->movimientoable->proveedor->numero_documento ?? 'N/A';
+                    } else {
+                        // Si no es ni venta ni compra, usar valores por defecto
+                        $entidadNombre = 'Entidad no disponible';
+                        $entidadDocumento = 'N/A';
+                    }
+                @endphp
                 <tr>
                     <td>1</td>
                     <td>{{ $movimiento->tipo == 'ingreso' ? 'Venta' : 'Compra' }}</td>
-                    <td>NOTA DE VENTA</td>
+                    <td>{{ $tipo_doc }}</td>
                     <td>{{ $movimiento->movimientoable->serie_correlativo }}</td>
-                    <td>2024-09-22</td>
-                    <td>Clientes - Varios</td>
-                    <td>99999999</td>
-                    <td>PEN</td>
-                    <td>160.20</td>
-                    <td>160.20</td>
+                    <td>{{ $movimiento->movimientoable->fecha_emision }}</td>
+                    <td>{{ $entidadNombre }}</td>
+                    <td>{{ $entidadDocumento }}</td>
+                    <td>{{ $movimiento->movimientoable->divisa }}</td>
+                    <td>{{ $movimiento->movimientoable->total }}</td>
                 </tr>
             @endforeach
 
-            <tr>
-                <td>2</td>
-                <td>Compra</td>
-                <td>FACTURA ELECTRÓNICA</td>
-                <td>F001-1</td>
-                <td>2024-09-22</td>
-                <td>SIFUENTES VASQUEZ JHAMNER ROLANDO</td>
-                <td>10751031497</td>
-                <td>PEN</td>
-                <td>25.00</td>
-                <td>25.00</td>
-            </tr>
+
         </tbody>
     </table>
 
