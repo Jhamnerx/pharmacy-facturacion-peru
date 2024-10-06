@@ -70,6 +70,7 @@
                             {{ number_format($caja->monto_final, 2) }}
                         </td>
                         <td class="px-4 py-2 whitespace-nowrap">
+
                             @if ($caja->estado == 'abierta')
                                 <x-form.badge positive label="Aperturada" />
                             @else
@@ -88,12 +89,12 @@
                                         href="{{ route('caja.chica.reporte', $caja) }}" />
                                     <x-dropdown.item separator label="Excel"
                                         wire:click.prevent="reporteCaja({{ $caja }})" />
-                                    <x-dropdown.item separator label="Resumen de Operaciones Diarias" target="_blank"
-                                        href="{{ route('caja.chica.reporte.operaciones.diarias', $caja) }}" />
-                                    <x-dropdown.item separator label="Reporte general caja" />
+                                    {{-- <x-dropdown.item separator label="Resumen de Operaciones Diarias" target="_blank"
+                                        href="{{ route('caja.chica.reporte.operaciones.diarias', $caja) }}" /> --}}
+                                    {{-- <x-dropdown.item separator label="Reporte general caja" /> --}}
                                 </x-form.dropdown>
 
-                                <x-form.dropdown>
+                                {{-- <x-form.dropdown>
                                     <x-slot name="trigger">
                                         <x-form.button xs label="Reporte Efectivo" primary />
                                     </x-slot>
@@ -102,12 +103,13 @@
                                     <x-dropdown.item separator label="Excel" />
                                     <x-dropdown.item separator label="Ingresos y egresos" />
                                     <x-dropdown.item separator label="Pagos asociados a caja" />
-                                </x-form.dropdown>
+                                </x-form.dropdown> --}}
 
-                                <x-form.button xs positive label="R. Ingreso" />
-
-                                <x-form.button xs success label="Cerrar Caja"
-                                    wire:click.prevent="closeCaja({{ $caja->id }})" />
+                                {{-- <x-form.button xs positive label="R. Ingreso" /> --}}
+                                @if ($caja->estado == 'abierta')
+                                    <x-form.button xs success label="Cerrar Caja"
+                                        wire:click.prevent="closeCaja({{ $caja->id }})" />
+                                @endif
                                 <x-form.button xs warning label="Editar"
                                     wire:click.prevent="openModalEdit({{ $caja->id }})" />
                                 <x-form.button xs negative label="Eliminar"

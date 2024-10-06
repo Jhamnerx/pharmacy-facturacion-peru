@@ -2,29 +2,35 @@
 
 namespace App\Livewire\Admin\Cajas;
 
-use Livewire\Component;
 use App\Models\CajaChica;
+use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\DB;
-use DragonCode\Contracts\Cashier\Auth\Auth;
 
-class Create extends Component
+class Edit extends Component
 {
+
     public $showModal = false;
 
     public $numero_referencia = null;
     public $monto_inicial = 0.00;
     public $user_id;
 
+    public CajaChica $caja;
+
 
     public function render()
     {
-        return view('livewire.admin.cajas.create');
+        return view('livewire.admin.cajas.edit');
     }
 
-    #[On('open-modal-create')]
-    public function openModal()
+    #[On('open-modal-edit')]
+    public function openModal(CajaChica $caja)
     {
+        $this->caja = $caja;
+        $this->numero_referencia = $caja->numero_referencia;
+        $this->monto_inicial = $caja->monto_inicial;
+        $this->user_id = $caja->user_id;
         $this->showModal = true;
     }
 
@@ -34,59 +40,54 @@ class Create extends Component
         $this->resetProp();
     }
 
-    // Método para guardar la apertura de caja
     public function save()
     {
         $datos = $this->validate([
             'user_id' => 'required',
-            'numero_referencia' => 'required|string|max:255',
+            'numero_referencia' => 'required|string|max:20',
             'monto_inicial' => 'required|numeric|min:0',
         ]);
 
-
         try {
             DB::beginTransaction();
-            // Guardar la caja chica
-            $caja = CajaChica::create([
+            $this->caja->update([
                 'user_id' => $datos['user_id'],
                 'numero_referencia' => $datos['numero_referencia'],
                 'monto_inicial' => $datos['monto_inicial'],
-                'fecha_apertura' => now(),
-                'estado' => 'abierta',
                 'created_by' => auth()->user()->id,
             ]);
 
-            // Cerrar el modal y limpiar
             $this->afterSave();
             DB::commit();
         } catch (\Exception $e) {
+
             DB::rollBack();
             $this->dispatch(
                 'notify-toast',
                 icon: 'error',
                 title: 'ERROR',
-                mensaje: 'Ocurrio un error al guardar la caja'
+                mensaje: 'Ocurrio un error al actualizar la caja'
             );
         }
     }
-
     public function afterSave()
     {
-        $this->close();
+
         $this->dispatch(
             'notify-toast',
             icon: 'success',
-            title: 'CAJA APERTURADA',
-            mensaje: 'La Caja se aperturo correctamente'
+            title: 'CAJA ACTUALIZADA',
+            mensaje: 'La Caja se actualizo correctamente'
         );
+
+        $this->close();
         $this->dispatch('update-table');
-        $this->resetProp();
     }
 
     public function resetProp()
     {
-        $this->user_id = null;
         $this->numero_referencia = null;
         $this->monto_inicial = 0.00;
+        $this->user_id = null;
     }
 }

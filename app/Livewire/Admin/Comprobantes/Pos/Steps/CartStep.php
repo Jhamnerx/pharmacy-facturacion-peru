@@ -550,7 +550,6 @@ class CartStep extends Component
                 $this->dispatch('finishVenta', venta: $venta->id);
             }
 
-            $this->registrarMovimiento($venta);
             $this->afterVenta();
         } catch (\Throwable $th) {
 

@@ -24,6 +24,7 @@ class VentasObserver
     {
 
         $venta->payments()->create([
+            'caja_chica_id' => $caja->id,
             'monto' => $venta->total,
             'descripcion' => 'Pago de la venta',
             'fecha' => now(),

@@ -52,25 +52,21 @@ class Index extends Component
 
     public function openModalDelete(CajaChica $cajaChica)
     {
-        $this->dispatch('open-modal-delete', caja: $cajaChica);
+
+        $cajaChica->movimientos()->count() > 0
+            ? $this->dispatch(
+                'notify-toast',
+                icon: 'error',
+                title: 'CAJA CON MOVIMIENTOS',
+                mensaje: 'No se puede eliminar la caja, tiene movimientos'
+            )
+            : $this->dispatch('open-modal-delete', caja: $cajaChica);
     }
 
     public function closeCaja(CajaChica $cajaChica)
     {
 
-        $montoCajaDiario = $cajaChica->movimientos()->whereDate('created_at', Carbon::now())->get()->sum('monto');
-
-        $cajaChica->update(
-            ['monto_final' => $montoCajaDiario]
-        );
-
-        $this->dispatch(
-            'notify-toast',
-            icon: 'error',
-            title: 'CAJA CERRADA',
-            mensaje: 'La Caja se cerro correctamente'
-        );
-        $this->render();
+        $this->dispatch('open-modal-close-caja', caja: $cajaChica);
     }
 
     public function reporteCaja(CajaChica $cajaChica)

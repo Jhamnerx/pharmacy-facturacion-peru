@@ -4,7 +4,7 @@
 
         <h1 class="text-xl font-bold text-gray-800 dark:text-slate-100">Listado de cajas</h1>
         <div class="space-x-2 xs:space-y-1 sm:space-x-0">
-            <x-form.button primary label="Reporte general" icon="printer" />
+            {{-- <x-form.button primary label="Reporte general" icon="printer" /> --}}
             <x-form.button positive label="Aperturar caja chica POS" icon="plus-circle"
                 wire:click.prevent="openModalCreate" />
         </div>

@@ -13,12 +13,12 @@ use Carbon\Carbon;
 class CajaChica extends Model
 {
     use HasFactory;
-    protected $fillable = ['numero_referencia', 'monto_inicial', 'monto_final', 'fecha_apertura', 'fecha_cierre', 'estado', 'user_id', 'local_id', 'created_by'];
-
+    protected $guarded = ['id', 'created_at', 'updated_at'];
     protected $table = 'cajas_chicas';
 
     protected $casts = [
         'fecha_apertura' => 'datetime',
+        'fecha_cierre' => 'datetime',
     ];
 
     // Relación con MovimientoCaja
@@ -90,11 +90,12 @@ class CajaChica extends Model
 
     public function obtenerResumenPagos($cajaChicaId)
     {
+
         // Obtener la caja chica con los movimientos (ingresos y egresos)
         $cajaChica = CajaChica::with(['movimientos' => function ($query) {
             $query->whereIn('tipo', ['ingreso', 'egreso']);
         }, 'movimientos.movimientoable'])->find($cajaChicaId);
-
+        dd($cajaChica->movimientos);
         // Agrupar por métodos de pago y calcular los ingresos y egresos
         $resumenPagos = $cajaChica->movimientos->groupBy(function ($movimiento) {
             return $movimiento->movimientoable->metodoPago->descripcion;
