@@ -79,7 +79,32 @@
 
 </div>
 
+
 <?php $__env->startPush('scripts'); ?>
-    <script></script>
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+            Livewire.on('imprimir-ticket', (event) => {
+
+                console.log(event.datos);
+
+                //imprimirHolaMundo(IMPRESORA_POR_DEFECTO);
+                pc_print(event.datos);
+            });
+
+
+            function pc_print(data) {
+                var socket = new WebSocket("ws://127.0.0.1:40213/");
+                socket.bufferType = "arraybuffer";
+                socket.onerror = function(error) {
+                    window.Livewire.find('<?php echo e($_instance->getId()); ?>').notifyError();
+                };
+                socket.onopen = function() {
+                    socket.send(data);
+                    socket.close(1000, "Work complete");
+                };
+            }
+
+        });
+    </script>
 <?php $__env->stopPush(); ?>
 <?php /**PATH C:\laragon2\www\pharmacy\resources\views/livewire/admin/devoluciones/index.blade.php ENDPATH**/ ?>

@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Mike42\Escpos\EscposImage;
 use Mike42\Escpos\GdEscposImage;
 use App\Http\Controllers\Controller;
+use App\Models\Devoluciones;
 use Mike42\Escpos\CapabilityProfile;
 use Mike42\Escpos\ImagickEscposImage;
 use Illuminate\Support\Facades\Storage;
@@ -52,7 +53,7 @@ class PrintController extends Controller
 
         // Encabezado de la factura
         $printer->setJustification(Printer::JUSTIFY_CENTER);
-        $printer->text($empresa->nombre_comericla . "\n");
+        $printer->text($empresa->nombre_comercial . "\n");
         $printer->text($empresa->direccion['direccion'] . "\n");
         $printer->text("Tel: " . $empresa->telefono . "\n");
         $printer->text("Email: " . $empresa->correo . "\n");
@@ -146,6 +147,102 @@ class PrintController extends Controller
             $printer->text("OBSERVACIONES:\n");
             $printer->text($venta->comentario . "\n");
         }
+        // Pie de página
+        $printer->feed(1);
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
+        $printer->text("Gracias por su compra\n");
+
+        // Cortar el papel
+        $printer->cut();
+
+        // Cerrar la conexión
+        $printer->close();
+    }
+    public function printReceiptDevolucion($id)
+    {
+
+        $devolucion = Devoluciones::withoutGlobalScopes()->findOrFail($id);
+
+        $empresa = Empresa::first();
+
+        $profile = CapabilityProfile::load("POS-5890");
+
+        /* Fill in your own connector here */
+        $connector = new RawbtPrintConnector();
+
+        /* Start the printer */
+        $logo = EscposImage::load(storage_path('app/public/imagenes/print-logo.png'), false);
+        $printer = new Printer($connector, $profile);
+
+
+        /* Print top logo */
+        if ($profile->getSupportsGraphics()) {
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->graphics($logo);
+        }
+        if ($profile->getSupportsBitImageRaster() && !$profile->getSupportsGraphics()) {
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->bitImage($logo);
+        }
+
+        // Encabezado de la factura
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
+        $printer->text($empresa->nombre_comercial . "\n");
+        $printer->text($empresa->direccion['direccion'] . "\n");
+        $printer->text("Tel: " . $empresa->telefono . "\n");
+        $printer->text("Doc. Afectado " . $devolucion->venta->serie_correlativo . "\n");
+        $printer->text("Email: " . $empresa->correo . "\n");
+        $printer->text($empresa->ruc . "\n");
+        $printer->text("Fecha: " . $devolucion->fecha_emision->format('d-m-Y') . "\n");
+        $printer->feed();
+
+        // Título de la factura
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
+        $printer->text("DEVOLUCION\n");
+        $printer->text("DEV-" . $devolucion->id . "\n");
+        $printer->feed();
+
+        // Detalles del cliente
+        $printer->setJustification(Printer::JUSTIFY_LEFT);
+        $printer->text("Cliente: " . $devolucion->venta->cliente->razon_social . "\n");
+        $printer->text("Dirección: " . $devolucion->venta->cliente->direccion . "\n");
+        if ($devolucion->venta->cliente->numero_documento) {
+            $printer->text("RUC/DNI: " . $devolucion->venta->cliente->numero_documento . "\n");
+        }
+        $printer->text($devolucion->venta->divisa == 'PEN' ? 'Tipo Moneda: SOLES' : 'Tipo Moneda: DOLARES' . "\n");
+
+        $printer->feed();
+
+        // Detalle de la factura
+        $printer->text("Cantidad  Descripción                Precio\n");
+        $printer->text("------------------------------------------------\n");
+        $items = $devolucion->detalle()->select('cantidad', 'descripcion', 'total')->get()->toArray();
+
+        foreach ($items as $item) {
+            $printer->text(sprintf("%-8s %-24s %8.2f\n", round($item['cantidad'], 2), $item['descripcion'], round($item['total'], 2)));
+        }
+        $printer->text("------------------------------------------------\n");
+
+        //MONTO EN SOLES
+
+        $printer->feed(2);
+        $printer->setJustification(Printer::JUSTIFY_LEFT);
+
+        // // RQ Code
+        $printer2 = new Printer($connector); // dirty printer profile hack !!
+        $printer2->setJustification(Printer::JUSTIFY_CENTER);
+        $printer2->qrCode($this->textoQr($empresa, $devolucion->venta), Printer::QR_ECLEVEL_M, 8);
+        $printer2->feed();
+
+        // Información adicional
+        $printer->setJustification(Printer::JUSTIFY_LEFT);
+        $printer->feed();
+        $printer->text("Información Adicional\n");
+        $printer->text("LEYENDA\n");
+
+        $printer->text("VENDEDOR: " . $devolucion->user->name . "\n");
+
+
         // Pie de página
         $printer->feed(1);
         $printer->setJustification(Printer::JUSTIFY_CENTER);

@@ -6,6 +6,8 @@ use DateTime;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Devoluciones;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Client;
 
 class Index extends Component
 {
@@ -34,5 +36,18 @@ class Index extends Component
     {
         $d = DateTime::createFromFormat($format, $date);
         return $d && $d->format($format) == $date;
+    }
+
+    public function imprimirTicket(Devoluciones $devolucion)
+    {
+
+        $client = new Client([
+            'verify' => false,
+        ]);
+
+        $request = new Request('GET', route('api.print.receipt.devolucion', ['devolucion' => $devolucion->id]));
+        $res = $client->sendAsync($request)->wait();
+        $datos = $res->getBody()->getContents();
+        $this->dispatch('imprimir-ticket', datos: $datos);
     }
 }
