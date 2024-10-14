@@ -42,4 +42,6 @@ Route::controller(VisualizarArchivosController::class)->group(function () {
     Route::get('anulaciones/cdr/{id}/{envio_resumen:nombre_cdr}', 'cdr_anulacion')->name('facturacion.anulacion.ver.cdr');
 
     Route::get('cotizacion/pdf/{cotizaciones:uuid}', 'pdf_cotizacion')->name('facturacion.cotizacion.ver.pdf');
+
+    Route::get('{formato}/devolucion/{devolucion}', 'pdf_devolucion')->name('devolucion.ver.pdf');
 });

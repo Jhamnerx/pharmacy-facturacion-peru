@@ -10,6 +10,7 @@ use App\Models\GuiaRemision;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\CajaChica;
+use App\Models\Devoluciones;
 
 class VisualizarArchivosController extends Controller
 {
@@ -25,6 +26,11 @@ class VisualizarArchivosController extends Controller
         $venta = Ventas::where('uuid', $uuid)->firstOrFail();
 
         return $venta->getPdfNotaVenta($formato);
+    }
+
+    public function pdf_devolucion($formato, Devoluciones $devolucion)
+    {
+        return $devolucion->getPdf($formato);
     }
 
     public function ticket($uuid) {}

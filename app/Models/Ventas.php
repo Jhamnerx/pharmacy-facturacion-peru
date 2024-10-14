@@ -176,6 +176,7 @@ class Ventas extends Model
     //CREAR ITEM DETALLE VENTA
     public static function createItems(Ventas $venta, $ventaItems, $decrease_stock = true)
     {
+
         foreach ($ventaItems as $ventaItem) {
             $ventaItem['ventas_id'] = $venta->id;
 

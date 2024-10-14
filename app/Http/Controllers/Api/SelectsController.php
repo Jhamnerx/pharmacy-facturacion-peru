@@ -156,7 +156,6 @@ class SelectsController extends Controller
         return Ventas::query()
             ->withoutGlobalScopes() // Elimina todos los scopes globales
             ->select('id', 'serie_correlativo', 'fecha_emision', 'divisa', 'total', 'cliente_id')
-            ->where('fe_estado', 1)
             ->orderBy('serie_correlativo')
             ->when(
                 $request->search,

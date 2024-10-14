@@ -49,6 +49,7 @@ class VentasPosRequest extends FormRequest
 
             'cart' => 'array|between:1,1000',
             'cart.*.producto_id' => 'nullable',
+            'cart.*.codigo' => 'nullable',
             'cart.*.cantidad' => 'required|gte:1',
             'cart.*.unit' => 'required',
             'cart.*.unit_name' => 'required',

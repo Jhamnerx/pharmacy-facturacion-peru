@@ -376,6 +376,7 @@ class Emitir extends Component
     #[On('add-producto-selected')]
     function addProducto($selected)
     {
+
         try {
 
             $this->items->push([
@@ -567,8 +568,6 @@ class Emitir extends Component
         if ($this->detraccion) {
             $this->calcularMontoDetraccion($this->total);
         }
-
-
 
         //$this->op_gratuitas = $this->calcularOperacionesGratuitas();
     }

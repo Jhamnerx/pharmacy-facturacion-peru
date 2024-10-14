@@ -17,6 +17,7 @@ use App\Http\Controllers\Utiles\PrintController;
 use App\Http\Controllers\AdministracionController;
 use App\Http\Controllers\Clientes\ClienteUtilController;
 use App\Http\Controllers\Comprobantes\ComprobantesController;
+use App\Http\Controllers\DevolucionesController;
 use App\Http\Controllers\Facturacion\VisualizarArchivosController;
 
 
@@ -71,6 +72,12 @@ Route::controller(ComprobantesController::class)->middleware(['auth'])->group(fu
 Route::controller(CajaChicaController::class)->middleware(['auth'])->group(function () {
 
     Route::get('caja', 'index')->name('admin.caja.index');
+});
+
+Route::controller(DevolucionesController::class)->middleware(['auth'])->group(function () {
+
+    Route::get('devoluciones', 'index')->name('admin.devoluciones.index');
+    Route::get('devoluciones/registrar', 'create')->name('admin.devoluciones.create');
 });
 
 

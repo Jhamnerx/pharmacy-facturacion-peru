@@ -142,9 +142,9 @@
                     <!-- Comprobantes -->
                     @canany(['comprobantes.ver', 'comprobantes.crear', 'comprobantes.anular'])
 
-                        <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(1), ['emitir', 'ventas'])) {{ 'bg-slate-900' }} @endif"
-                            x-data="{ open: {{ in_array(Request::segment(1), ['emitir', 'ventas']) ? 1 : 0 }} }">
-                            <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(1), ['emitir'])) {{ 'hover:text-slate-200' }} @endif"
+                        <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(1), ['emitir', 'ventas', 'devoluciones'])) {{ 'bg-slate-900' }} @endif"
+                            x-data="{ open: {{ in_array(Request::segment(1), ['emitir', 'ventas', 'devoluciones']) ? 1 : 0 }} }">
+                            <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(1), ['emitir', 'ventas', 'devoluciones'])) {{ 'hover:text-slate-200' }} @endif"
                                 href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center">
@@ -178,6 +178,7 @@
                                             </a>
                                         </li>
                                     @endcan
+
                                     @can('comprobantes.crear')
                                         <li class="mb-1 last:mb-0">
                                             <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.invoice.create')) {{ '!text-teal-500' }} @endif"
@@ -189,6 +190,26 @@
                                             </a>
                                         </li>
                                     @endcan
+                                    @canany(['devoluciones.crear', 'devoluciones.index'])
+                                        <li class="mb-1 last:mb-0">
+                                            <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.devoluciones.index')) {{ '!text-teal-500' }} @endif"
+                                                href="{{ route('admin.devoluciones.index') }}">
+                                                <span
+                                                    class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                                    Ver Devoluciones
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="mb-1 last:mb-0">
+                                            <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.devoluciones.create')) {{ '!text-teal-500' }} @endif"
+                                                href="{{ route('admin.devoluciones.create') }}">
+                                                <span
+                                                    class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                                    Registrar Devolucion
+                                                </span>
+                                            </a>
+                                        </li>
+                                    @endcanany
                                     {{-- 
                                 <li class="mb-1 last:mb-0">
                                     <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.nota.credito.create')) {{ '!text-teal-500' }} @endif"
