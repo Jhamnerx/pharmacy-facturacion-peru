@@ -50,4 +50,14 @@ class Index extends Component
         $datos = $res->getBody()->getContents();
         $this->dispatch('imprimir-ticket', datos: $datos);
     }
+
+    public function notifyError()
+    {
+        $this->dispatch(
+            'notify-toast',
+            icon: 'error',
+            title: 'ERROR',
+            mensaje: 'Ocurrió un error Al imprimir'
+        );
+    }
 }

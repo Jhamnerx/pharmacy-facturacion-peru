@@ -85,7 +85,7 @@
         document.addEventListener('livewire:initialized', () => {
             Livewire.on('imprimir-ticket', (event) => {
 
-                console.log(event.datos);
+                // console.log(event.datos);
 
                 //imprimirHolaMundo(IMPRESORA_POR_DEFECTO);
                 pc_print(event.datos);
