@@ -272,7 +272,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\WireUi\Components\Button\Base::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['xs' => true,'negative' => true,'label' => 'Eliminar','wire:click.prevent' => 'deleteCaja('.e($caja->id).')']); ?>
+<?php $component->withAttributes(['xs' => true,'negative' => true,'label' => 'Eliminar','wire:click.prevent' => 'openModalDelete('.e($caja->id).')']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginalf04362c37f55b087f96f1c4fb07d5ce1)): ?>

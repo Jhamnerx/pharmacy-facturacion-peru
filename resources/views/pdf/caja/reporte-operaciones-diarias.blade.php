@@ -114,7 +114,7 @@
                 </tr>
                 <tr>
                     <td><strong>RUC:</strong> 2020202020</td>
-                    <td><strong>Establecimiento:</strong> - LIMA - Lima</td>
+                    <td><strong>Establecimiento: </strong> - LIMA - Lima</td>
                 </tr>
             </table>
         </div>

@@ -44,6 +44,22 @@ class Create extends Component
         ]);
 
 
+
+        $caja = CajaChica::where('user_id', $datos['user_id'])
+            ->where('estado', 'abierta')
+            ->first();
+
+        if ($caja) {
+            $this->dispatch(
+                'notify-toast',
+                icon: 'error',
+                title: 'CAJA ABIERTA',
+                mensaje: 'El usuario ya tiene una caja abierta'
+            );
+            return;
+        }
+
+
         try {
             DB::beginTransaction();
             // Guardar la caja chica

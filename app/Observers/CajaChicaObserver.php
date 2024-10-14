@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\CajaChica;
+use App\Models\User;
 use Illuminate\Support\Facades\App;
 
 class CajaChicaObserver
@@ -13,8 +14,8 @@ class CajaChicaObserver
     {
 
         if (!App::runningInConsole()) {
-
-            $cajaChica->local_id = session('local_id');
+            $user_caja = User::find($cajaChica->user_id);
+            $cajaChica->local_id = $user_caja->local_id;
         }
     }
 

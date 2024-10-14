@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use App\Observers\CajaChicaObserver;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Scopes\LocalScope;
+use App\Observers\CajaChicaObserver;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
 #[ObservedBy([CajaChicaObserver::class])]
 class CajaChica extends Model
@@ -20,6 +21,19 @@ class CajaChica extends Model
         'fecha_apertura' => 'datetime',
         'fecha_cierre' => 'datetime',
     ];
+
+    // GLOBAL SCOPE LOCAL
+    protected static function booted()
+    {
+        static::addGlobalScope(new LocalScope);
+    }
+
+    // Scope local de local
+    public function scopeLocal($query, $id)
+    {
+        return $query->where('local_id', $id);
+    }
+
 
     // Relación con MovimientoCaja
     public function movimientos()
@@ -95,7 +109,7 @@ class CajaChica extends Model
         $cajaChica = CajaChica::with(['movimientos' => function ($query) {
             $query->whereIn('tipo', ['ingreso', 'egreso']);
         }, 'movimientos.movimientoable'])->find($cajaChicaId);
-        dd($cajaChica->movimientos);
+
         // Agrupar por métodos de pago y calcular los ingresos y egresos
         $resumenPagos = $cajaChica->movimientos->groupBy(function ($movimiento) {
             return $movimiento->movimientoable->metodoPago->descripcion;

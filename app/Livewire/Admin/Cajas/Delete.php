@@ -2,8 +2,9 @@
 
 namespace App\Livewire\Admin\Cajas;
 
-use App\Models\CajaChica;
 use Livewire\Component;
+use App\Models\CajaChica;
+use Livewire\Attributes\On;
 
 class Delete extends Component
 {
@@ -16,6 +17,7 @@ class Delete extends Component
         return view('livewire.admin.cajas.delete');
     }
 
+    #[On('open-modal-delete')]
     public function openModal(CajaChica $caja)
     {
         $this->showModal = true;
@@ -31,6 +33,23 @@ class Delete extends Component
     {
         // Eliminar la caja chica
         $this->caja->delete();
-        $this->close();
+        $this->afterDelete();
+    }
+
+    public function afterDelete()
+    {
+        $this->dispatch(
+            'notify-toast',
+            icon: 'success',
+            title: 'CAJA ELIMINADA',
+            mensaje: 'se elimino correctamente la CAJA'
+        );
+        $this->dispatch('update-table');
+        $this->closeModal();
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
     }
 }

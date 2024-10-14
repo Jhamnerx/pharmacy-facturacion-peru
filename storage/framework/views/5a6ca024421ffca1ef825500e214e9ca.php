@@ -43,7 +43,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\WireUi\Components\Select\Base::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['label' => 'Filtrar por:','placeholder' => 'Selecciona','options' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(['Ingresos', 'Egresos']),'wire:model' => 'filtro','class' => 'rounded']); ?>
+<?php $component->withAttributes(['label' => 'Filtrar por:','placeholder' => 'Selecciona','options' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(['Ingresos', 'Egresos']),'class' => 'rounded']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal49b3de13d927faa5a3ecd49fc0b06061)): ?>

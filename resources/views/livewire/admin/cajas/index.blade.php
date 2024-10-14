@@ -16,8 +16,7 @@
     <!-- Filtros -->
     <div class="flex items-center justify-between mb-4">
         <div class="w-1/3">
-            <x-form.select label="Filtrar por:" placeholder="Selecciona" :options="['Ingresos', 'Egresos']" wire:model="filtro"
-                class="rounded" />
+            <x-form.select label="Filtrar por:" placeholder="Selecciona" :options="['Ingresos', 'Egresos']" class="rounded" />
         </div>
         <div class="w-1/3">
             <x-form.input label="Buscar" wire:model.live="search" placeholder="Buscar..." class="rounded" />

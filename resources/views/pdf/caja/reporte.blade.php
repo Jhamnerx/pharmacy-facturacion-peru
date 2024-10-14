@@ -181,7 +181,7 @@
                 </td>
                 <td>
                     <strong>Fecha reporte:</strong> {{ now()->format('d-m-Y') }}<br>
-                    <strong>Establecimiento:</strong>{{ $local->nombre }} - {{ $local->direccion }}<br>
+                    <strong>Establecimiento:</strong> {{ $local->nombre }} - {{ $local->direccion }}<br>
                     <strong>Fecha y hora apertura:</strong> {{ $datos->fecha_apertura }}<br>
                     <strong>Ingreso:</strong> S/.{{ number_format($totalIngresos, 2) }}<br>
                     <strong>Egreso:</strong> S/. {{ number_format($totalEgresos, 2) }}<br>

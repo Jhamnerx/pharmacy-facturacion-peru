@@ -121,7 +121,7 @@
 
                                 @can('caja_chica.eliminar')
                                     <x-form.button xs negative label="Eliminar"
-                                        wire:click.prevent="deleteCaja({{ $caja->id }})" />
+                                        wire:click.prevent="openModalDelete({{ $caja->id }})" />
                                 @endcan
                                 {{-- <x-form.button xs info label="C. Electrónico" /> --}}
                             </div>
