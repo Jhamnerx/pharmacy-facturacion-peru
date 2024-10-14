@@ -5,6 +5,9 @@
             <x-form.select wire:model.live="user_id" label="Vendedor" placeholder="Selecciona un vendedor"
                 :async-data="[
                     'api' => route('api.user.index'),
+                    'params' => [
+                        'user_id' => auth()->user()->id,
+                    ],
                 ]" option-label="name" option-value="id" />
         </div>
 

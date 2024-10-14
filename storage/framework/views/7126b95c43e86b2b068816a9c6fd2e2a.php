@@ -213,8 +213,10 @@
                                 
 
                                 
-                                <!--[if BLOCK]><![endif]--><?php if($caja->estado == 'abierta'): ?>
-                                    <?php if (isset($component)) { $__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1 = $component; } ?>
+
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('caja_chica.cambiar_estado')): ?>
+                                    <!--[if BLOCK]><![endif]--><?php if($caja->estado == 'abierta'): ?>
+                                        <?php if (isset($component)) { $__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalf04362c37f55b087f96f1c4fb07d5ce1 = $attributes; } ?>
 <?php $component = WireUi\Components\Button\Base::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('form.button'); ?>
@@ -234,8 +236,11 @@
 <?php $component = $__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1; ?>
 <?php unset($__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1); ?>
 <?php endif; ?>
-                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                                <?php if (isset($component)) { $__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1 = $component; } ?>
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                <?php endif; ?>
+
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('caja_chica.editar')): ?>
+                                    <?php if (isset($component)) { $__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalf04362c37f55b087f96f1c4fb07d5ce1 = $attributes; } ?>
 <?php $component = WireUi\Components\Button\Base::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('form.button'); ?>
@@ -255,7 +260,10 @@
 <?php $component = $__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1; ?>
 <?php unset($__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1); ?>
 <?php endif; ?>
-                                <?php if (isset($component)) { $__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1 = $component; } ?>
+                                <?php endif; ?>
+
+                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('caja_chica.eliminar')): ?>
+                                    <?php if (isset($component)) { $__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalf04362c37f55b087f96f1c4fb07d5ce1 = $attributes; } ?>
 <?php $component = WireUi\Components\Button\Base::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('form.button'); ?>
@@ -275,26 +283,8 @@
 <?php $component = $__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1; ?>
 <?php unset($__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1); ?>
 <?php endif; ?>
-                                <?php if (isset($component)) { $__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginalf04362c37f55b087f96f1c4fb07d5ce1 = $attributes; } ?>
-<?php $component = WireUi\Components\Button\Base::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('form.button'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\WireUi\Components\Button\Base::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['xs' => true,'info' => true,'label' => 'C. Electrónico']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginalf04362c37f55b087f96f1c4fb07d5ce1)): ?>
-<?php $attributes = $__attributesOriginalf04362c37f55b087f96f1c4fb07d5ce1; ?>
-<?php unset($__attributesOriginalf04362c37f55b087f96f1c4fb07d5ce1); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1)): ?>
-<?php $component = $__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1; ?>
-<?php unset($__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1); ?>
-<?php endif; ?>
+                                <?php endif; ?>
+                                
                             </div>
                         </td>
                     </tr>

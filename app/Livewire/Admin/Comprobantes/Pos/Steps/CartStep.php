@@ -89,6 +89,16 @@ class CartStep extends Component
         //  CONSULTAR TIPO CAMBIO
         $util = new UtilesController;
         $this->tipo_cambio = $util->tipoCambio();
+
+
+        $caja = CajaChica::where('user_id', auth()->user()->id)
+            ->where('estado', 'abierta')
+            ->first();
+
+        // Verificar que la caja chica está abierta
+        if (!$caja) {
+            return redirect()->route('admin.caja.index');
+        }
     }
 
     public function loadSeries()

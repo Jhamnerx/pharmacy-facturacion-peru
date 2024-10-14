@@ -107,7 +107,7 @@
 
                 </div>
             </div>
-            {{ json_encode($errors->all()) }}
+
 
             <div class="px-4 py-3 text-right sm:px-6 sticky my-2 bg-white border-b border-slate-200">
 

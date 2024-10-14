@@ -106,15 +106,24 @@
                                 </x-form.dropdown> --}}
 
                                 {{-- <x-form.button xs positive label="R. Ingreso" /> --}}
-                                @if ($caja->estado == 'abierta')
-                                    <x-form.button xs success label="Cerrar Caja"
-                                        wire:click.prevent="closeCaja({{ $caja->id }})" />
-                                @endif
-                                <x-form.button xs warning label="Editar"
-                                    wire:click.prevent="openModalEdit({{ $caja->id }})" />
-                                <x-form.button xs negative label="Eliminar"
-                                    wire:click.prevent="deleteCaja({{ $caja->id }})" />
-                                <x-form.button xs info label="C. Electrónico" />
+
+                                @can('caja_chica.cambiar_estado')
+                                    @if ($caja->estado == 'abierta')
+                                        <x-form.button xs success label="Cerrar Caja"
+                                            wire:click.prevent="closeCaja({{ $caja->id }})" />
+                                    @endif
+                                @endcan
+
+                                @can('caja_chica.editar')
+                                    <x-form.button xs warning label="Editar"
+                                        wire:click.prevent="openModalEdit({{ $caja->id }})" />
+                                @endcan
+
+                                @can('caja_chica.eliminar')
+                                    <x-form.button xs negative label="Eliminar"
+                                        wire:click.prevent="deleteCaja({{ $caja->id }})" />
+                                @endcan
+                                {{-- <x-form.button xs info label="C. Electrónico" /> --}}
                             </div>
                         </td>
                     </tr>

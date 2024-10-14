@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(PermisosSeeder::class);
         // $this->call(UserSeeder::class);
         // $this->call(CreateLotesForExistingProductsSeeder::class);
-        //$this->call(PermisosSeeder::class);
+        $this->call(PermisosSeeder::class);
         //$this->call(updateEmpresaSeeder::class);
     }
 }

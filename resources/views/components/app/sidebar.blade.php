@@ -82,7 +82,7 @@
                     @endcan --}}
 
                     {{-- POS --}}
-                    @canany(['punto.venta.ver', 'caja.crear'])
+                    @canany(['punto.venta.ver', 'caja_chica.ver', 'caja_chica.crear'])
 
                         <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(1), ['pos', 'caja'])) {{ 'bg-slate-900' }} @endif"
                             x-data="{ open: {{ in_array(Request::segment(1), ['pos', 'caja']) ? 1 : 0 }} }">
@@ -122,7 +122,7 @@
                                         </li>
                                     @endcan
 
-                                    @can('caja.crear')
+                                    @canany(['caja_chica.crear', 'caja_chica.ver'])
                                         <li class="mb-1 last:mb-0">
                                             <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.caja.index')) {{ '!text-teal-500' }} @endif"
                                                 href="{{ route('admin.caja.index') }}">
@@ -132,7 +132,7 @@
                                                 </span>
                                             </a>
                                         </li>
-                                    @endcan
+                                    @endcanany
                                 </ul>
                             </div>
                         </li>
@@ -190,7 +190,8 @@
                                             </a>
                                         </li>
                                     @endcan
-                                    @canany(['devoluciones.crear', 'devoluciones.index'])
+
+                                    @canany(['devoluciones.crear', 'devoluciones.ver'])
                                         <li class="mb-1 last:mb-0">
                                             <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.devoluciones.index')) {{ '!text-teal-500' }} @endif"
                                                 href="{{ route('admin.devoluciones.index') }}">

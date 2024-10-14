@@ -5,7 +5,8 @@
         <h1 class="text-xl font-bold text-gray-800 dark:text-slate-100">Listado de cajas</h1>
         <div class="space-x-2 xs:space-y-1 sm:space-x-0">
             
-            <?php if (isset($component)) { $__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1 = $component; } ?>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('caja_chica.crear')): ?>
+                <?php if (isset($component)) { $__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalf04362c37f55b087f96f1c4fb07d5ce1 = $attributes; } ?>
 <?php $component = WireUi\Components\Button\Base::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('form.button'); ?>
@@ -25,6 +26,7 @@
 <?php $component = $__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1; ?>
 <?php unset($__componentOriginalf04362c37f55b087f96f1c4fb07d5ce1); ?>
 <?php endif; ?>
+            <?php endif; ?>
         </div>
 
     </div>

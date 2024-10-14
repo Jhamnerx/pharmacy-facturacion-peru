@@ -497,6 +497,7 @@ class SelectsController extends Controller
     public function user(Request $request): Collection
     {
 
+        $user = User::find($request->input('user_id'));
         return User::query()
 
             ->select('id', 'name')
@@ -507,6 +508,10 @@ class SelectsController extends Controller
                     ->where('name', 'like', "%{$request->search}%")
             )
             ->when(
+                !$user->hasRole('admin'),
+                fn(Builder $query) => $query->where('id', $request->input('user_id'))
+            )
+            ->when(
                 $request->exists('selected'),
                 fn(Builder $query) => $query->whereIn('id', $request->input('selected', [])),
                 fn(Builder $query) => $query->limit(20)
@@ -514,6 +519,9 @@ class SelectsController extends Controller
 
             ->get();
     }
+
+
+
 
     public function puertosPeru(Request $request)
     {

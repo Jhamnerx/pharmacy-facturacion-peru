@@ -65,7 +65,7 @@
                     
 
                     
-                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['punto.venta.ver', 'caja.crear'])): ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['punto.venta.ver', 'caja_chica.ver', 'caja_chica.crear'])): ?>
 
                         <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 <?php if(in_array(Request::segment(1), ['pos', 'caja'])): ?> <?php echo e('bg-slate-900'); ?> <?php endif; ?>"
                             x-data="{ open: <?php echo e(in_array(Request::segment(1), ['pos', 'caja']) ? 1 : 0); ?> }">
@@ -124,7 +124,7 @@
                                         </li>
                                     <?php endif; ?>
 
-                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('caja.crear')): ?>
+                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['caja_chica.crear', 'caja_chica.ver'])): ?>
                                         <li class="mb-1 last:mb-0">
                                             <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate <?php if(Route::is('admin.caja.index')): ?> <?php echo e('!text-teal-500'); ?> <?php endif; ?>"
                                                 href="<?php echo e(route('admin.caja.index')); ?>">
@@ -211,7 +211,8 @@
                                             </a>
                                         </li>
                                     <?php endif; ?>
-                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['devoluciones.crear', 'devoluciones.index'])): ?>
+
+                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['devoluciones.crear', 'devoluciones.ver'])): ?>
                                         <li class="mb-1 last:mb-0">
                                             <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate <?php if(Route::is('admin.devoluciones.index')): ?> <?php echo e('!text-teal-500'); ?> <?php endif; ?>"
                                                 href="<?php echo e(route('admin.devoluciones.index')); ?>">

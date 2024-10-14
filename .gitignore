@@ -27,3 +27,4 @@ auth-image.psd
 /storage/framework/cache/*
 /storage/framework/cache/data/*
 /storage/framework/cache/laravel-excel/*
+/storage/framework/views/*
