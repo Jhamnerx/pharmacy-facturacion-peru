@@ -534,7 +534,7 @@
                         <td align="center" class="bold">CANTIDAD</td>
                         <td align="center" class="bold">CÓDIGO</td>
                         <td align="center" class="bold">DESCRIPCIÓN</td>
-                        <td align="center" class="bold">VALOR UNITARIO</td>
+                        <td align="center" class="bold">PRECIO UNITARIO</td>
                         <td align="center" class="bold">VALOR TOTAL</td>
                     </tr>
 
@@ -561,11 +561,12 @@
                         </td>
                         <td align="center">
                             {{ moneda }}
-                            {{ det.mtoValorUnitario|n_format }}
+                            {{ det.mtoPrecioUnitario|n_format }}
+
                         </td>
                         <td align="center">
                             {{ moneda }}
-                            {{ det.mtoValorVenta|n_format }}
+                            {{ (det.mtoPrecioUnitario * det.cantidad)|n_format }}
                         </td>
                     </tr>
                     {% endfor %}

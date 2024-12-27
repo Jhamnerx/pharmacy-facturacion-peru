@@ -38,7 +38,7 @@ class Ventas extends Component
 
     public function updatedFechaInicio($value)
     {
-        dd('Fecha Inicio Updated:', $value);
+        // dd('Fecha Inicio Updated:', $value);
     }
 
     public function exportar()

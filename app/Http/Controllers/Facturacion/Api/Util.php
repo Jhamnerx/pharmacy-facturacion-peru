@@ -436,7 +436,6 @@ class Util extends Controller
     //OBTENER Y VISUALIZAR PDF INVOICE
     public function getPdf(Ventas $venta, $formato)
     {
-
         $twigOptions = [
             'cache' => storage_path('framework/cache/data/facturacion/pdf'),
             'strict_variables' => true,

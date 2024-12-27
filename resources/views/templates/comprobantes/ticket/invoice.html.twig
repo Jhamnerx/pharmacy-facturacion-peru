@@ -381,7 +381,7 @@
                     <tr class="tr-head">
                         <th style="text-align:center; width:10mm;">Cant.</th>
                         <th style="text-align:center; width:30mm;">Descripción</th>
-                        <th style="text-align:center; width:13mm;">V. Unitario</th>
+                        <th style="text-align:center; width:13mm;">P. Unitario</th>
                         <th style="text-align:center; width:13mm;">V. Total</th>
                     </tr>
                     <tr>
@@ -403,9 +403,9 @@
                             {{ det.unidad }}</td>
                         <td style="width:30mm; text-align:center;">{{ det.descripcion }}</td>
                         <td style="width:14mm;"> {{ moneda }}
-                            {{ det.mtoValorUnitario|n_format }}</td>
+                            {{ det.mtoPrecioUnitario|n_format }}</td>
                         <td style="width:14mm;"> {{ moneda }}
-                            {{ det.mtoValorVenta|n_format }}</td>
+                            {{ (det.mtoPrecioUnitario * det.cantidad)|n_format }}</td>
                     </tr>
                 {% endfor %}
 

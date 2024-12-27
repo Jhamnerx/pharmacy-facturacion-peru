@@ -167,4 +167,51 @@ class QpseController extends Controller
             ];
         }
     }
+
+    public function consultaTicket($nombre_archivo)
+    {
+
+        try {
+            $url = $this->getUrl() . '/api/cpe/consultar/' . $nombre_archivo;
+
+            $client = new Client(['verify' => false]);
+
+            $tokenResponse = $this->getToken();
+            if (isset($tokenResponse['error'])) {
+                return $tokenResponse;
+            }
+
+            $parameters = [
+                'connect_timeout' => 5,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer ' . $tokenResponse['token_acceso'],
+                ],
+            ];
+
+            $res = $client->request('POST', $url, $parameters);
+
+            if ($res->getStatusCode() === 200) {
+                return json_decode($res->getBody()->getContents(), true);
+            } else {
+                return [
+                    'error' => 'Error: La respuesta no tiene un código de estado 200.',
+                    'code' => Response::HTTP_BAD_REQUEST
+                ];
+            }
+        } catch (RequestException $e) {
+            $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : Response::HTTP_INTERNAL_SERVER_ERROR;
+            $message = $e->getResponse() ? json_decode($e->getResponse()->getBody()->getContents())->message : 'Error: La solicitud falló sin respuesta.';
+            return [
+                'error' => "Error " . $statusCode . " :" . $message,
+                'code' => $statusCode
+            ];
+        } catch (\Exception $e) {
+            return [
+                'error' => 'Error: ' . $e->getMessage(),
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR
+            ];
+        }
+    }
 }

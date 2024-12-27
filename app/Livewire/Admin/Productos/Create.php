@@ -7,9 +7,9 @@ use Livewire\Component;
 use App\Models\Productos;
 use Livewire\Attributes\On;
 use App\Models\CatalogoDigemid;
-use Intervention\Image\ImageManager;
 use App\Http\Requests\ProductosRequest;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Encoders\PngEncoder;
 
